@@ -83,6 +83,28 @@ export type Situation = {
   users: RoadUser[];
 };
 
+/**
+ * Colours a situation from its answer key (les 3 onwards): `go` rides in the
+ * first turn of every possibility (green), `vf` are the road users between
+ * whom verkeersfatsoen is applied (purple), everyone else waits (orange).
+ * Throws on a label the situation doesn't have, so a typo in the key can't
+ * silently leave someone uncoloured.
+ */
+export function withKey(situation: Situation, go: string[], vf: string[] = []): Situation {
+  const labels = new Set(situation.users.map((u) => u.label));
+  for (const label of [...go, ...vf]) {
+    if (!labels.has(label)) throw new Error(`answer key names "${label}", which is not in the situation`);
+  }
+  return {
+    ...situation,
+    users: situation.users.map((u) => ({
+      ...u,
+      hasPriority: go.includes(u.label),
+      ...(vf.includes(u.label) && { courtesy: true }),
+    })),
+  };
+}
+
 export const MAQUETTE_COLORS = {
   priority: "#16a34a",
   wait: "#d97706",

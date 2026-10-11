@@ -807,3 +807,29 @@ The owner uploaded `materiaalrijonderricht/VERKEERSBORDEN.pdf` (75 signs with mo
 - **Checked:** tsc, eslint, jest (66 tests; a new test checks every image exists, every quiz answer is the sign's own meaning, and no option repeats). No browser on this machine, so the pages have not been seen rendered.
 
 **Review page:** https://claude.ai/artifact/6snPFETr3zRvq3UtaFGAH9
+
+## 2026-10-11 — Maquette Les 3–6: answers, lessons and quizzes
+
+The owner uploaded the instructor's answer keys: `ANTWOORDEN MAQUETTES H3.docx` (Les 3), `H4.docx` (Les 4) and `H5&6.docx` (Les 5 and 6). They are followed as written.
+
+- **Corrected typos (owner's call):** 34 "VF2+F(F+2)1+2-7" is `VF 2+f — (fW2) 1 + 2 – f of (2Wf) 1 + f – 2`; 40 "3+2+F1-3+4" is `3 + 2 + f1 – 1 + 4`. Read as obvious: the second possibility of 41 ends with f10 (key: "10"); the Les 5 oplossingsmodel's "(T8W6)" is (f8W6).
+- **Mapping:** the H3 key numbers its answers like the PDF (32–35, then 32–38); in order they are 32–42. The two brede T-kruising answers in H4 are taken in page order: the VF one is met rijwielpad, the same pattern as in Les 3.
+- **Les 4 is partial:** the key answers the T-kruising, both brede T-kruisingen and Regel 1. Regel 2, 3 Opl 1/2, 4, 5 and 6 have no answer; the owner chose to build what is answered. Their lessons go after the current three when the answers arrive (the seed only adds missing lessons, so appending works).
+- **Colours:** new `withKey()` in `lib/maquette.ts` colours a situation from its key (green = rides in the first turn, purple = VF, orange = waits) and throws on a label the diagram doesn't have.
+- **Modules:** Les 3 (TEXT + example 32, quiz 33–37, quiz 38–42), Les 4 (T-kruising + example, quiz brede T-kruising with/without rijwielpad, inrit rules 1–6 and Oplossingsmodellen A/B + example Regel 1), Les 5 (rules, oplossingsmodel and the 4 soorten verkeersfatsoen + examples Regel 1 and 2, quiz Regel 3 V.B. 1/2 and the oplossingsmodel), Les 6 (rules + example V.B. 1, quiz V.B. 2, summary with the solving order and the Toelichting). Seeded at orderIndex 3–6; Verkeersborden and the example modules move to 7–11.
+- **Explanations** are written from the PDFs' rules; where the reason for an order isn't clear from the rules (e.g. 37) they only describe it.
+- **Checked:** tsc, eslint, jest (70 tests; a new test checks every answer names exactly the road users in its diagram and every answered diagram is coloured).
+
+**Review page:** https://claude.ai/artifact/UZxufjbHjrLmgT4ahpDo8b
+
+**Les 4 Regel 2–6, worked out from the rules (owner's request, same day):** the owner confirmed the six diagrams and that they explain the rules, so they are worked examples in the inrit lesson, not quizzes. The answers come from the inrit rules and Oplossingsmodel A (first the traffic not going to the inrit, as at a T-kruising; then clear the inrit; then fill it as at a T-kruising), a method that reproduces the key's Les 4 Regel 1 and Les 6 V.B. 2:
+- Regel 2: `2 – 1 – 3 – 4 – 7 – 6 – 5`
+- Regel 3 Opl 1: `VF 3+4 — (3W4) 4 – 3 – 1 – 2 – 5 of (4W3) 3 – 4 – 1 – 2 – 5`
+- Regel 3 Opl 2 (least certain: rule 3 applied a second time between f4 and f5): `VF f5+3 — (3Wf5) f5 – 3 – f4 – 1 – 2 – 6 of (f5W3) 3 – VF f5+f4 — (f5Wf4) f4 – f5 of (f4Wf5) f5 – f4, daarna 1 – 2 – 6`
+- Regel 4: `1 – f` · Regel 5: `1 – 2 + 3` · Regel 6: `4 – f3 – 1 – 2`
+
+The owner chose to keep the other example diagrams as quizzes (Les 4 brede T-kruisingen, Les 5 Regel 3 V.B. 1/2 and Oplossingsmodel, Les 6 V.B. 2).
+
+**Approved** by the owner on the review page and committed.
+
+**Open:** push, seed the live database and check on the live site. The instructor to confirm the six derived Les 4 answers.
