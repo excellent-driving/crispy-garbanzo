@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import "../(public)/public-shared.css";
 import styles from "./booking.module.css";
 
-export default function BookingLayout({ children }: { children: React.ReactNode }) {
+export default async function BookingLayout({ children }: { children: React.ReactNode }) {
+  const t = await getTranslations("Booking");
   return (
     <div className={styles.body}>
       <nav>
@@ -18,7 +20,7 @@ export default function BookingLayout({ children }: { children: React.ReactNode 
             </div>
           </Link>
           <Link href="/" className="btn btn-outline" style={{ fontSize: "0.82rem", padding: "8px 16px" }}>
-            ← Back to Home
+            {t("backToHome")}
           </Link>
         </div>
       </nav>

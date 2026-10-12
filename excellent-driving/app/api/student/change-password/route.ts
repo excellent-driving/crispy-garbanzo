@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { apiError } from "@/lib/api-error";
 
 const passwordSchema = z.object({
   currentPassword: z.string().min(1),
@@ -12,20 +13,20 @@ const passwordSchema = z.object({
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user) return await apiError("unauthorized", 401);
 
   const body = await request.json();
   const parsed = passwordSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "New password must be at least 8 characters." }, { status: 400 });
+    return await apiError("passwordTooShort", 400);
   }
 
   const user = await prisma.user.findUnique({ where: { id: session.user.id } });
-  if (!user) return NextResponse.json({ error: "User not found." }, { status: 404 });
+  if (!user) return await apiError("userNotFound", 404);
 
   const isValid = await bcrypt.compare(parsed.data.currentPassword, user.passwordHash);
   if (!isValid) {
-    return NextResponse.json({ error: "Current password is incorrect." }, { status: 400 });
+    return await apiError("wrongPassword", 400);
   }
 
   const passwordHash = await bcrypt.hash(parsed.data.newPassword, 10);

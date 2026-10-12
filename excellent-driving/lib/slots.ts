@@ -22,6 +22,16 @@ export function parseSlotLabel(label: string): number {
   return hour * 60 + Number(minuteStr);
 }
 
+/**
+ * A stored slot label ("1:00 PM") as the viewer reads it: unchanged in
+ * English, on the 24-hour clock in Dutch ("13:00").
+ */
+export function displaySlot(label: string, locale: string): string {
+  if (locale !== "nl") return label;
+  const minutes = parseSlotLabel(label);
+  return `${Math.floor(minutes / 60).toString().padStart(2, "0")}:${(minutes % 60).toString().padStart(2, "0")}`;
+}
+
 function parseTime(hhmm: string) {
   const [h, m] = hhmm.split(":").map(Number);
   return h * 60 + m;

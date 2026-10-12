@@ -1,4 +1,4 @@
-import { dayOfWeekCode, formatSlotLabel, parseSlotLabel, generateSlotMinutes } from "@/lib/slots";
+import { dayOfWeekCode, displaySlot, formatSlotLabel, parseSlotLabel, generateSlotMinutes } from "@/lib/slots";
 
 describe("dayOfWeekCode", () => {
   it("maps a known Sunday to SUN", () => {
@@ -62,5 +62,17 @@ describe("generateSlotMinutes", () => {
 
   it("returns exactly one slot when the window exactly fits one lesson", () => {
     expect(generateSlotMinutes("09:00", "09:50", 50)).toEqual([9 * 60]);
+  });
+});
+
+describe("displaySlot", () => {
+  it("keeps the stored label in English", () => {
+    expect(displaySlot("1:00 PM", "en")).toBe("1:00 PM");
+  });
+
+  it("uses the 24-hour clock in Dutch", () => {
+    expect(displaySlot("8:00 AM", "nl")).toBe("08:00");
+    expect(displaySlot("12:00 PM", "nl")).toBe("12:00");
+    expect(displaySlot("4:00 PM", "nl")).toBe("16:00");
   });
 });

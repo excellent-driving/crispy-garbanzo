@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import styles from "./bookings.module.css";
+import { displaySlot } from "@/lib/slots";
 
 export type BookingRow = {
   id: string;
@@ -53,7 +54,7 @@ function Row({ booking, onCancelled }: { booking: BookingRow; onCancelled: (id: 
         <div className={styles.info}>
           <div className={styles.title}>{t("packageLesson", { name: booking.packageName })}</div>
           <div className={styles.meta}>
-            <span>⏰ {booking.timeSlot}</span>
+            <span>⏰ {displaySlot(booking.timeSlot, locale)}</span>
             <span>👨‍🏫 {booking.instructorName}</span>
             <span>{booking.paymentMethod === "CASH" ? `💵 ${t("cash")}` : `🏦 ${t("bankTransfer")}`}</span>
           </div>

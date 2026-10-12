@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
+import { apiError } from "@/lib/api-error";
 
 const contactSchema = z.object({
   name: z.string().min(1),
@@ -13,14 +14,11 @@ export async function POST(request: Request) {
   const parsed = contactSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Please fill in all fields correctly." }, { status: 400 });
+    return await apiError("contactInvalid", 400);
   }
 
   if (!process.env.RESEND_API_KEY) {
-    return NextResponse.json(
-      { error: "Email is not configured yet — please reach out via WhatsApp instead." },
-      { status: 503 }
-    );
+    return await apiError("contactNotConfigured", 503);
   }
 
   const { name, email, message } = parsed.data;
@@ -35,7 +33,7 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    return NextResponse.json({ error: "Failed to send. Please try WhatsApp instead." }, { status: 502 });
+    return await apiError("contactFailed", 502);
   }
 
   return NextResponse.json({ ok: true });

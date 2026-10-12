@@ -842,3 +842,13 @@ The owner chose to keep the other example diagrams as quizzes (Les 4 brede T-kru
 `prisma/seed.ts` added every seeded instructor's weekly schedule on each run (`schedules` has no unique key, so `skipDuplicates` did nothing). It now creates a schedule only for an instructor it has just created; an existing instructor's hours are left to the admin, who can edit them. No unique key was added, because an instructor may have two blocks on one day. Checked on a throwaway local database: 17 schedule rows after the first run and after the second. The seed is safe to re-run on the live database again.
 
 The "Demo build" banner stays (and stays in English) until the app is declared ready for production; it goes away then rather than being translated.
+
+### 2026-10-12 — Booking wizard and server errors in Dutch
+
+- **Owner's review account** (`webtrekker95@gmail.com`): Verkeersborden is module 8 now, so to open it all Les 3–6 lessons were marked PASSED on that account (10 rows; the account had passed Les 3 lesson 1 already). Verkeersborden lessons 1–2 were already passed from before; lesson 3 is next.
+- **Booking wizard** (`/booking`): every text comes from a new `Booking` section in `messages/en.json` and `nl.json`. Month and day names, dates and prices follow the language through the browser's date formatting; package names use `packageName()`; instructor availability ("Beschikbaar ma–vr") is built on the server. English wording is unchanged.
+- **Times:** slots are still stored as "1:00 PM"; new `displaySlot()` in `lib/slots.ts` shows them on the 24-hour clock in Dutch ("13:00") in the wizard, the dashboard and the bookings list.
+- **Server errors:** the student- and public-facing API routes (bookings, cancel, profile, password, lesson progress, register, contact) answer with a message from a new `Errors` section, in the visitor's language, through `apiError()` in `lib/api-error.ts`. It uses the same language choice as the pages: cookie, then the account's language, then the browser. Admin, cron and internal routes are unchanged.
+- **Checked:** tsc, eslint, jest (72 tests; new ones for `displaySlot`). On a local production build with a throwaway database, a test student booked a lesson through all six steps in Dutch at 1280px and 400px and in English: a text scan found no English left on the Dutch pages, no page errors, no overflow. A double booking and a wrong current password returned Dutch errors in Dutch and English ones in English.
+
+**Still English under NL:** the login and register pages (not checked); WhatsApp/email message texts.

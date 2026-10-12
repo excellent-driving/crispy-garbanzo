@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { getStudentModuleStates, getStudentDashboardStats, moduleTitle, packageName } from "@/lib/progress";
 import styles from "./dashboard.module.css";
 import shell from "../../student-shell.module.css";
+import { displaySlot } from "@/lib/slots";
 
 const moduleIcons = ["📖", "🚦", "🛣️", "🚗", "🏁"];
 
@@ -205,7 +206,7 @@ export default async function StudentDashboardPage() {
                   <div className={styles["booking-info"]}>
                     <div className={styles["booking-title"]}>{t("packageLesson", { name: packageName(nextBooking.package, locale) })}</div>
                     <div className={styles["booking-meta"]}>
-                      <div className={styles["booking-meta-item"]}>⏰ {nextBooking.timeSlot}</div>
+                      <div className={styles["booking-meta-item"]}>⏰ {displaySlot(nextBooking.timeSlot, locale)}</div>
                       <div className={styles["booking-meta-item"]}>👨‍🏫 {nextBooking.instructor.user.name}</div>
                       <div className={styles["booking-meta-item"]}>📍 Bonistraat 44</div>
                     </div>

@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getStudentModuleStates } from "@/lib/progress";
 import { scoreQuiz } from "@/lib/quiz";
+import { apiError } from "@/lib/api-error";
 
 const submitSchema = z.object({
   answers: z.array(z.number().nullable()).optional(),
@@ -15,16 +16,16 @@ export async function POST(
   { params }: { params: Promise<{ lessonId: string }> }
 ) {
   const session = await getServerSession(authOptions);
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user) return await apiError("unauthorized", 401);
 
   const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { courseAccess: true } });
   if (!user?.courseAccess) {
-    return NextResponse.json({ error: "Your course access is currently on hold." }, { status: 403 });
+    return await apiError("accessOnHold", 403);
   }
 
   const { lessonId } = await params;
   const lesson = await prisma.lesson.findUnique({ where: { id: lessonId } });
-  if (!lesson) return NextResponse.json({ error: "Lesson not found." }, { status: 404 });
+  if (!lesson) return await apiError("lessonNotFound", 404);
 
   const moduleStates = await getStudentModuleStates(session.user.id);
   const lessonState = moduleStates
@@ -32,13 +33,13 @@ export async function POST(
     .find((l) => l.lesson.id === lessonId);
 
   if (!lessonState?.unlocked) {
-    return NextResponse.json({ error: "This lesson is locked." }, { status: 403 });
+    return await apiError("lessonLocked", 403);
   }
 
   const body = await request.json().catch(() => ({}));
   const parsed = submitSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid submission." }, { status: 400 });
+    return await apiError("invalidSubmission", 400);
   }
 
   const moduleId = lesson.moduleId;

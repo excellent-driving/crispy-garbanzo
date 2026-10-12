@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { apiError } from "@/lib/api-error";
 
 const profileSchema = z.object({
   name: z.string().min(1),
@@ -12,12 +13,12 @@ const profileSchema = z.object({
 
 export async function PATCH(request: Request) {
   const session = await getServerSession(authOptions);
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user) return await apiError("unauthorized", 401);
 
   const body = await request.json();
   const parsed = profileSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Please check your name, phone, and language." }, { status: 400 });
+    return await apiError("invalidProfile", 400);
   }
 
   const user = await prisma.user.update({

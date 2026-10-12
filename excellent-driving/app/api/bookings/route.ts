@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { dayOfWeekCode, formatSlotLabel, generateSlotMinutes } from "@/lib/slots";
 import { notify, templates } from "@/lib/whatsapp";
+import { apiError } from "@/lib/api-error";
 
 const bookingSchema = z.object({
   packageId: z.string().min(1),
@@ -17,13 +18,13 @@ const bookingSchema = z.object({
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
-    return NextResponse.json({ error: "You must be logged in to book a lesson." }, { status: 401 });
+    return await apiError("loginToBook", 401);
   }
 
   const body = await request.json();
   const parsed = bookingSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid booking details." }, { status: 400 });
+    return await apiError("invalidBooking", 400);
   }
 
   const { packageId, instructorId, date: dateParam, timeSlot, paymentMethod } = parsed.data;
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
   const dayCode = dayOfWeekCode(date);
 
   if (dayCode === "SUN" || date < today) {
-    return NextResponse.json({ error: "That date is not available for booking." }, { status: 400 });
+    return await apiError("dateUnavailable", 400);
   }
 
   const [pkg, instructor, schedule] = await Promise.all([
@@ -42,13 +43,10 @@ export async function POST(request: Request) {
     prisma.schedule.findFirst({ where: { instructorId, dayOfWeek: dayCode } }),
   ]);
 
-  if (!pkg) return NextResponse.json({ error: "Package not found." }, { status: 404 });
-  if (!instructor) return NextResponse.json({ error: "Instructor not found." }, { status: 404 });
+  if (!pkg) return await apiError("packageNotFound", 404);
+  if (!instructor) return await apiError("instructorNotFound", 404);
   if (!schedule) {
-    return NextResponse.json(
-      { error: "This instructor is not available on that day." },
-      { status: 400 }
-    );
+    return await apiError("instructorUnavailable", 400);
   }
 
   const validSlots = generateSlotMinutes(
@@ -57,7 +55,7 @@ export async function POST(request: Request) {
     schedule.slotDurationMinutes
   ).map(formatSlotLabel);
   if (!validSlots.includes(timeSlot)) {
-    return NextResponse.json({ error: "That time slot is not available." }, { status: 400 });
+    return await apiError("slotUnavailable", 400);
   }
 
   const booking = await prisma.$transaction(async (tx) => {
@@ -86,10 +84,7 @@ export async function POST(request: Request) {
   });
 
   if (!booking) {
-    return NextResponse.json(
-      { error: "That slot was just booked by someone else. Please pick another." },
-      { status: 409 }
-    );
+    return await apiError("slotTaken", 409);
   }
 
   const dateLabel = booking.date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" });
