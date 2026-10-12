@@ -65,26 +65,31 @@ async function main() {
       },
     });
 
-    const instructor = await prisma.instructor.upsert({
-      where: { userId: user.id },
-      update: {},
-      create: {
-        userId: user.id,
-        bio: seed.bio,
-        yearsExperience: seed.yearsExperience,
-        isActive: true,
-      },
-    });
+    const existing = await prisma.instructor.findUnique({ where: { userId: user.id } });
+    const instructor =
+      existing ??
+      (await prisma.instructor.create({
+        data: {
+          userId: user.id,
+          bio: seed.bio,
+          yearsExperience: seed.yearsExperience,
+          isActive: true,
+        },
+      }));
 
-    await prisma.schedule.createMany({
-      data: seed.schedule.map((dayOfWeek) => ({
-        instructorId: instructor.id,
-        dayOfWeek,
-        startTime: dayOfWeek === "SAT" ? "09:00" : "08:00",
-        endTime: dayOfWeek === "SAT" ? "13:00" : "17:00",
-      })),
-      skipDuplicates: true,
-    });
+    // Only for an instructor created just now. schedules has no unique key, so
+    // re-running the seed would add every day again, and an existing
+    // instructor's hours are the admin's to change.
+    if (!existing) {
+      await prisma.schedule.createMany({
+        data: seed.schedule.map((dayOfWeek) => ({
+          instructorId: instructor.id,
+          dayOfWeek,
+          startTime: dayOfWeek === "SAT" ? "09:00" : "08:00",
+          endTime: dayOfWeek === "SAT" ? "13:00" : "17:00",
+        })),
+      });
+    }
 
     instructors.push(instructor);
   }
