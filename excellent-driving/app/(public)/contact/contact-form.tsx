@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import styles from "./contact.module.css";
 
 export function ContactForm() {
+  const t = useTranslations("Contact");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -20,7 +22,7 @@ export function ContactForm() {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setErrorMessage(data.error ?? "Something went wrong. Please try WhatsApp instead.");
+      setErrorMessage(data.error ?? t("genericError"));
       setStatus("error");
       return;
     }
@@ -31,16 +33,16 @@ export function ContactForm() {
 
   return (
     <div className={styles["form-card"]}>
-      <h2>Send Us a Message</h2>
+      <h2>{t("formTitle")}</h2>
 
       {status === "sent" && (
-        <p className={styles["status-success"]}>Thanks! We&apos;ll get back to you soon.</p>
+        <p className={styles["status-success"]}>{t("sent")}</p>
       )}
       {status === "error" && <p className={styles["status-error"]}>{errorMessage}</p>}
 
       <form onSubmit={handleSubmit}>
         <div className={styles.field}>
-          <label htmlFor="contact-name">Name</label>
+          <label htmlFor="contact-name">{t("name")}</label>
           <input
             id="contact-name"
             required
@@ -49,7 +51,7 @@ export function ContactForm() {
           />
         </div>
         <div className={styles.field}>
-          <label htmlFor="contact-email">Email</label>
+          <label htmlFor="contact-email">{t("email")}</label>
           <input
             id="contact-email"
             type="email"
@@ -59,7 +61,7 @@ export function ContactForm() {
           />
         </div>
         <div className={styles.field}>
-          <label htmlFor="contact-message">Message</label>
+          <label htmlFor="contact-message">{t("message")}</label>
           <textarea
             id="contact-message"
             required
@@ -68,7 +70,7 @@ export function ContactForm() {
           />
         </div>
         <button type="submit" className="btn btn-primary" disabled={status === "sending"}>
-          {status === "sending" ? "Sending…" : "Send Message"}
+          {status === "sending" ? t("sending") : t("send")}
         </button>
       </form>
     </div>

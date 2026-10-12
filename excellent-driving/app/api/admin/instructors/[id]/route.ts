@@ -13,6 +13,7 @@ const scheduleDaySchema = z.object({
 const updateSchema = z.object({
   name: z.string().min(1).optional(),
   bio: z.string().optional(),
+  bioNl: z.string().optional(),
   yearsExperience: z.number().int().min(0).optional(),
   isActive: z.boolean().optional(),
   schedule: z.array(scheduleDaySchema).optional(),

@@ -41,10 +41,10 @@ export default async function HomePage() {
   ];
 
   const journeyItems = [
-    { icon: "📚", label: "Theory Lessons", sub: "Online at your own pace" },
-    { icon: "🚗", label: "Practical Training", sub: "With certified instructors" },
-    { icon: "🎓", label: "Exam Preparation", sub: "Pass on your first try" },
-    { icon: "📱", label: "WhatsApp Updates", sub: "Instant confirmations" },
+    { icon: "📚", label: t("journeyTheory"), sub: t("journeyTheorySub") },
+    { icon: "🚗", label: t("journeyPractical"), sub: t("journeyPracticalSub") },
+    { icon: "🎓", label: t("journeyExam"), sub: t("journeyExamSub") },
+    { icon: "📱", label: t("journeyWhatsapp"), sub: t("journeyWhatsappSub") },
   ];
 
   return (
@@ -70,7 +70,7 @@ export default async function HomePage() {
 
           <div className={styles["hero-visual"]}>
             <div className={styles["hero-card"]}>
-              <div className={styles["hero-card-title"]}>Your Learning Journey</div>
+              <div className={styles["hero-card-title"]}>{t("journeyTitle")}</div>
               {journeyItems.map((item) => (
                 <div className={styles["cert-item"]} key={item.label}>
                   <div className={styles["cert-icon"]} aria-hidden="true">{item.icon}</div>
@@ -97,7 +97,7 @@ export default async function HomePage() {
             <div className={styles["stat-label"]}>{t("statsInstructors")}</div>
           </div>
           <div className={styles.stat}>
-            <div className={styles["stat-number"]}>Mon–Sat</div>
+            <div className={styles["stat-number"]}>{t("statsDays")}</div>
             <div className={styles["stat-label"]}>{t("statsAvailable")}</div>
           </div>
           <div className={styles.stat}>
@@ -136,15 +136,15 @@ export default async function HomePage() {
                 <div className={styles["package-name"]}>{isNl ? pkg.nameNl : pkg.nameEn}</div>
                 <div className={styles["package-desc"]}>{isNl ? pkg.descriptionNl : pkg.descriptionEn}</div>
                 <div className={styles["package-price"]}>
-                  SRD {Number(pkg.price).toLocaleString()} <span>/ package</span>
+                  SRD {Number(pkg.price).toLocaleString(isNl ? "nl-NL" : "en-US")} <span>{t("perPackage")}</span>
                 </div>
                 <div className={styles["package-includes"]}>
                   <div className={`${styles["include-item"]} ${styles.excluded}`}>
-                    Practical lessons are not included, theory only
+                    {t("includeNoPractical")}
                   </div>
-                  <div className={styles["include-item"]}>Theory access included</div>
-                  <div className={styles["include-item"]}>WhatsApp support</div>
-                  <div className={styles["include-item"]}>Certificate upon completion</div>
+                  <div className={styles["include-item"]}>{t("includeTheory")}</div>
+                  <div className={styles["include-item"]}>{t("includeWhatsapp")}</div>
+                  <div className={styles["include-item"]}>{t("includeCertificate")}</div>
                 </div>
                 <Link
                   href="/booking"
@@ -198,9 +198,9 @@ export default async function HomePage() {
                 <div className={styles["instructor-info"]}>
                   <div className={styles["instructor-name"]}>{instructor.user.name}</div>
                   <div className={styles["instructor-years"]}>
-                    {instructor.yearsExperience} years experience
+                    {t("years", { years: instructor.yearsExperience ?? 0 })}
                   </div>
-                  <div className={styles["instructor-bio"]}>{instructor.bio}</div>
+                  <div className={styles["instructor-bio"]}>{(isNl && instructor.bioNl) || instructor.bio}</div>
                 </div>
               </div>
             ))}

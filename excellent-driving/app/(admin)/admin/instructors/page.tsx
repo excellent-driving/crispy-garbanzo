@@ -12,6 +12,7 @@ export default async function AdminInstructorsPage() {
     name: inst.user.name,
     email: inst.user.email,
     bio: inst.bio ?? "",
+    bioNl: inst.bioNl ?? "",
     yearsExperience: inst.yearsExperience ?? 0,
     isActive: inst.isActive,
     schedule: Object.fromEntries(

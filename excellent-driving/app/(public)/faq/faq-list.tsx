@@ -1,17 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { FaqAccordion, type FaqItem } from "@/components/faq-accordion";
 import styles from "./faq.module.css";
 
-export function FaqList({ en, nl }: { en: FaqItem[]; nl: FaqItem[] }) {
-  const [lang, setLang] = useState<"en" | "nl">("en");
+export function FaqList({ en, nl, initialLang }: { en: FaqItem[]; nl: FaqItem[]; initialLang: "en" | "nl" }) {
+  const t = useTranslations("Faq");
+  const [lang, setLang] = useState<"en" | "nl">(initialLang);
   const items = lang === "en" ? en : nl;
 
   return (
     <>
       <div className={styles["filter-bar"]}>
-        <div className={styles["filter-label"]}>Filter by language</div>
+        <div className={styles["filter-label"]}>{t("filterLabel")}</div>
         <div className={styles["filter-tabs"]}>
           <button
             type="button"
@@ -31,10 +33,10 @@ export function FaqList({ en, nl }: { en: FaqItem[]; nl: FaqItem[] }) {
       </div>
 
       {items.length > 0 ? (
-        <FaqAccordion items={items} />
+        <FaqAccordion key={lang} items={items} />
       ) : (
         <p style={{ color: "var(--gray-600)", fontSize: "0.9rem" }}>
-          No questions available in this language yet.
+          {t("none")}
         </p>
       )}
     </>

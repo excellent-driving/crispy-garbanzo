@@ -16,6 +16,7 @@ const createSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   bio: z.string().optional(),
+  bioNl: z.string().optional(),
   yearsExperience: z.number().int().min(0).optional(),
   schedule: z.array(scheduleDaySchema),
 });
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
       data: { name: parsed.data.name, email: parsed.data.email, passwordHash, role: "INSTRUCTOR" },
     });
     const created = await tx.instructor.create({
-      data: { userId: user.id, bio: parsed.data.bio, yearsExperience: parsed.data.yearsExperience, isActive: true },
+      data: { userId: user.id, bio: parsed.data.bio, bioNl: parsed.data.bioNl, yearsExperience: parsed.data.yearsExperience, isActive: true },
     });
     if (parsed.data.schedule.length > 0) {
       await tx.schedule.createMany({

@@ -165,6 +165,8 @@ model Instructor {
   id              String   @id @default(cuid())
   userId          String   @unique
   bio             String?  @db.Text
+  /// The bio in Dutch; the public instructors page falls back to `bio` when it is empty.
+  bioNl           String?  @db.Text
   yearsExperience Int?
   isActive        Boolean  @default(true)
   createdAt       DateTime @default(now())

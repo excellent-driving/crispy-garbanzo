@@ -67,60 +67,60 @@ export default async function PackagesPage() {
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Practical Lessons</strong></td>
-                  <td><span className={styles.cross}>—</span> Not included</td>
-                  <td className={styles.highlight}><span className={styles.cross}>—</span> Not included</td>
-                  <td><span className={styles.cross}>—</span> Not included</td>
-                  <td><span className={styles.cross}>—</span> Not included</td>
+                  <td><strong>{t("rowPractical")}</strong></td>
+                  <td><span className={styles.cross}>—</span> {t("notIncluded")}</td>
+                  <td className={styles.highlight}><span className={styles.cross}>—</span> {t("notIncluded")}</td>
+                  <td><span className={styles.cross}>—</span> {t("notIncluded")}</td>
+                  <td><span className={styles.cross}>—</span> {t("notIncluded")}</td>
                 </tr>
                 <tr>
-                  <td><strong>Theory Course</strong></td>
-                  <td><span className={styles.check}>✓</span> Basic</td>
-                  <td className={styles.highlight}><span className={styles.check}>✓</span> Full</td>
-                  <td><span className={styles.check}>✓</span> Full + Video</td>
-                  <td><span className={styles.check}>✓</span> 30 days</td>
+                  <td><strong>{t("rowTheory")}</strong></td>
+                  <td><span className={styles.check}>✓</span> {t("basic")}</td>
+                  <td className={styles.highlight}><span className={styles.check}>✓</span> {t("full")}</td>
+                  <td><span className={styles.check}>✓</span> {t("fullVideo")}</td>
+                  <td><span className={styles.check}>✓</span> {t("days30")}</td>
                 </tr>
                 <tr>
-                  <td><strong>Mock Exams</strong></td>
+                  <td><strong>{t("rowMock")}</strong></td>
                   <td><span className={styles.cross}>—</span></td>
-                  <td className={styles.highlight}>2 sessions</td>
-                  <td>Unlimited</td>
-                  <td>1 session</td>
+                  <td className={styles.highlight}>{t("sessions2")}</td>
+                  <td>{t("unlimited")}</td>
+                  <td>{t("session1")}</td>
                 </tr>
                 <tr>
-                  <td><strong>Priority Booking</strong></td>
+                  <td><strong>{t("rowPriority")}</strong></td>
                   <td><span className={styles.cross}>—</span></td>
                   <td className={styles.highlight}><span className={styles.check}>✓</span></td>
                   <td><span className={styles.check}>✓</span></td>
                   <td><span className={styles.cross}>—</span></td>
                 </tr>
                 <tr>
-                  <td><strong>WhatsApp Support</strong></td>
+                  <td><strong>{t("rowWhatsapp")}</strong></td>
                   <td><span className={styles.check}>✓</span></td>
                   <td className={styles.highlight}><span className={styles.check}>✓</span></td>
                   <td><span className={styles.check}>✓</span></td>
                   <td><span className={styles.check}>✓</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Dedicated Instructor</strong></td>
+                  <td><strong>{t("rowDedicated")}</strong></td>
                   <td><span className={styles.cross}>—</span></td>
                   <td className={styles.highlight}><span className={styles.cross}>—</span></td>
                   <td><span className={styles.check}>✓</span></td>
                   <td><span className={styles.cross}>—</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Exam Day Accompaniment</strong></td>
+                  <td><strong>{t("rowExamDay")}</strong></td>
                   <td><span className={styles.cross}>—</span></td>
                   <td className={styles.highlight}><span className={styles.cross}>—</span></td>
                   <td><span className={styles.check}>✓</span></td>
                   <td><span className={styles.cross}>—</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Price</strong></td>
-                  <td><strong>SRD {Number(byName.Starter?.price ?? 0).toLocaleString()}</strong></td>
-                  <td className={styles.highlight}><strong>SRD {Number(byName.Standard?.price ?? 0).toLocaleString()}</strong></td>
-                  <td><strong>SRD {Number(byName.Premium?.price ?? 0).toLocaleString()}</strong></td>
-                  <td><strong>SRD {Number(byName.Refresher?.price ?? 0).toLocaleString()}</strong></td>
+                  <td><strong>{t("rowPrice")}</strong></td>
+                  <td><strong>SRD {Number(byName.Starter?.price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}</strong></td>
+                  <td className={styles.highlight}><strong>SRD {Number(byName.Standard?.price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}</strong></td>
+                  <td><strong>SRD {Number(byName.Premium?.price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}</strong></td>
+                  <td><strong>SRD {Number(byName.Refresher?.price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}</strong></td>
                 </tr>
               </tbody>
             </table>

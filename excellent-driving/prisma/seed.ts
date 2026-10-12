@@ -31,6 +31,7 @@ async function main() {
       name: "Carlos Martinus",
       yearsExperience: 12,
       bio: "Specializes in nervous beginners. Calm, patient teaching style with focus on road safety.",
+      bioNl: "Gespecialiseerd in nerveuze beginners. Rustige, geduldige manier van lesgeven, met de nadruk op verkeersveiligheid.",
       schedule: ["MON", "TUE", "WED", "THU", "FRI", "SAT"] as const,
     },
     {
@@ -38,6 +39,7 @@ async function main() {
       name: "Sandra Pengel",
       yearsExperience: 8,
       bio: "Expert in city driving and parking techniques. Available Monday through Friday.",
+      bioNl: "Expert in rijden in de stad en parkeertechnieken. Beschikbaar van maandag tot en met vrijdag.",
       schedule: ["MON", "TUE", "WED", "THU", "FRI"] as const,
     },
     {
@@ -45,6 +47,7 @@ async function main() {
       name: "Roy Apensa",
       yearsExperience: 15,
       bio: "Former driving examiner. Knows exactly what examiners look for. 97% pass rate.",
+      bioNl: "Voormalig rijexaminator. Weet precies waar examinatoren op letten. 97% slagingspercentage.",
       schedule: ["MON", "TUE", "WED", "THU", "FRI", "SAT"] as const,
     },
   ];
@@ -72,6 +75,7 @@ async function main() {
         data: {
           userId: user.id,
           bio: seed.bio,
+          bioNl: seed.bioNl,
           yearsExperience: seed.yearsExperience,
           isActive: true,
         },
@@ -201,6 +205,41 @@ async function main() {
         "Wij accepteren contante betalingen op onze locatie (Bonistraat 44) en bankoverschrijvingen. Zodra de betaling is bevestigd, ontvang je een WhatsApp-bericht.",
       language: "NL" as const,
       orderIndex: 2,
+    },
+    // Each language has the same six questions; added 2026-10-12.
+    {
+      question: "Do I need to bring my own car?",
+      answer: "No. All practical lessons use our fully insured driving school cars.",
+      language: "EN" as const,
+      orderIndex: 6,
+    },
+    {
+      question: "Hoeveel lessen heb ik nodig om te slagen voor mijn examen?",
+      answer:
+        "De meeste leerlingen slagen na 15 tot 20 lessen, afhankelijk van hun eerdere ervaring. Onze instructeurs begeleiden je en laten je weten wanneer je klaar bent voor het examen.",
+      language: "NL" as const,
+      orderIndex: 3,
+    },
+    {
+      question: "Kan ik een les annuleren of verzetten?",
+      answer:
+        "Ja! Je kunt een les tot 24 uur voor de geplande tijd annuleren of verzetten, direct vanuit je studentendashboard.",
+      language: "NL" as const,
+      orderIndex: 4,
+    },
+    {
+      question: "Is de theoriecursus beschikbaar in het Nederlands?",
+      answer:
+        "Ja! Ons hele platform is beschikbaar in het Engels en het Nederlands. Je kunt op elk moment van taal wisselen via je profielinstellingen.",
+      language: "NL" as const,
+      orderIndex: 5,
+    },
+    {
+      question: "Waar worden de lessen gegeven?",
+      answer:
+        "De lessen beginnen en eindigen bij onze rijschool aan de Bonistraat 44 in Paramaribo. Je instructeur rijdt met je verschillende routes door de stad.",
+      language: "NL" as const,
+      orderIndex: 6,
     },
   ];
 

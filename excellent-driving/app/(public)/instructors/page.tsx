@@ -1,13 +1,17 @@
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import styles from "./instructors.module.css";
 
-const dayLabels: Record<string, string> = {
-  MON: "Mon", TUE: "Tue", WED: "Wed", THU: "Thu", FRI: "Fri", SAT: "Sat",
+const dayLabels: Record<string, Record<string, string>> = {
+  en: { MON: "Mon", TUE: "Tue", WED: "Wed", THU: "Thu", FRI: "Fri", SAT: "Sat" },
+  nl: { MON: "ma", TUE: "di", WED: "wo", THU: "do", FRI: "vr", SAT: "za" },
 };
 const dayOrder = ["MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 export default async function InstructorsPage() {
+  const [t, locale] = await Promise.all([getTranslations("Instructors"), getLocale()]);
+  const days = dayLabels[locale] ?? dayLabels.en;
   const instructors = await prisma.instructor.findMany({
     where: { isActive: true },
     include: { user: true, schedules: true },
@@ -19,15 +23,12 @@ export default async function InstructorsPage() {
       <div className={styles["page-header"]}>
         <div className={styles["page-header-inner"]}>
           <div className={styles.breadcrumb}>
-            <Link href="/">Home</Link>
+            <Link href="/">{t("home")}</Link>
             <span>›</span>
-            <span style={{ color: "rgba(255,255,255,0.8)" }}>Instructors</span>
+            <span style={{ color: "rgba(255,255,255,0.8)" }}>{t("breadcrumb")}</span>
           </div>
-          <h1>Meet Our Instructors</h1>
-          <p>
-            Experienced, patient, and certified professionals dedicated to your success behind the
-            wheel.
-          </p>
+          <h1>{t("title")}</h1>
+          <p>{t("intro")}</p>
         </div>
       </div>
 
@@ -35,7 +36,7 @@ export default async function InstructorsPage() {
         <div className={styles["content-inner"]}>
           <div className={styles["instructors-grid"]}>
             {instructors.map((instructor) => {
-              const days = dayOrder.filter((d) =>
+              const workDays = dayOrder.filter((d) =>
                 instructor.schedules.some((s) => s.dayOfWeek === d)
               );
               return (
@@ -46,12 +47,14 @@ export default async function InstructorsPage() {
                   <div className={styles["instructor-info"]}>
                     <div className={styles["instructor-name"]}>{instructor.user.name}</div>
                     <div className={styles["instructor-years"]}>
-                      {instructor.yearsExperience} years experience
+                      {t("years", { years: instructor.yearsExperience ?? 0 })}
                     </div>
-                    <div className={styles["instructor-bio"]}>{instructor.bio}</div>
-                    {days.length > 0 && (
+                    <div className={styles["instructor-bio"]}>
+                      {(locale === "nl" && instructor.bioNl) || instructor.bio}
+                    </div>
+                    {workDays.length > 0 && (
                       <div className={styles["instructor-days"]}>
-                        Available: {days.map((d) => dayLabels[d]).join(", ")}
+                        {t("available", { days: workDays.map((d) => days[d]).join(", ") })}
                       </div>
                     )}
                   </div>

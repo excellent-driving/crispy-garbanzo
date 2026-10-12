@@ -17,6 +17,7 @@ type Instructor = {
   name: string;
   email: string;
   bio: string;
+  bioNl: string;
   yearsExperience: number;
   isActive: boolean;
   schedule: Record<string, { on: boolean; start: string; end: string }>;
@@ -34,6 +35,7 @@ export function InstructorsManager({ initial }: { initial: Instructor[] }) {
     email: "",
     password: "",
     bio: "",
+    bioNl: "",
     yearsExperience: "0",
     schedule: emptySchedule(),
   });
@@ -41,7 +43,7 @@ export function InstructorsManager({ initial }: { initial: Instructor[] }) {
   const [error, setError] = useState<string | null>(null);
 
   function openCreate() {
-    setForm({ name: "", email: "", password: "", bio: "", yearsExperience: "0", schedule: emptySchedule() });
+    setForm({ name: "", email: "", password: "", bio: "", bioNl: "", yearsExperience: "0", schedule: emptySchedule() });
     setError(null);
     setEditing("new");
   }
@@ -52,6 +54,7 @@ export function InstructorsManager({ initial }: { initial: Instructor[] }) {
       email: inst.email,
       password: "",
       bio: inst.bio,
+      bioNl: inst.bioNl,
       yearsExperience: String(inst.yearsExperience),
       schedule: inst.schedule,
     });
@@ -80,12 +83,14 @@ export function InstructorsManager({ initial }: { initial: Instructor[] }) {
           email: form.email,
           password: form.password,
           bio: form.bio,
+          bioNl: form.bioNl,
           yearsExperience: Number(form.yearsExperience),
           schedule: toScheduleArray(),
         }
       : {
           name: form.name,
           bio: form.bio,
+          bioNl: form.bioNl,
           yearsExperience: Number(form.yearsExperience),
           schedule: toScheduleArray(),
         };
@@ -109,6 +114,7 @@ export function InstructorsManager({ initial }: { initial: Instructor[] }) {
       name: inst.user.name,
       email: inst.user.email,
       bio: inst.bio ?? "",
+      bioNl: inst.bioNl ?? "",
       yearsExperience: inst.yearsExperience ?? 0,
       isActive: inst.isActive,
       schedule: {
@@ -217,6 +223,10 @@ export function InstructorsManager({ initial }: { initial: Instructor[] }) {
               <div className="field">
                 <label htmlFor="inst-bio">Bio</label>
                 <textarea id="inst-bio" rows={2} value={form.bio} onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))} />
+              </div>
+              <div className="field">
+                <label htmlFor="inst-bio-nl">Bio in Dutch (shown when the site is in Dutch)</label>
+                <textarea id="inst-bio-nl" rows={2} value={form.bioNl} onChange={(e) => setForm((f) => ({ ...f, bioNl: e.target.value }))} />
               </div>
 
               <div className="field">

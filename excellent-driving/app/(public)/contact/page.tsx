@@ -1,11 +1,14 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { getSchoolContact } from "@/lib/school";
 import { ContactForm } from "./contact-form";
 import styles from "./contact.module.css";
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [t, tf, contact] = await Promise.all([getTranslations("Contact"), getTranslations("Footer"), getSchoolContact()]);
   const mapSrc =
     "https://www.google.com/maps?q=" +
-    encodeURIComponent("Bonistraat 44, Paramaribo, Suriname") +
+    encodeURIComponent(`${contact.address}, Suriname`) +
     "&output=embed";
 
   return (
@@ -13,12 +16,12 @@ export default function ContactPage() {
       <div className={styles["page-header"]}>
         <div className={styles["page-header-inner"]}>
           <div className={styles.breadcrumb}>
-            <Link href="/">Home</Link>
+            <Link href="/">{t("home")}</Link>
             <span>›</span>
-            <span style={{ color: "rgba(255,255,255,0.8)" }}>Contact</span>
+            <span style={{ color: "rgba(255,255,255,0.8)" }}>{t("breadcrumb")}</span>
           </div>
-          <h1>Get in Touch</h1>
-          <p>Questions about packages, bookings, or anything else? We&apos;re happy to help.</p>
+          <h1>{t("title")}</h1>
+          <p>{t("intro")}</p>
         </div>
       </div>
 
@@ -29,40 +32,44 @@ export default function ContactPage() {
               <div className={styles["info-row"]}>
                 <div className={styles["info-icon"]} aria-hidden="true">📍</div>
                 <div>
-                  <div className={styles["info-label"]}>Address</div>
-                  <div className={styles["info-value"]}>Bonistraat 44, Paramaribo</div>
+                  <div className={styles["info-label"]}>{t("address")}</div>
+                  <div className={styles["info-value"]}>{contact.address}</div>
                 </div>
               </div>
-              <div className={styles["info-row"]}>
-                <div className={styles["info-icon"]} aria-hidden="true">📞</div>
-                <div>
-                  <div className={styles["info-label"]}>Phone</div>
-                  <div className={styles["info-value"]}>+597 XXX XXXX</div>
+              {contact.phone && (
+                <div className={styles["info-row"]}>
+                  <div className={styles["info-icon"]} aria-hidden="true">📞</div>
+                  <div>
+                    <div className={styles["info-label"]}>{t("phone")}</div>
+                    <div className={styles["info-value"]}>{contact.phone}</div>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className={styles["info-row"]}>
                 <div className={styles["info-icon"]} aria-hidden="true">✉️</div>
                 <div>
-                  <div className={styles["info-label"]}>Email</div>
+                  <div className={styles["info-label"]}>{t("email")}</div>
                   <div className={styles["info-value"]}>info@excellentdriving.sr</div>
                 </div>
               </div>
               <div className={styles["info-row"]}>
                 <div className={styles["info-icon"]} aria-hidden="true">🕒</div>
                 <div>
-                  <div className={styles["info-label"]}>Hours</div>
-                  <div className={styles["info-value"]}>Mon–Sat: 7am–6pm</div>
+                  <div className={styles["info-label"]}>{t("hours")}</div>
+                  <div className={styles["info-value"]}>{tf("hours")}</div>
                 </div>
               </div>
-              <a href="#" className="whatsapp-btn" style={{ marginTop: 20 }}>
-                Chat on WhatsApp
-              </a>
+              {contact.whatsappUrl && (
+                <a href={contact.whatsappUrl} target="_blank" rel="noopener noreferrer" className="whatsapp-btn" style={{ marginTop: 20 }}>
+                  {tf("chatWhatsapp")}
+                </a>
+              )}
             </div>
 
             <iframe
               className={styles["map-frame"]}
               src={mapSrc}
-              title="Excellent Driving location — Bonistraat 44, Paramaribo"
+              title={t("mapTitle", { address: contact.address })}
               loading="lazy"
             />
           </div>

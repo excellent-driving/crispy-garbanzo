@@ -15,59 +15,61 @@ type Pkg = {
   featured: boolean;
 };
 
+// Feature lists per package; the texts are message keys under Packages.features.
+type Feature = { key: string; included: boolean };
 const packageMeta: Record<
   string,
-  { icon: string; tags: string[]; stats: { num: string; label: string }[]; includes: { text: string; included: boolean }[] }
+  { icon: string; tags: string[]; stats: { num: string; key: "statPractical" | "statTheory" | "statMock" }[]; includes: Feature[] }
 > = {
   Starter: {
     icon: "🚀",
     tags: ["beginner"],
     stats: [
-      { num: "0", label: "Practical Lessons" },
-      { num: "✓", label: "Theory" },
+      { num: "0", key: "statPractical" },
+      { num: "✓", key: "statTheory" },
     ],
     includes: [
-      { text: "Practical lessons are not included, theory only", included: false },
-      { text: "Online theory course access", included: true },
-      { text: "Practice quizzes (unlimited retries)", included: true },
-      { text: "WhatsApp booking support", included: true },
-      { text: "Completion certificate", included: true },
-      { text: "Mock exam sessions", included: false },
-      { text: "Exam day accompaniment", included: false },
+      { key: "noPractical", included: false },
+      { key: "onlineTheory", included: true },
+      { key: "quizzesUnlimited", included: true },
+      { key: "whatsappBooking", included: true },
+      { key: "certificate", included: true },
+      { key: "mockSessions", included: false },
+      { key: "examDay", included: false },
     ],
   },
   Standard: {
     icon: "🎯",
     tags: ["beginner", "theory"],
     stats: [
-      { num: "0", label: "Practical Lessons" },
-      { num: "2", label: "Mock exams" },
+      { num: "0", key: "statPractical" },
+      { num: "2", key: "statMock" },
     ],
     includes: [
-      { text: "Practical lessons are not included, theory only", included: false },
-      { text: "Full theory course + video content", included: true },
-      { text: "2 official mock exam sessions", included: true },
-      { text: "Priority booking slots", included: true },
-      { text: "WhatsApp support + reminders", included: true },
-      { text: "Completion certificate", included: true },
-      { text: "Exam day accompaniment", included: false },
+      { key: "noPractical", included: false },
+      { key: "fullTheoryVideo", included: true },
+      { key: "twoMock", included: true },
+      { key: "prioritySlots", included: true },
+      { key: "whatsappReminders", included: true },
+      { key: "certificate", included: true },
+      { key: "examDay", included: false },
     ],
   },
   Premium: {
     icon: "💎",
     tags: ["theory", "exam"],
     stats: [
-      { num: "0", label: "Practical Lessons" },
-      { num: "∞", label: "Mock exams" },
+      { num: "0", key: "statPractical" },
+      { num: "∞", key: "statMock" },
     ],
     includes: [
-      { text: "Practical lessons are not included, theory only", included: false },
-      { text: "Full theory + video lesson library", included: true },
-      { text: "Unlimited mock exam sessions", included: true },
-      { text: "Priority booking — first pick always", included: true },
-      { text: "Dedicated instructor assignment", included: true },
-      { text: "Exam day accompaniment by instructor", included: true },
-      { text: "Pass guarantee or extra lessons free", included: true },
+      { key: "noPractical", included: false },
+      { key: "fullTheoryLibrary", included: true },
+      { key: "unlimitedMock", included: true },
+      { key: "priorityFirst", included: true },
+      { key: "dedicatedInstructor", included: true },
+      { key: "examDayInstructor", included: true },
+      { key: "passGuarantee", included: true },
     ],
   },
   Refresher: {
@@ -75,26 +77,26 @@ const packageMeta: Record<
     tags: ["exam"],
     stats: [],
     includes: [
-      { text: "Practical lessons are not included, theory only", included: false },
-      { text: "1 mock exam session", included: true },
-      { text: "Theory quiz access (30 days)", included: true },
-      { text: "Full theory course", included: false },
+      { key: "noPractical", included: false },
+      { key: "oneMock", included: true },
+      { key: "quiz30", included: true },
+      { key: "fullTheory", included: false },
     ],
   },
 };
 
-const fallbackIncludes = [
-  { text: "Practical lessons are not included, theory only", included: false },
-  { text: "Online theory course access", included: true },
-  { text: "WhatsApp support", included: true },
-  { text: "Completion certificate", included: true },
+const fallbackIncludes: Feature[] = [
+  { key: "noPractical", included: false },
+  { key: "onlineTheory", included: true },
+  { key: "whatsappSupport", included: true },
+  { key: "certificate", included: true },
 ];
 
 /** Every known package has hand-tuned copy above; anything else (e.g. a
  * package created later in the admin panel) falls back to generic content
  * derived from real fields, instead of crashing on an unrecognized name. */
 function getMeta(name: string) {
-  return packageMeta[name] ?? { icon: "🚗", tags: [] as string[], stats: [], includes: fallbackIncludes };
+  return packageMeta[name] ?? { icon: "🚗", tags: [] as string[], stats: [] as { num: string; key: "statPractical" }[], includes: fallbackIncludes };
 }
 
 export function PackagesGrid({ packages }: { packages: Pkg[] }) {
@@ -156,31 +158,31 @@ export function PackagesGrid({ packages }: { packages: Pkg[] }) {
                 <div className={styles["pkg-name"]}>{isNl ? pkg.nameNl : pkg.nameEn}</div>
                 <div className={styles["pkg-tagline"]}>{isNl ? pkg.descriptionNl : pkg.descriptionEn}</div>
                 <div className={styles["pkg-price-row"]}>
-                  <div className={styles["pkg-price"]}>{pkg.price.toLocaleString()}</div>
+                  <div className={styles["pkg-price"]}>{pkg.price.toLocaleString(isNl ? "nl-NL" : "en-US")}</div>
                   <div className={styles["pkg-currency"]}>SRD</div>
-                  <div className={styles["pkg-period"]}>/ package</div>
+                  <div className={styles["pkg-period"]}>{t("perPackage")}</div>
                 </div>
               </div>
               <div className={styles["package-body"]}>
                 <div className={styles["pkg-stats"]}>
                   {meta.stats.map((stat) => (
-                    <div className={styles["pkg-stat"]} key={stat.label}>
+                    <div className={styles["pkg-stat"]} key={stat.key}>
                       <div className={styles["pkg-stat-num"]}>{stat.num}</div>
-                      <div className={styles["pkg-stat-label"]}>{stat.label}</div>
+                      <div className={styles["pkg-stat-label"]}>{t(stat.key)}</div>
                     </div>
                   ))}
                 </div>
-                <div className={styles["includes-title"]}>What&apos;s included</div>
+                <div className={styles["includes-title"]}>{t("whatsIncluded")}</div>
                 <div className={styles["includes-list"]}>
                   {meta.includes.map((item) => (
                     <div
-                      key={item.text}
+                      key={item.key}
                       className={`${styles["include-item"]}${item.included ? "" : ` ${styles.unavailable}`}`}
                     >
                       <div className={item.included ? styles["check-icon"] : styles["cross-icon"]}>
                         {item.included ? "✓" : "✗"}
                       </div>
-                      {item.text}
+                      {t(`features.${item.key}`)}
                     </div>
                   ))}
                 </div>
@@ -203,23 +205,23 @@ export function PackagesGrid({ packages }: { packages: Pkg[] }) {
                 <div className={styles["pkg-name"]}>{isNl ? visibleRefresher.nameNl : "Refresher"}</div>
                 <div className={styles["pkg-tagline"]}>{isNl ? visibleRefresher.descriptionNl : visibleRefresher.descriptionEn}</div>
                 <div className={styles["pkg-price-row"]}>
-                  <div className={styles["pkg-price"]}>{visibleRefresher.price.toLocaleString()}</div>
+                  <div className={styles["pkg-price"]}>{visibleRefresher.price.toLocaleString(isNl ? "nl-NL" : "en-US")}</div>
                   <div className={styles["pkg-currency"]}>SRD</div>
-                  <div className={styles["pkg-period"]}>/ package</div>
+                  <div className={styles["pkg-period"]}>{t("perPackage")}</div>
                 </div>
               </div>
               <div className={styles["package-body"]}>
-                <div className={styles["includes-title"]}>What&apos;s included</div>
+                <div className={styles["includes-title"]}>{t("whatsIncluded")}</div>
                 <div className={styles["includes-list"]}>
                   {getMeta("Refresher").includes.map((item) => (
                     <div
-                      key={item.text}
+                      key={item.key}
                       className={`${styles["include-item"]}${item.included ? "" : ` ${styles.unavailable}`}`}
                     >
                       <div className={item.included ? styles["check-icon"] : styles["cross-icon"]}>
                         {item.included ? "✓" : "✗"}
                       </div>
-                      {item.text}
+                      {t(`features.${item.key}`)}
                     </div>
                   ))}
                 </div>

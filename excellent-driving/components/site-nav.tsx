@@ -58,7 +58,7 @@ export function SiteNav() {
 
         <button
           className={`hamburger${menuOpen ? " open" : ""}`}
-          aria-label="Toggle navigation menu"
+          aria-label={t("toggleMenu")}
           aria-expanded={menuOpen}
           aria-controls="primary-menu"
           onClick={() => setMenuOpen((open) => !open)}
