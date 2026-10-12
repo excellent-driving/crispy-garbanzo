@@ -3,15 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const t = useTranslations("Auth");
+  const locale = useLocale();
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     password: "",
-    language: "EN",
+    language: locale === "nl" ? "NL" : "EN",
   });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -34,7 +37,7 @@ export default function RegisterPage() {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.error?.formErrors?.[0] ?? data.error ?? "Registration failed.");
+      setError(typeof data.error === "string" ? data.error : t("registrationFailed"));
       setSubmitting(false);
       return;
     }
@@ -62,7 +65,7 @@ export default function RegisterPage() {
         className="w-full max-w-sm space-y-4 rounded-2xl border border-[var(--color-navy)]/10 p-8 shadow-sm"
       >
         <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold text-[var(--color-navy)]">
-          Create your account
+          {t("registerTitle")}
         </h1>
 
         {error && (
@@ -70,7 +73,7 @@ export default function RegisterPage() {
         )}
 
         <label className="block text-sm font-medium text-[var(--color-navy)]">
-          Full name
+          {t("fullName")}
           <input
             required
             value={form.name}
@@ -80,7 +83,7 @@ export default function RegisterPage() {
         </label>
 
         <label className="block text-sm font-medium text-[var(--color-navy)]">
-          Email
+          {t("email")}
           <input
             type="email"
             required
@@ -91,7 +94,7 @@ export default function RegisterPage() {
         </label>
 
         <label className="block text-sm font-medium text-[var(--color-navy)]">
-          Phone
+          {t("phone")}
           <input
             value={form.phone}
             onChange={update("phone")}
@@ -100,7 +103,7 @@ export default function RegisterPage() {
         </label>
 
         <label className="block text-sm font-medium text-[var(--color-navy)]">
-          Password
+          {t("password")}
           <input
             type="password"
             required
@@ -112,7 +115,7 @@ export default function RegisterPage() {
         </label>
 
         <label className="block text-sm font-medium text-[var(--color-navy)]">
-          Language
+          {t("language")}
           <select
             value={form.language}
             onChange={update("language")}
@@ -128,13 +131,13 @@ export default function RegisterPage() {
           disabled={submitting}
           className="w-full rounded-full bg-[var(--color-amber)] px-6 py-3 font-semibold text-[var(--color-navy)] transition hover:brightness-110 disabled:opacity-50"
         >
-          {submitting ? "Creating account…" : "Create account"}
+          {submitting ? t("creatingAccount") : t("createAccount")}
         </button>
 
         <p className="text-center text-sm text-[var(--color-navy)]/60">
-          Already have an account?{" "}
+          {t("haveAccount")}{" "}
           <a href="/login" className="font-semibold text-[var(--color-navy)] underline">
-            Log in
+            {t("logIn")}
           </a>
         </p>
       </form>

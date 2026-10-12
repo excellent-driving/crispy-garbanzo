@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSession, signIn } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations("Auth");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +27,7 @@ export default function LoginPage() {
     setSubmitting(false);
 
     if (result?.error) {
-      setError("Invalid email or password.");
+      setError(t("invalidLogin"));
       return;
     }
 
@@ -40,7 +42,7 @@ export default function LoginPage() {
         className="w-full max-w-sm space-y-4 rounded-2xl border border-[var(--color-navy)]/10 p-8 shadow-sm"
       >
         <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold text-[var(--color-navy)]">
-          Log in
+          {t("loginTitle")}
         </h1>
 
         {error && (
@@ -48,7 +50,7 @@ export default function LoginPage() {
         )}
 
         <label className="block text-sm font-medium text-[var(--color-navy)]">
-          Email
+          {t("email")}
           <input
             type="email"
             required
@@ -59,7 +61,7 @@ export default function LoginPage() {
         </label>
 
         <label className="block text-sm font-medium text-[var(--color-navy)]">
-          Password
+          {t("password")}
           <input
             type="password"
             required
@@ -74,13 +76,13 @@ export default function LoginPage() {
           disabled={submitting}
           className="w-full rounded-full bg-[var(--color-amber)] px-6 py-3 font-semibold text-[var(--color-navy)] transition hover:brightness-110 disabled:opacity-50"
         >
-          {submitting ? "Logging in…" : "Log in"}
+          {submitting ? t("loggingIn") : t("logIn")}
         </button>
 
         <p className="text-center text-sm text-[var(--color-navy)]/60">
-          No account?{" "}
+          {t("noAccount")}{" "}
           <a href="/register" className="font-semibold text-[var(--color-navy)] underline">
-            Register
+            {t("register")}
           </a>
         </p>
       </form>

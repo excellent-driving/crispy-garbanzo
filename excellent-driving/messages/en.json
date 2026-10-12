@@ -308,6 +308,25 @@
     "emailTaken": "An account with this email already exists.",
     "contactInvalid": "Please fill in all fields correctly.",
     "contactNotConfigured": "Email is not configured yet — please reach out via WhatsApp instead.",
-    "contactFailed": "Failed to send. Please try WhatsApp instead."
+    "contactFailed": "Failed to send. Please try WhatsApp instead.",
+    "invalidRegistration": "Please check your name, email and password (at least 8 characters)."
+  },
+  "Auth": {
+    "loginTitle": "Log in",
+    "email": "Email",
+    "password": "Password",
+    "loggingIn": "Logging in…",
+    "logIn": "Log in",
+    "invalidLogin": "Invalid email or password.",
+    "noAccount": "No account?",
+    "register": "Register",
+    "registerTitle": "Create your account",
+    "fullName": "Full name",
+    "phone": "Phone",
+    "language": "Language",
+    "creatingAccount": "Creating account…",
+    "createAccount": "Create account",
+    "haveAccount": "Already have an account?",
+    "registrationFailed": "Registration failed. Please try again."
   }
 }

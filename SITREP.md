@@ -856,3 +856,10 @@ The "Demo build" banner stays (and stays in English) until the app is declared r
 ### 2026-10-12 — Project status sheet
 
 At the owner's request, progress to launch is tracked in the Google Sheet "Excellent Driving Project Status" (https://docs.google.com/spreadsheets/d/1x9WOv3sJkQOsXM2X841RA2ZkLCehZwKnnTpb_h-nMJQ/edit): a **Tasks** tab with every open and finished task (area, status, who it waits on, whether launch needs it), a **Log** tab, and an **Overview** calculated from the tasks. Started with 37 tasks: 12 of the 32 launch tasks done. It is updated alongside this file in every session.
+
+### 2026-10-12 — Login and register pages in Dutch
+
+- `/login` and `/register` take their text from a new `Auth` section in `messages/en.json` and `nl.json`. The register form's language choice now starts on the language the visitor is using (it always started on English).
+- **Fixed:** a register request that failed validation answered with zod's error object, which the page would have tried to show as text (React can't render an object, so the form would crash). The browser's own field checks normally stop such input first. The route now answers with a translated message (`invalidRegistration`).
+- **Checked** on a local production build in Dutch (400px) and English (1280px): wrong password, an email that already has an account, and an invalid register request all show the message in the visitor's language; no page errors.
+- **Noticed:** the login and register pages have no site menu, so there is no language switch on them; they follow the language chosen elsewhere on the site, or the browser's.

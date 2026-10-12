@@ -308,6 +308,25 @@
     "emailTaken": "Er bestaat al een account met dit e-mailadres.",
     "contactInvalid": "Vul alle velden correct in.",
     "contactNotConfigured": "E-mail is nog niet ingesteld. Neem contact met ons op via WhatsApp.",
-    "contactFailed": "Verzenden is mislukt. Probeer het via WhatsApp."
+    "contactFailed": "Verzenden is mislukt. Probeer het via WhatsApp.",
+    "invalidRegistration": "Controleer je naam, e-mailadres en wachtwoord (minstens 8 tekens)."
+  },
+  "Auth": {
+    "loginTitle": "Inloggen",
+    "email": "E-mail",
+    "password": "Wachtwoord",
+    "loggingIn": "Inloggen…",
+    "logIn": "Inloggen",
+    "invalidLogin": "Onjuist e-mailadres of wachtwoord.",
+    "noAccount": "Nog geen account?",
+    "register": "Registreren",
+    "registerTitle": "Maak je account aan",
+    "fullName": "Volledige naam",
+    "phone": "Telefoon",
+    "language": "Taal",
+    "creatingAccount": "Account aanmaken…",
+    "createAccount": "Account aanmaken",
+    "haveAccount": "Heb je al een account?",
+    "registrationFailed": "Registreren is mislukt. Probeer het opnieuw."
   }
 }
