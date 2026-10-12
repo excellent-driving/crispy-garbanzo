@@ -25,11 +25,7 @@ export async function PATCH(
   await notify({
     phone: booking.student.phone,
     email: booking.student.email,
-    subject: "Your Excellent Driving booking was cancelled",
-    message: templates.bookingCancelled({
-      date: booking.date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }),
-      time: booking.timeSlot,
-    }),
+    ...templates.bookingCancelled(booking.student.language, { date: booking.date, timeSlot: booking.timeSlot }),
   });
 
   return NextResponse.json({ booking: updated });

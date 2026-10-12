@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { notify, templates } from "@/lib/whatsapp";
+import { packageName } from "@/lib/progress";
 
 export async function PATCH(
   _request: Request,
@@ -28,8 +29,9 @@ export async function PATCH(
   await notify({
     phone: booking.student.phone,
     email: booking.student.email,
-    subject: "Payment confirmed — Excellent Driving",
-    message: templates.paymentConfirmed({ packageName: booking.package.nameEn }),
+    ...templates.paymentConfirmed(booking.student.language, {
+      packageName: packageName(booking.package, booking.student.language === "NL" ? "nl" : "en"),
+    }),
   });
 
   return NextResponse.json({ booking: updated });

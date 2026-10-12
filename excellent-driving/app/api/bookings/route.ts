@@ -87,29 +87,25 @@ export async function POST(request: Request) {
     return await apiError("slotTaken", 409);
   }
 
-  const dateLabel = booking.date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" });
-
   await notify({
     phone: booking.student.phone,
     email: booking.student.email,
-    subject: "Your Excellent Driving booking is confirmed",
-    message: templates.bookingConfirmation({
+    ...templates.bookingConfirmation(booking.student.language, {
       name: booking.student.name,
       instructor: booking.instructor.user.name,
-      date: dateLabel,
-      time: booking.timeSlot,
-      method: booking.paymentMethod === "CASH" ? "Cash" : "Bank Transfer",
+      date: booking.date,
+      timeSlot: booking.timeSlot,
+      method: booking.paymentMethod,
     }),
   });
 
   await notify({
     phone: null, // instructor phone isn't collected yet — falls back to email
     email: booking.instructor.user.email,
-    subject: "New lesson booking",
-    message: templates.instructorNewBooking({
+    ...templates.instructorNewBooking(booking.instructor.user.language, {
       studentName: booking.student.name,
-      date: dateLabel,
-      time: booking.timeSlot,
+      date: booking.date,
+      timeSlot: booking.timeSlot,
     }),
   });
 

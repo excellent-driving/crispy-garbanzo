@@ -30,9 +30,8 @@ export async function GET(request: Request) {
       notify({
         phone: booking.student.phone,
         email: booking.student.email,
-        subject: "Reminder: your driving lesson is tomorrow",
-        message: templates.bookingReminder({
-          time: booking.timeSlot,
+        ...templates.bookingReminder(booking.student.language, {
+          timeSlot: booking.timeSlot,
           instructor: booking.instructor.user.name,
         }),
       })

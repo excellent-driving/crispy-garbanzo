@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { displaySlot } from "@/lib/slots";
 
 type SendResult = { success: boolean; channel: "whatsapp" | "email" | "none"; error?: string };
 
@@ -89,19 +90,74 @@ export async function notify(params: {
   return { success: false, channel: "none", error: emailResult.error };
 }
 
+type Lang = "EN" | "NL";
+type Message = { subject: string; message: string };
+
+/** A lesson date as the recipient reads it: "Monday, November 2" or "maandag 2 november". */
+export function lessonDate(date: Date, lang: Lang) {
+  return date.toLocaleDateString(lang === "NL" ? "nl-NL" : "en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" });
+}
+
+const lessonTime = (timeSlot: string, lang: Lang) => displaySlot(timeSlot, lang === "NL" ? "nl" : "en");
+
+/**
+ * Every notification in the recipient's language (their account's language).
+ * The English texts are the ones from Claude.md; register the same wording
+ * as WhatsApp templates in Meta Business Manager.
+ */
 export const templates = {
-  bookingConfirmation: (params: { name: string; instructor: string; date: string; time: string; method: string }) =>
-    `Hi ${params.name}, your booking with ${params.instructor} on ${params.date} at ${params.time} is confirmed. Payment: ${params.method}.`,
+  bookingConfirmation: (lang: Lang, p: { name: string; instructor: string; date: Date; timeSlot: string; method: "CASH" | "BANK_TRANSFER" }): Message =>
+    lang === "NL"
+      ? {
+          subject: "Je boeking bij Excellent Driving is bevestigd",
+          message: `Hoi ${p.name}, je les bij ${p.instructor} op ${lessonDate(p.date, lang)} om ${lessonTime(p.timeSlot, lang)} is bevestigd. Betaling: ${p.method === "CASH" ? "contant" : "bankoverschrijving"}.`,
+        }
+      : {
+          subject: "Your Excellent Driving booking is confirmed",
+          message: `Hi ${p.name}, your booking with ${p.instructor} on ${lessonDate(p.date, lang)} at ${lessonTime(p.timeSlot, lang)} is confirmed. Payment: ${p.method === "CASH" ? "Cash" : "Bank Transfer"}.`,
+        },
 
-  bookingReminder: (params: { time: string; instructor: string }) =>
-    `Reminder: Your driving lesson is tomorrow at ${params.time} with ${params.instructor}. See you there!`,
+  bookingReminder: (lang: Lang, p: { timeSlot: string; instructor: string }): Message =>
+    lang === "NL"
+      ? {
+          subject: "Herinnering: je rijles is morgen",
+          message: `Herinnering: je rijles is morgen om ${lessonTime(p.timeSlot, lang)} bij ${p.instructor}. Tot dan!`,
+        }
+      : {
+          subject: "Reminder: your driving lesson is tomorrow",
+          message: `Reminder: Your driving lesson is tomorrow at ${lessonTime(p.timeSlot, lang)} with ${p.instructor}. See you there!`,
+        },
 
-  paymentConfirmed: (params: { packageName: string }) =>
-    `Your payment for ${params.packageName} has been confirmed. You now have access to your online lessons!`,
+  paymentConfirmed: (lang: Lang, p: { packageName: string }): Message =>
+    lang === "NL"
+      ? {
+          subject: "Betaling bevestigd: Excellent Driving",
+          message: `Je betaling voor ${p.packageName} is bevestigd. Je hebt nu toegang tot je online lessen!`,
+        }
+      : {
+          subject: "Payment confirmed — Excellent Driving",
+          message: `Your payment for ${p.packageName} has been confirmed. You now have access to your online lessons!`,
+        },
 
-  bookingCancelled: (params: { date: string; time: string }) =>
-    `Your booking on ${params.date} at ${params.time} has been cancelled.`,
+  bookingCancelled: (lang: Lang, p: { date: Date; timeSlot: string }): Message =>
+    lang === "NL"
+      ? {
+          subject: "Je boeking bij Excellent Driving is geannuleerd",
+          message: `Je boeking op ${lessonDate(p.date, lang)} om ${lessonTime(p.timeSlot, lang)} is geannuleerd.`,
+        }
+      : {
+          subject: "Your Excellent Driving booking was cancelled",
+          message: `Your booking on ${lessonDate(p.date, lang)} at ${lessonTime(p.timeSlot, lang)} has been cancelled.`,
+        },
 
-  instructorNewBooking: (params: { studentName: string; date: string; time: string }) =>
-    `New booking: ${params.studentName} booked a lesson with you on ${params.date} at ${params.time}.`,
+  instructorNewBooking: (lang: Lang, p: { studentName: string; date: Date; timeSlot: string }): Message =>
+    lang === "NL"
+      ? {
+          subject: "Nieuwe lesboeking",
+          message: `Nieuwe boeking: ${p.studentName} heeft een les bij je geboekt op ${lessonDate(p.date, lang)} om ${lessonTime(p.timeSlot, lang)}.`,
+        }
+      : {
+          subject: "New lesson booking",
+          message: `New booking: ${p.studentName} booked a lesson with you on ${lessonDate(p.date, lang)} at ${lessonTime(p.timeSlot, lang)}.`,
+        },
 };

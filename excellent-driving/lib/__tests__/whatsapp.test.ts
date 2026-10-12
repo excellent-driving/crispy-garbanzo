@@ -90,14 +90,39 @@ describe("notify (WhatsApp -> email fallback chain)", () => {
 });
 
 describe("message templates", () => {
-  it("interpolate all provided fields", async () => {
+  // 2026-11-02 is a Monday.
+  const date = new Date("2026-11-02T00:00:00Z");
+
+  it("interpolate all provided fields, in English", async () => {
     const { templates } = await import("@/lib/whatsapp");
 
-    expect(templates.bookingConfirmation({ name: "Ana", instructor: "Roy", date: "Monday", time: "9:00 AM", method: "Cash" })).toBe(
-      "Hi Ana, your booking with Roy on Monday at 9:00 AM is confirmed. Payment: Cash."
+    expect(templates.bookingConfirmation("EN", { name: "Ana", instructor: "Roy", date, timeSlot: "9:00 AM", method: "CASH" })).toEqual({
+      subject: "Your Excellent Driving booking is confirmed",
+      message: "Hi Ana, your booking with Roy on Monday, November 2 at 9:00 AM is confirmed. Payment: Cash.",
+    });
+    expect(templates.bookingCancelled("EN", { date, timeSlot: "9:00 AM" }).message).toBe(
+      "Your booking on Monday, November 2 at 9:00 AM has been cancelled."
     );
-    expect(templates.bookingCancelled({ date: "Monday", time: "9:00 AM" })).toBe(
-      "Your booking on Monday at 9:00 AM has been cancelled."
+  });
+
+  it("write Dutch messages with Dutch dates and the 24-hour clock", async () => {
+    const { templates } = await import("@/lib/whatsapp");
+
+    expect(templates.bookingConfirmation("NL", { name: "Ana", instructor: "Roy", date, timeSlot: "1:00 PM", method: "BANK_TRANSFER" })).toEqual({
+      subject: "Je boeking bij Excellent Driving is bevestigd",
+      message: "Hoi Ana, je les bij Roy op maandag 2 november om 13:00 is bevestigd. Betaling: bankoverschrijving.",
+    });
+    expect(templates.bookingReminder("NL", { timeSlot: "8:00 AM", instructor: "Roy" }).message).toBe(
+      "Herinnering: je rijles is morgen om 08:00 bij Roy. Tot dan!"
+    );
+    expect(templates.bookingCancelled("NL", { date, timeSlot: "9:00 AM" }).message).toBe(
+      "Je boeking op maandag 2 november om 09:00 is geannuleerd."
+    );
+    expect(templates.paymentConfirmed("NL", { packageName: "Standaard" }).message).toBe(
+      "Je betaling voor Standaard is bevestigd. Je hebt nu toegang tot je online lessen!"
+    );
+    expect(templates.instructorNewBooking("NL", { studentName: "Ana", date, timeSlot: "9:00 AM" }).message).toBe(
+      "Nieuwe boeking: Ana heeft een les bij je geboekt op maandag 2 november om 09:00."
     );
   });
 });
