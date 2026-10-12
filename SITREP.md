@@ -910,4 +910,4 @@ The owner's side uploaded `VRAGEN CAT A EN B.pdf`, `VRAGEN CAT C.pdf` and `VRAGE
 - **Styles:** questions are `<details>` boxes (lesson.module.css), the speed table scrolls sideways on a phone.
 - **Checked:** tsc, eslint, jest (76 tests; a new test pins the numbering, answers and page split). On a local build: every page shows its questions closed, an answer opens on tap, no overflow at 400px; locks behave as for other modules.
 - **For the instructor:** answer 25 ("Mag een leerling onder invloed van alcohol … een auto besturen? — Ja, als hij het naar behoren kan doen.") reads as wrong; shown as written until confirmed.
-- **Not yet in the live database.**
+- **Live (same day):** seed run on the live database (15 modules; schedules still 17). Checked with a temporary student, deleted afterwards: pages 1, 5, 9, 11 and the C page show their questions closed, answers open on tap, the speed table shows, no overflow at 400px. On the review account `webtrekker95@gmail.com` all 12 Verkeersborden lessons were marked PASSED at the user's request, so the questions are open.
