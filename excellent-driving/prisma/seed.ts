@@ -504,8 +504,10 @@ async function main() {
       lessons: theorieAlgemeenLessons,
     },
     {
-      titleEn: "Traffic Regulations",
-      titleNl: "Verkeersreglementen",
+      // Example content from the first build: unpublished, waiting for the OK to delete.
+      titleEn: "[PLACEHOLDER] Traffic Regulations",
+      titleNl: "[VOORBEELD] Verkeersreglementen",
+      isPublished: false,
       id: "seed-module-2",
       orderIndex: 9,
       lessons: [
@@ -520,8 +522,10 @@ async function main() {
       ],
     },
     {
-      titleEn: "Practical Driving Skills",
-      titleNl: "Praktische Rijvaardigheden",
+      // Example content from the first build: unpublished, waiting for the OK to delete.
+      titleEn: "[PLACEHOLDER] Practical Driving Skills",
+      titleNl: "[VOORBEELD] Praktische Rijvaardigheden",
+      isPublished: false,
       id: "seed-module-3",
       orderIndex: 10,
       lessons: [
@@ -530,8 +534,10 @@ async function main() {
       ],
     },
     {
-      titleEn: "Highway & Motorway Driving",
-      titleNl: "Snelweg Rijden",
+      // Example content from the first build: unpublished, waiting for the OK to delete.
+      titleEn: "[PLACEHOLDER] Highway & Motorway Driving",
+      titleNl: "[VOORBEELD] Snelweg Rijden",
+      isPublished: false,
       id: "seed-module-4",
       orderIndex: 11,
       lessons: [
@@ -540,8 +546,10 @@ async function main() {
       ],
     },
     {
-      titleEn: "Exam Preparation",
-      titleNl: "Examenvoorbereiding",
+      // Example content from the first build: unpublished, waiting for the OK to delete.
+      titleEn: "[PLACEHOLDER] Exam Preparation",
+      titleNl: "[VOORBEELD] Examenvoorbereiding",
+      isPublished: false,
       id: "seed-module-5",
       orderIndex: 12,
       lessons: [
@@ -576,7 +584,7 @@ async function main() {
         titleEn: mod.titleEn,
         titleNl: mod.titleNl,
         orderIndex: mod.orderIndex,
-        isPublished: true,
+        isPublished: (mod as { isPublished?: boolean }).isPublished ?? true,
       },
     });
 
