@@ -1,11 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { getSchoolContact } from "@/lib/school";
 import { ContactForm } from "./contact-form";
 import styles from "./contact.module.css";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("Meta"))("contact") };
+}
+
 export default async function ContactPage() {
-  const [t, tf, contact] = await Promise.all([getTranslations("Contact"), getTranslations("Footer"), getSchoolContact()]);
+  const [t, tf, contact, locale] = await Promise.all([getTranslations("Contact"), getTranslations("Footer"), getSchoolContact(), getLocale()]);
   const mapSrc =
     "https://www.google.com/maps?q=" +
     encodeURIComponent(`${contact.address}, Suriname`) +
@@ -58,7 +63,7 @@ export default async function ContactPage() {
                 <div className={styles["info-icon"]} aria-hidden="true">🕒</div>
                 <div>
                   <div className={styles["info-label"]}>{t("hours")}</div>
-                  <div className={styles["info-value"]}>{tf("hours")}</div>
+                  <div className={styles["info-value"]}>{contact.hours[locale === "nl" ? "nl" : "en"]}</div>
                 </div>
               </div>
               {contact.whatsappUrl && (
@@ -76,7 +81,23 @@ export default async function ContactPage() {
             />
           </div>
 
-          <ContactForm />
+          {/* The form needs email sending (RESEND_API_KEY); until then, point people to email and WhatsApp. */}
+          {process.env.RESEND_API_KEY ? (
+            <ContactForm />
+          ) : (
+            <div className={styles["form-card"]}>
+              <h2>{t("noFormTitle")}</h2>
+              <p className={styles["no-form-text"]}>{t("noFormText")}</p>
+              <div className={styles["no-form-actions"]}>
+                <a href={`mailto:${contact.email}`} className="btn btn-primary">✉️ {contact.email}</a>
+                {contact.whatsappUrl && (
+                  <a href={contact.whatsappUrl} target="_blank" rel="noopener noreferrer" className="whatsapp-btn">
+                    {tf("chatWhatsapp")}
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

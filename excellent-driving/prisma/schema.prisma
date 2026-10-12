@@ -67,6 +67,9 @@ model User {
   name          String
   language      Language  @default(EN)
   courseAccess  Boolean   @default(true)
+  /// Wrong passwords in a row; after 5 the account is locked until lockedUntil (lib/login-lock.ts).
+  failedLoginCount Int       @default(0)
+  lockedUntil      DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -260,6 +263,18 @@ model SchoolSettings {
   email              String   @default("info@excellentdriving.sr")
   whatsappNumber     String   @default("")
   whatsappBotEnabled Boolean  @default(false)
+  /// Bank transfer is offered once bankAccountNumber is filled in.
+  bankName           String   @default("")
+  bankAccountHolder  String   @default("")
+  bankAccountNumber  String   @default("")
+  /// When true, new students get the online lessons only after the admin confirms a payment.
+  lessonsAfterPayment Boolean @default(false)
+  /// Homepage numbers; an empty one is not shown.
+  statStudents       String   @default("")
+  statPassRate       String   @default("")
+  openingDaysNl      String   @default("Ma–Za")
+  openingDaysEn      String   @default("Mon–Sat")
+  openingTimes       String   @default("7:00–18:00")
   defaultLanguage    Language @default(EN)
   updatedAt          DateTime @updatedAt
 

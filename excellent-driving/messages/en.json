@@ -23,9 +23,7 @@
     "dashboard": "Dashboard",
     "myBookings": "My Bookings",
     "contactHeader": "Contact",
-    "hours": "Mon–Sat: 7am–6pm",
-    "copyright": "© 2026 Excellent Driving. All rights reserved.",
-    "legal": "Privacy Policy · Terms of Service"
+    "copyright": "© 2026 Excellent Driving. All rights reserved."
   },
   "Home": {
     "badge": "Suriname's #1 Driving School",
@@ -37,7 +35,7 @@
     "viewPackages": "View Packages",
     "statsStudents": "Students Trained",
     "statsInstructors": "Expert Instructors",
-    "statsAvailable": "Available 7am–6pm",
+    "statsAvailable": "Open {times}",
     "statsPassRate": "Pass Rate",
     "packagesTag": "Packages",
     "packagesTitle1": "Choose Your",
@@ -72,7 +70,6 @@
     "journeyExamSub": "Pass on your first try",
     "journeyWhatsapp": "WhatsApp Updates",
     "journeyWhatsappSub": "Instant confirmations",
-    "statsDays": "Mon–Sat",
     "perPackage": "/ package",
     "includeNoPractical": "Practical lessons are not included, theory only",
     "includeTheory": "Theory access included",
@@ -249,7 +246,8 @@
     "checkAnswer": "Check Answer",
     "nextQuestion": "Next Question",
     "submitting": "Submitting…",
-    "submitQuiz": "Submit Quiz"
+    "submitQuiz": "Submit Quiz",
+    "awaitingPayment": "Your online lessons open as soon as your payment is confirmed. Haven't booked a package yet? Book a lesson first."
   },
   "Bookings": {
     "upcoming": "Upcoming",
@@ -343,7 +341,12 @@
     "backHome": "Back to Home",
     "summary": "Booking Summary",
     "notSelected": "Not selected",
-    "total": "Total"
+    "total": "Total",
+    "bankDetailsTitle": "Bank details",
+    "bankName": "Bank",
+    "bankHolder": "Account holder",
+    "bankNumber": "Account number",
+    "bankReference": "Mention your name and the package in the description."
   },
   "Errors": {
     "unauthorized": "You need to be logged in.",
@@ -370,7 +373,8 @@
     "contactInvalid": "Please fill in all fields correctly.",
     "contactNotConfigured": "Email is not configured yet — please reach out via WhatsApp instead.",
     "contactFailed": "Failed to send. Please try WhatsApp instead.",
-    "invalidRegistration": "Please check your name, email and password (at least 8 characters)."
+    "invalidRegistration": "Please check your name, email and password (at least 8 characters).",
+    "bankTransferUnavailable": "Paying by bank transfer isn't possible yet. Please choose cash."
   },
   "Auth": {
     "loginTitle": "Log in",
@@ -388,7 +392,8 @@
     "creatingAccount": "Creating account…",
     "createAccount": "Create account",
     "haveAccount": "Already have an account?",
-    "registrationFailed": "Registration failed. Please try again."
+    "registrationFailed": "Registration failed. Please try again.",
+    "locked": "Too many failed attempts. Try again in 15 minutes."
   },
   "Contact": {
     "home": "Home",
@@ -406,7 +411,9 @@
     "message": "Message",
     "sending": "Sending…",
     "send": "Send Message",
-    "genericError": "Something went wrong. Please try WhatsApp instead."
+    "genericError": "Something went wrong. Please try WhatsApp instead.",
+    "noFormTitle": "Email or WhatsApp us",
+    "noFormText": "Send us an email or a WhatsApp message and we'll get back to you as soon as possible."
   },
   "Faq": {
     "home": "Home",
@@ -423,5 +430,24 @@
     "intro": "Experienced, patient, and certified professionals dedicated to your success behind the wheel.",
     "years": "{years} years experience",
     "available": "Available: {days}"
+  },
+  "Meta": {
+    "siteTitle": "Excellent Driving | Driving school in Paramaribo",
+    "description": "Driving school in Paramaribo, Suriname. Study the theory online and book your lessons easily on the website.",
+    "packages": "Packages",
+    "instructors": "Instructors",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "login": "Log in",
+    "register": "Register",
+    "booking": "Book a lesson",
+    "privacy": "Privacy policy",
+    "terms": "Terms and conditions",
+    "notFound": "Page not found",
+    "notFoundText": "This page doesn't exist or has moved.",
+    "notFoundHome": "Go to the homepage"
+  },
+  "Legal": {
+    "draft": "Draft: this text has not yet been approved by the driving school."
   }
 }

@@ -202,3 +202,10 @@
   .pkg-options, .payment-options { grid-template-columns: 1fr; }
   .instructor-options { grid-template-columns: 1fr 1fr; }
 }
+
+.bank-box { margin-top: 16px; padding: 16px; border: 1px solid var(--gray-200); border-radius: 10px; background: var(--gray-50); font-size: 0.85rem; color: var(--gray-700); }
+.bank-title { font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.bank-box dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0 0 8px; }
+.bank-box dt { color: var(--gray-600); }
+.bank-box dd { margin: 0; font-weight: 600; color: var(--navy); overflow-wrap: anywhere; }
+.bank-box p { margin: 0; }

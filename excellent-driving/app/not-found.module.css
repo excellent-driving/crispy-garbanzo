@@ -1,0 +1,6 @@
+.wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 96px 24px; gap: 12px; background: var(--gray-50); }
+.code { font-family: var(--font-sora), sans-serif; font-size: 4rem; font-weight: 800; color: var(--amber); line-height: 1; }
+.title { font-family: var(--font-sora), sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--navy); }
+.text { color: var(--gray-600); max-width: 40ch; }
+.button { margin-top: 12px; display: inline-flex; padding: 12px 24px; border-radius: 999px; background: var(--amber); color: var(--navy); font-weight: 700; text-decoration: none; }
+.button:hover { filter: brightness(1.05); }

@@ -27,7 +27,7 @@ export default function LoginPage() {
     setSubmitting(false);
 
     if (result?.error) {
-      setError(t("invalidLogin"));
+      setError(result.error === "locked" ? t("locked") : t("invalidLogin"));
       return;
     }
 

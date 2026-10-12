@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { dayOfWeekCode, formatSlotLabel, generateSlotMinutes } from "@/lib/slots";
 import { notify, templates } from "@/lib/whatsapp";
 import { apiError } from "@/lib/api-error";
+import { getSchool } from "@/lib/school";
 
 const bookingSchema = z.object({
   packageId: z.string().min(1),
@@ -28,6 +29,9 @@ export async function POST(request: Request) {
   }
 
   const { packageId, instructorId, date: dateParam, timeSlot, paymentMethod } = parsed.data;
+  if (paymentMethod === "BANK_TRANSFER" && !(await getSchool()).bank) {
+    return await apiError("bankTransferUnavailable", 400);
+  }
   const date = new Date(`${dateParam}T00:00:00Z`);
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);

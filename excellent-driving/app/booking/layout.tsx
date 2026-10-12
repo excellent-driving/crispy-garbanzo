@@ -1,7 +1,12 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import "../(public)/public-shared.css";
 import styles from "./booking.module.css";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("Meta"))("booking") };
+}
 
 export default async function BookingLayout({ children }: { children: React.ReactNode }) {
   const t = await getTranslations("Booking");

@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { apiError } from "@/lib/api-error";
+import { getSchool } from "@/lib/school";
 
 const registerSchema = z.object({
   name: z.string().min(1),
@@ -37,6 +38,8 @@ export async function POST(request: Request) {
       passwordHash,
       language,
       role: "STUDENT",
+      // With "lessons after payment" on, the lessons open when the admin confirms a payment.
+      courseAccess: !(await getSchool()).lessonsAfterPayment,
     },
     select: { id: true, email: true, name: true, role: true },
   });

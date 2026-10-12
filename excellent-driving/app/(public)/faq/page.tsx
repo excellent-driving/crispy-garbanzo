@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { FaqList } from "./faq-list";
 import styles from "./faq.module.css";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("Meta"))("faq") };
+}
 
 export default async function FaqPage() {
   const [t, locale] = await Promise.all([getTranslations("Faq"), getLocale()]);

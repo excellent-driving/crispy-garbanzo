@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { SchoolContact } from "@/lib/school";
 
 export function SiteFooter({ contact }: { contact: SchoolContact }) {
   const t = useTranslations("Footer");
+  const tm = useTranslations("Meta");
+  const locale = useLocale();
 
   return (
     <footer>
@@ -56,14 +58,18 @@ export function SiteFooter({ contact }: { contact: SchoolContact }) {
             <li><Link href="/contact">{contact.address}</Link></li>
             {contact.phone && <li><a href={`tel:${contact.phone.replace(/\s/g, "")}`}>{contact.phone}</a></li>}
             <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
-            <li>{t("hours")}</li>
+            <li>{contact.hours[locale === "nl" ? "nl" : "en"]}</li>
           </ul>
         </div>
       </div>
 
       <div className="footer-bottom" style={{ maxWidth: 1200, margin: "0 auto" }}>
         <p>{t("copyright")}</p>
-        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.78rem" }}>{t("legal")}</p>
+        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.78rem" }}>
+          <Link href="/privacy" style={{ color: "inherit" }}>{tm("privacy")}</Link>
+          {" · "}
+          <Link href="/voorwaarden" style={{ color: "inherit" }}>{tm("terms")}</Link>
+        </p>
       </div>
     </footer>
   );

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations, getLocale } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { FaqAccordion } from "@/components/faq-accordion";
+import { getSchool } from "@/lib/school";
 import styles from "./home.module.css";
 
 const packageIcons: Record<string, string> = {
@@ -16,7 +17,7 @@ export default async function HomePage() {
   const locale = await getLocale();
   const isNl = locale === "nl";
 
-  const [packages, instructors, faqs] = await Promise.all([
+  const [packages, instructors, faqs, instructorCount, school] = await Promise.all([
     prisma.package.findMany({
       where: { isActive: true, nameEn: { in: ["Starter", "Standard", "Premium"] } },
       orderBy: { price: "asc" },
@@ -32,6 +33,8 @@ export default async function HomePage() {
       orderBy: { orderIndex: "asc" },
       take: 5,
     }),
+    prisma.instructor.count({ where: { isActive: true } }),
+    getSchool(),
   ]);
 
   const steps = [
@@ -88,22 +91,27 @@ export default async function HomePage() {
       {/* STATS BAR */}
       <div className={styles["stats-bar"]}>
         <div className={styles["stats-inner"]}>
+          {/* Students trained and pass rate come from Admin › Settings and stay hidden until filled in. */}
+          {school.stats.students && (
+            <div className={styles.stat}>
+              <div className={styles["stat-number"]}>{school.stats.students}</div>
+              <div className={styles["stat-label"]}>{t("statsStudents")}</div>
+            </div>
+          )}
           <div className={styles.stat}>
-            <div className={styles["stat-number"]}>500+</div>
-            <div className={styles["stat-label"]}>{t("statsStudents")}</div>
-          </div>
-          <div className={styles.stat}>
-            <div className={styles["stat-number"]}>8</div>
+            <div className={styles["stat-number"]}>{instructorCount}</div>
             <div className={styles["stat-label"]}>{t("statsInstructors")}</div>
           </div>
           <div className={styles.stat}>
-            <div className={styles["stat-number"]}>{t("statsDays")}</div>
-            <div className={styles["stat-label"]}>{t("statsAvailable")}</div>
+            <div className={styles["stat-number"]}>{school.openingDays[isNl ? "nl" : "en"]}</div>
+            <div className={styles["stat-label"]}>{t("statsAvailable", { times: school.openingTimes })}</div>
           </div>
-          <div className={styles.stat}>
-            <div className={styles["stat-number"]}>95%</div>
-            <div className={styles["stat-label"]}>{t("statsPassRate")}</div>
-          </div>
+          {school.stats.passRate && (
+            <div className={styles.stat}>
+              <div className={styles["stat-number"]}>{school.stats.passRate}</div>
+              <div className={styles["stat-label"]}>{t("statsPassRate")}</div>
+            </div>
+          )}
         </div>
       </div>
 

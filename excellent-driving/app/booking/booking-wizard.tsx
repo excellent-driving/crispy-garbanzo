@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { displaySlot } from "@/lib/slots";
+import type { BankDetails } from "@/lib/school";
 import styles from "./booking.module.css";
 
 type Pkg = { id: string; name: string; price: number };
@@ -18,7 +19,7 @@ function pad(n: number) {
   return n.toString().padStart(2, "0");
 }
 
-export function BookingWizard({ packages, instructors }: { packages: Pkg[]; instructors: Instructor[] }) {
+export function BookingWizard({ packages, instructors, bank }: { packages: Pkg[]; instructors: Instructor[]; bank: BankDetails | null }) {
   const router = useRouter();
   const t = useTranslations("Booking");
   const locale = useLocale();
@@ -404,18 +405,21 @@ export function BookingWizard({ packages, instructors }: { packages: Pkg[]; inst
                     <div className={styles["pay-name"]}>{t("cashTitle")}</div>
                     <div className={styles["pay-desc"]}>{t("cashDesc")}</div>
                   </div>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    className={`${styles["pay-option"]}${payment === "BANK_TRANSFER" ? ` ${styles.selected}` : ""}`}
-                    onClick={() => setPayment("BANK_TRANSFER")}
-                    onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setPayment("BANK_TRANSFER")}
-                  >
-                    <div className={styles["pay-icon"]} aria-hidden="true">🏦</div>
-                    <div className={styles["pay-name"]}>{t("bankTitle")}</div>
-                    <div className={styles["pay-desc"]}>{t("bankDesc")}</div>
-                  </div>
+                  {bank && (
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      className={`${styles["pay-option"]}${payment === "BANK_TRANSFER" ? ` ${styles.selected}` : ""}`}
+                      onClick={() => setPayment("BANK_TRANSFER")}
+                      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setPayment("BANK_TRANSFER")}
+                    >
+                      <div className={styles["pay-icon"]} aria-hidden="true">🏦</div>
+                      <div className={styles["pay-name"]}>{t("bankTitle")}</div>
+                      <div className={styles["pay-desc"]}>{t("bankDesc")}</div>
+                    </div>
+                  )}
                 </div>
+                {bank && payment === "BANK_TRANSFER" && <BankBox bank={bank} t={t} />}
                 <div style={{ marginTop: 20, padding: 16, background: "rgba(245,166,35,0.08)", border: "1px solid rgba(245,166,35,0.25)", borderRadius: 10 }}>
                   <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--navy)", marginBottom: 4 }}>💡 {t("paymentNoteTitle")}</div>
                   <div style={{ fontSize: "0.82rem", color: "var(--gray-600)", lineHeight: 1.5 }}>
@@ -479,6 +483,8 @@ export function BookingWizard({ packages, instructors }: { packages: Pkg[]; inst
                   </div>
                 </div>
               </div>
+
+              {bank && payment === "BANK_TRANSFER" && <BankBox bank={bank} t={t} />}
 
               <div className={styles["wa-notice"]}>
                 <div className={styles["wa-notice-icon"]} aria-hidden="true">📱</div>
@@ -545,6 +551,21 @@ export function BookingWizard({ packages, instructors }: { packages: Pkg[]; inst
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function BankBox({ bank, t }: { bank: BankDetails; t: ReturnType<typeof useTranslations<"Booking">> }) {
+  return (
+    <div className={styles["bank-box"]}>
+      <div className={styles["bank-title"]}>🏦 {t("bankDetailsTitle")}</div>
+      <dl>
+        {bank.name && (<><dt>{t("bankName")}</dt><dd>{bank.name}</dd></>)}
+        {bank.holder && (<><dt>{t("bankHolder")}</dt><dd>{bank.holder}</dd></>)}
+        <dt>{t("bankNumber")}</dt>
+        <dd>{bank.number}</dd>
+      </dl>
+      <p>{t("bankReference")}</p>
     </div>
   );
 }

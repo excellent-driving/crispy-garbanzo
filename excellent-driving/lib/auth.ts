@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { afterFailedLogin, isLocked } from "@/lib/login-lock";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -30,12 +31,20 @@ export const authOptions: NextAuthOptions = {
           where: { email: credentials.email },
         });
         if (!user) return null;
+        // The login page shows its own message for this error.
+        if (isLocked(user.lockedUntil)) throw new Error("locked");
 
         const isValid = await bcrypt.compare(
           credentials.password,
           user.passwordHash
         );
-        if (!isValid) return null;
+        if (!isValid) {
+          await prisma.user.update({ where: { id: user.id }, data: afterFailedLogin(user.failedLoginCount) });
+          return null;
+        }
+        if (user.failedLoginCount > 0 || user.lockedUntil) {
+          await prisma.user.update({ where: { id: user.id }, data: { failedLoginCount: 0, lockedUntil: null } });
+        }
 
         return {
           id: user.id,

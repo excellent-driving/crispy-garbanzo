@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations, getLocale } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
@@ -5,6 +6,10 @@ import { PackagesGrid } from "./packages-grid";
 import styles from "./packages.module.css";
 
 const displayOrder = ["Starter", "Standard", "Premium", "Refresher"];
+
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("Meta"))("packages") };
+}
 
 export default async function PackagesPage() {
   const t = await getTranslations("Packages");

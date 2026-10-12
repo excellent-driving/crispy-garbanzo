@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
@@ -8,6 +9,10 @@ const dayLabels: Record<string, Record<string, string>> = {
   nl: { MON: "ma", TUE: "di", WED: "wo", THU: "do", FRI: "vr", SAT: "za" },
 };
 const dayOrder = ["MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("Meta"))("instructors") };
+}
 
 export default async function InstructorsPage() {
   const [t, locale] = await Promise.all([getTranslations("Instructors"), getLocale()]);

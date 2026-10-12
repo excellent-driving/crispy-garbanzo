@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { notify, templates } from "@/lib/whatsapp";
 import { packageName } from "@/lib/progress";
+import { getSchool } from "@/lib/school";
 
 export async function PATCH(
   _request: Request,
@@ -25,6 +26,9 @@ export async function PATCH(
     where: { id },
     data: { paymentStatus: "CONFIRMED", status: "CONFIRMED" },
   });
+  if ((await getSchool()).lessonsAfterPayment) {
+    await prisma.user.update({ where: { id: booking.studentId }, data: { courseAccess: true } });
+  }
 
   await notify({
     phone: booking.student.phone,

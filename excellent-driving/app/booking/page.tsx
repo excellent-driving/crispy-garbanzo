@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { packageName } from "@/lib/progress";
+import { getSchool } from "@/lib/school";
 import { BookingWizard } from "./booking-wizard";
 
 const dayOrder = ["MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -23,13 +24,14 @@ function describeAvailability(days: string[], t: Awaited<ReturnType<typeof getTr
 
 export default async function BookingPage() {
   const [locale, t] = [await getLocale(), await getTranslations("Booking")];
-  const [packagesRaw, instructors] = await Promise.all([
+  const [packagesRaw, instructors, school] = await Promise.all([
     prisma.package.findMany({ where: { isActive: true } }),
     prisma.instructor.findMany({
       where: { isActive: true },
       include: { user: true, schedules: true },
       orderBy: { yearsExperience: "desc" },
     }),
+    getSchool(),
   ]);
 
   const orderOf = (name: string) => {
@@ -40,6 +42,7 @@ export default async function BookingPage() {
 
   return (
     <BookingWizard
+      bank={school.bank}
       packages={packages.map((p) => ({ id: p.id, name: packageName(p, locale), price: Number(p.price) }))}
       instructors={instructors.map((i) => ({
         id: i.id,

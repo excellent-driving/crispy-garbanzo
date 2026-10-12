@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getSchool } from "@/lib/school";
 
 export default async function LearnLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
@@ -12,6 +13,9 @@ export default async function LearnLayout({ children }: { children: React.ReactN
 
   if (!user?.courseAccess) {
     const t = await getTranslations("Learn");
+    // A student who never had access is waiting for a payment; otherwise the admin closed it.
+    const waitingForPayment = (await getSchool()).lessonsAfterPayment &&
+      !(await prisma.booking.count({ where: { studentId: session!.user.id, paymentStatus: "CONFIRMED" } }));
     return (
       <div
         style={{
@@ -23,7 +27,7 @@ export default async function LearnLayout({ children }: { children: React.ReactN
           color: "var(--gray-600)",
         }}
       >
-        🔒 {t("accessOnHold")}
+        🔒 {waitingForPayment ? t("awaitingPayment") : t("accessOnHold")}
       </div>
     );
   }

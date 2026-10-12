@@ -23,9 +23,7 @@
     "dashboard": "Dashboard",
     "myBookings": "Mijn Boekingen",
     "contactHeader": "Contact",
-    "hours": "Ma–Za: 7:00–18:00",
-    "copyright": "© 2026 Excellent Driving. Alle rechten voorbehouden.",
-    "legal": "Privacybeleid · Algemene Voorwaarden"
+    "copyright": "© 2026 Excellent Driving. Alle rechten voorbehouden."
   },
   "Home": {
     "badge": "Suriname's #1 Rijschool",
@@ -37,7 +35,7 @@
     "viewPackages": "Bekijk Pakketten",
     "statsStudents": "Studenten Opgeleid",
     "statsInstructors": "Ervaren Instructeurs",
-    "statsAvailable": "Geopend 7:00–18:00",
+    "statsAvailable": "Geopend {times}",
     "statsPassRate": "Slagingspercentage",
     "packagesTag": "Pakketten",
     "packagesTitle1": "Kies Je",
@@ -72,7 +70,6 @@
     "journeyExamSub": "Slaag in één keer",
     "journeyWhatsapp": "Updates via WhatsApp",
     "journeyWhatsappSub": "Direct een bevestiging",
-    "statsDays": "Ma–Za",
     "perPackage": "/ pakket",
     "includeNoPractical": "Praktijklessen zijn niet inbegrepen, alleen theorie",
     "includeTheory": "Toegang tot de theorie inbegrepen",
@@ -249,7 +246,8 @@
     "checkAnswer": "Controleer Antwoord",
     "nextQuestion": "Volgende Vraag",
     "submitting": "Versturen…",
-    "submitQuiz": "Quiz Insturen"
+    "submitQuiz": "Quiz Insturen",
+    "awaitingPayment": "Je online lessen gaan open zodra je betaling is bevestigd. Nog geen pakket geboekt? Boek dan eerst een les."
   },
   "Bookings": {
     "upcoming": "Aankomend",
@@ -343,7 +341,12 @@
     "backHome": "Terug naar Home",
     "summary": "Overzicht",
     "notSelected": "Nog niet gekozen",
-    "total": "Totaal"
+    "total": "Totaal",
+    "bankDetailsTitle": "Bankgegevens",
+    "bankName": "Bank",
+    "bankHolder": "Ten name van",
+    "bankNumber": "Rekeningnummer",
+    "bankReference": "Vermeld je naam en het pakket bij de omschrijving."
   },
   "Errors": {
     "unauthorized": "Je moet ingelogd zijn.",
@@ -370,7 +373,8 @@
     "contactInvalid": "Vul alle velden correct in.",
     "contactNotConfigured": "E-mail is nog niet ingesteld. Neem contact met ons op via WhatsApp.",
     "contactFailed": "Verzenden is mislukt. Probeer het via WhatsApp.",
-    "invalidRegistration": "Controleer je naam, e-mailadres en wachtwoord (minstens 8 tekens)."
+    "invalidRegistration": "Controleer je naam, e-mailadres en wachtwoord (minstens 8 tekens).",
+    "bankTransferUnavailable": "Betalen per overschrijving is nog niet mogelijk. Kies contant."
   },
   "Auth": {
     "loginTitle": "Inloggen",
@@ -388,7 +392,8 @@
     "creatingAccount": "Account aanmaken…",
     "createAccount": "Account aanmaken",
     "haveAccount": "Heb je al een account?",
-    "registrationFailed": "Registreren is mislukt. Probeer het opnieuw."
+    "registrationFailed": "Registreren is mislukt. Probeer het opnieuw.",
+    "locked": "Te veel mislukte pogingen. Probeer het over 15 minuten opnieuw."
   },
   "Contact": {
     "home": "Home",
@@ -406,7 +411,9 @@
     "message": "Bericht",
     "sending": "Versturen…",
     "send": "Bericht Versturen",
-    "genericError": "Er ging iets mis. Probeer het via WhatsApp."
+    "genericError": "Er ging iets mis. Probeer het via WhatsApp.",
+    "noFormTitle": "Mail of WhatsApp ons",
+    "noFormText": "Stuur ons een e-mail of een WhatsApp-bericht, dan reageren we zo snel mogelijk."
   },
   "Faq": {
     "home": "Home",
@@ -423,5 +430,24 @@
     "intro": "Ervaren, geduldige en gecertificeerde professionals die zich inzetten voor jouw succes achter het stuur.",
     "years": "{years} jaar ervaring",
     "available": "Beschikbaar: {days}"
+  },
+  "Meta": {
+    "siteTitle": "Excellent Driving | Rijschool in Paramaribo",
+    "description": "Rijschool in Paramaribo, Suriname. Leer de theorie online en boek je lessen eenvoudig via de website.",
+    "packages": "Pakketten",
+    "instructors": "Instructeurs",
+    "faq": "Veelgestelde vragen",
+    "contact": "Contact",
+    "login": "Inloggen",
+    "register": "Registreren",
+    "booking": "Les boeken",
+    "privacy": "Privacybeleid",
+    "terms": "Algemene voorwaarden",
+    "notFound": "Pagina niet gevonden",
+    "notFoundText": "Deze pagina bestaat niet of is verplaatst.",
+    "notFoundHome": "Naar de homepage"
+  },
+  "Legal": {
+    "draft": "Concept: deze tekst is nog niet goedgekeurd door de rijschool."
   }
 }

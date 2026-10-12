@@ -1,0 +1,10 @@
+-- AlterTable
+ALTER TABLE "school_settings" ADD COLUMN "bankName" TEXT NOT NULL DEFAULT '',
+ADD COLUMN "bankAccountHolder" TEXT NOT NULL DEFAULT '',
+ADD COLUMN "bankAccountNumber" TEXT NOT NULL DEFAULT '',
+ADD COLUMN "lessonsAfterPayment" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN "statStudents" TEXT NOT NULL DEFAULT '',
+ADD COLUMN "statPassRate" TEXT NOT NULL DEFAULT '',
+ADD COLUMN "openingDaysNl" TEXT NOT NULL DEFAULT 'Ma–Za',
+ADD COLUMN "openingDaysEn" TEXT NOT NULL DEFAULT 'Mon–Sat',
+ADD COLUMN "openingTimes" TEXT NOT NULL DEFAULT '7:00–18:00';

@@ -81,3 +81,7 @@
 @media (max-width: 900px) {
   .content-inner { grid-template-columns: 1fr; }
 }
+
+.no-form-text { color: var(--gray-600); font-size: 0.95rem; margin: 0 0 20px; }
+.no-form-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.no-form-actions a { overflow-wrap: anywhere; }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Sora, Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Providers } from "@/components/providers";
 import { DemoBanner } from "@/components/demo-banner";
 import "./globals.css";
@@ -18,10 +18,13 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
-export const metadata: Metadata = {
-  title: "Excellent Driving",
-  description: "Learn to drive with confidence — Excellent Driving, Paramaribo.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Meta");
+  return {
+    title: { template: "%s | Excellent Driving", default: t("siteTitle") },
+    description: t("description"),
+  };
+}
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();

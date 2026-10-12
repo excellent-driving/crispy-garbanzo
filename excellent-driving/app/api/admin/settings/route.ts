@@ -11,6 +11,15 @@ const settingsSchema = z.object({
   email: z.string().email(),
   whatsappNumber: z.string(),
   whatsappBotEnabled: z.boolean(),
+  bankName: z.string(),
+  bankAccountHolder: z.string(),
+  bankAccountNumber: z.string(),
+  lessonsAfterPayment: z.boolean(),
+  statStudents: z.string(),
+  statPassRate: z.string(),
+  openingDaysNl: z.string().min(1),
+  openingDaysEn: z.string().min(1),
+  openingTimes: z.string().min(1),
   defaultLanguage: z.enum(["EN", "NL"]),
 });
 
