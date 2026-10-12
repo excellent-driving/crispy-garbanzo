@@ -6,6 +6,7 @@ import { maquetteLes3Lessons } from "./content/maquette-les-3";
 import { maquetteLes4Lessons } from "./content/maquette-les-4";
 import { maquetteLes5Lessons } from "./content/maquette-les-5";
 import { maquetteLes6Lessons } from "./content/maquette-les-6";
+import { theorieAlgemeenLessons, theorieCategorieCLessons, theorieCategorieDLessons } from "./content/theorie-vragen";
 import { verkeersbordenLessons } from "./content/verkeersborden";
 
 const prisma = new PrismaClient();
@@ -495,10 +496,18 @@ async function main() {
       lessons: verkeersbordenLessons,
     },
     {
+      // The school's question list for the theory exam, the part every category shares.
+      id: "seed-module-theorie-algemeen",
+      titleEn: "Theory Exam Questions",
+      titleNl: "Theorie-examenvragen",
+      orderIndex: 8,
+      lessons: theorieAlgemeenLessons,
+    },
+    {
       titleEn: "Traffic Regulations",
       titleNl: "Verkeersreglementen",
       id: "seed-module-2",
-      orderIndex: 8,
+      orderIndex: 9,
       lessons: [
         { title: "Introduction to Traffic Laws", type: "TEXT" as const, content: { type: "TEXT", body: "Traffic laws exist to keep everyone safe and traffic flowing predictably. As a driver, you're responsible for knowing and following these rules at all times, not just when a police officer is watching." } },
         { title: "Speed Limits & Zones", type: "TEXT" as const, content: { type: "TEXT", body: "Speed limits vary by zone: residential (30 km/h), urban roads (50 km/h unless posted otherwise), and open highways (the national default unless signed). Always adjust for road and weather conditions." } },
@@ -514,7 +523,7 @@ async function main() {
       titleEn: "Practical Driving Skills",
       titleNl: "Praktische Rijvaardigheden",
       id: "seed-module-3",
-      orderIndex: 9,
+      orderIndex: 10,
       lessons: [
         { title: "Vehicle Controls Overview", type: "TEXT" as const, content: { type: "TEXT", body: "Before your first practical lesson, familiarize yourself with the controls: steering, pedals, gear selector, mirrors, and indicators. Your instructor will walk through these in person, but knowing the names in advance speeds things up." } },
         { title: "Parking & Maneuvering Basics", type: "TEXT" as const, content: { type: "TEXT", body: "Parallel parking, reverse parking, and three-point turns are core maneuvering skills assessed in the practical exam. Practice the theory here, then apply it with your instructor." } },
@@ -524,7 +533,7 @@ async function main() {
       titleEn: "Highway & Motorway Driving",
       titleNl: "Snelweg Rijden",
       id: "seed-module-4",
-      orderIndex: 10,
+      orderIndex: 11,
       lessons: [
         { title: "Merging & Lane Discipline", type: "TEXT" as const, content: { type: "TEXT", body: "When merging onto a highway, match your speed to traffic flow before merging. Stay in the appropriate lane for your speed and intentions — slower traffic keeps right." } },
         { title: "Overtaking Safely", type: "TEXT" as const, content: { type: "TEXT", body: "Only overtake when you can see the road ahead is clear, you have enough space to complete the maneuver, and it's legal to do so at that point in the road." } },
@@ -534,11 +543,26 @@ async function main() {
       titleEn: "Exam Preparation",
       titleNl: "Examenvoorbereiding",
       id: "seed-module-5",
-      orderIndex: 11,
+      orderIndex: 12,
       lessons: [
         { title: "What to Expect on Exam Day", type: "TEXT" as const, content: { type: "TEXT", body: "Arrive 15 minutes early, bring valid ID and your learner documentation, and get a good night's sleep beforehand. The exam covers both a vehicle check and a supervised drive." } },
         { title: "Final Mock Exam", type: "QUIZ" as const, content: examPrepQuiz },
       ],
+    },
+    {
+      // Only for students taking the truck (C) or bus (D) licence; last, so they hold nobody up.
+      id: "seed-module-theorie-c",
+      titleEn: "Theory Exam Questions: Trucks (Category C)",
+      titleNl: "Theorie-examenvragen: vrachtauto (categorie C)",
+      orderIndex: 13,
+      lessons: theorieCategorieCLessons,
+    },
+    {
+      id: "seed-module-theorie-d",
+      titleEn: "Theory Exam Questions: Buses (Category D)",
+      titleNl: "Theorie-examenvragen: autobus (categorie D)",
+      orderIndex: 14,
+      lessons: theorieCategorieDLessons,
     },
   ];
 

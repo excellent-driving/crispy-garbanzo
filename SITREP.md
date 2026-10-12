@@ -899,3 +899,15 @@ Walked https://crispy-garbanzo-one.vercel.app with a browser as a visitor, a new
 - **Student (Dutch, 400px):** register → dashboard; lesson 1 marked complete opens lesson 2; a later module's lesson shows as locked; two bookings through the wizard (Dutch dates, 08:00/09:00, SRD 2.500); the bookings list shows 24-hour times; cancelling a booking works; profile save shows "Profiel bijgewerkt."; switching to EN changes the student area.
 - **Admin (1280 and 400px):** all 8 admin pages load; confirming a payment and cancelling a booking through the buttons works.
 - **Fixed:** the admin dashboard was 94px (desktop) and 363px (phone) wider than the screen because its grid let the Recent Bookings table stretch the page. The grid's columns may now shrink and the table scrolls inside its box (checked locally at 1280, 1024 and 400px).
+
+### 2026-10-12 — Theory exam questions (VRAGEN CAT A/B, C, D)
+
+The owner's side uploaded `VRAGEN CAT A EN B.pdf`, `VRAGEN CAT C.pdf` and `VRAGEN CAT D.pdf` (the .docx versions were already in the folder; nothing from them was in the app yet). All three start with the same general list (questions 1–107 with 82a and 82b; item 47 is a table of maximum speeds); C adds 14 truck items (7a–7c), D 11 bus items. Every question has one written answer, no options.
+
+- **Owner's choices:** study pages with the answer hidden until tapped (no scoring, nothing invented); the general questions for every student, the C and D questions as two short modules at the end.
+- **Content:** `prisma/content/theorie-vragen.ts` holds the questions as data (number, question, answer or list) and builds the pages: 11 pages of ten numbers (`Examenvragen 1–10` … `101–107`), the speed table after 46, one page each for C and D. Text as in the PDFs; only spacing and four words split over a line break are tidied ("waarvan", "T-kruising", "A-rijbewijs", "Procureur-Generaal").
+- **Modules (seed):** `seed-module-theorie-algemeen` "Theorie-examenvragen" at orderIndex 8, after Verkeersborden; the four example modules move to 9–12; `seed-module-theorie-c` (13) and `seed-module-theorie-d` (14) last. Because modules open in order, a bus (D) student first marks the one truck (C) page done.
+- **Styles:** questions are `<details>` boxes (lesson.module.css), the speed table scrolls sideways on a phone.
+- **Checked:** tsc, eslint, jest (76 tests; a new test pins the numbering, answers and page split). On a local build: every page shows its questions closed, an answer opens on tap, no overflow at 400px; locks behave as for other modules.
+- **For the instructor:** answer 25 ("Mag een leerling onder invloed van alcohol … een auto besturen? — Ja, als hij het naar behoren kan doen.") reads as wrong; shown as written until confirmed.
+- **Not yet in the live database.**
