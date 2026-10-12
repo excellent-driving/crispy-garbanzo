@@ -852,3 +852,7 @@ The "Demo build" banner stays (and stays in English) until the app is declared r
 - **Checked:** tsc, eslint, jest (72 tests; new ones for `displaySlot`). On a local production build with a throwaway database, a test student booked a lesson through all six steps in Dutch at 1280px and 400px and in English: a text scan found no English left on the Dutch pages, no page errors, no overflow. A double booking and a wrong current password returned Dutch errors in Dutch and English ones in English.
 
 **Still English under NL:** the login and register pages (not checked); WhatsApp/email message texts.
+
+### 2026-10-12 — Project status sheet
+
+At the owner's request, progress to launch is tracked in the Google Sheet "Excellent Driving Project Status" (https://docs.google.com/spreadsheets/d/1x9WOv3sJkQOsXM2X841RA2ZkLCehZwKnnTpb_h-nMJQ/edit): a **Tasks** tab with every open and finished task (area, status, who it waits on, whether launch needs it), a **Log** tab, and an **Overview** calculated from the tasks. Started with 37 tasks: 12 of the 32 launch tasks done. It is updated alongside this file in every session.
