@@ -832,4 +832,7 @@ The owner chose to keep the other example diagrams as quizzes (Les 4 brede T-kru
 
 **Approved** by the owner on the review page and committed.
 
-**Open:** push, seed the live database and check on the live site. The instructor to confirm the six derived Les 4 answers.
+**Live (2026-10-12):** pushed by the owner. The full seed was not re-run on the live database: its `schedule.createMany` has no unique key to skip on, so a second run would duplicate every instructor's schedule. A one-off script did only the module part instead: the four modules and their 11 lessons were added and Verkeersborden and the example modules moved to 7–11 (17 schedule rows before and after). Read back: Les 3–6 are modules 4–7, published.
+- **Checked on the live site** with a temporary student who had Les 1–2 passed: walked every Les 3–6 lesson at 1280px and 400px, choosing the keyed answer for all 11 quiz questions: every one marked correct, every quiz passed, no page errors, no horizontal overflow. Account and progress deleted afterwards (1 student left).
+
+**Open:** the instructor to confirm the six derived Les 4 answers. Before the seed is run on a database that already has data, give schedules a unique key or guard the `createMany`.
