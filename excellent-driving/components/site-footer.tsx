@@ -55,7 +55,7 @@ export function SiteFooter({ contact }: { contact: SchoolContact }) {
           <ul>
             <li><Link href="/contact">{contact.address}</Link></li>
             {contact.phone && <li><a href={`tel:${contact.phone.replace(/\s/g, "")}`}>{contact.phone}</a></li>}
-            <li><a href="mailto:info@excellentdriving.sr">info@excellentdriving.sr</a></li>
+            <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
             <li>{t("hours")}</li>
           </ul>
         </div>

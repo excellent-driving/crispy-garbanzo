@@ -8,6 +8,7 @@ const settingsSchema = z.object({
   schoolName: z.string().min(1),
   address: z.string().min(1),
   phone: z.string().min(1),
+  email: z.string().email(),
   whatsappNumber: z.string(),
   whatsappBotEnabled: z.boolean(),
   defaultLanguage: z.enum(["EN", "NL"]),

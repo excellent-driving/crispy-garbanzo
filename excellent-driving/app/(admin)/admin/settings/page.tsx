@@ -14,6 +14,7 @@ export default async function AdminSettingsPage() {
         schoolName: settings.schoolName,
         address: settings.address,
         phone: settings.phone,
+        email: settings.email,
         whatsappNumber: settings.whatsappNumber,
         whatsappBotEnabled: settings.whatsappBotEnabled,
         defaultLanguage: settings.defaultLanguage,

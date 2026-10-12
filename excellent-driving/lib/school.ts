@@ -4,6 +4,7 @@ export type SchoolContact = {
   address: string;
   /** Null while the admin settings still hold the placeholder number. */
   phone: string | null;
+  email: string;
   /** A wa.me chat link, or null when no WhatsApp number is set. */
   whatsappUrl: string | null;
 };
@@ -16,6 +17,7 @@ export async function getSchoolContact(): Promise<SchoolContact> {
   return {
     address: settings?.address || "Bonistraat 44, Paramaribo",
     phone: phone && !/X/i.test(phone) ? phone : null,
+    email: settings?.email || "info@excellentdriving.sr",
     whatsappUrl: whatsappDigits ? `https://wa.me/${whatsappDigits}` : null,
   };
 }

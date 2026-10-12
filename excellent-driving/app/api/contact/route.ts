@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 import { apiError } from "@/lib/api-error";
+import { getSchoolContact } from "@/lib/school";
 
 const contactSchema = z.object({
   name: z.string().min(1),
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
 
   const { error } = await resend.emails.send({
     from: "Excellent Driving Website <onboarding@resend.dev>",
-    to: "info@excellentdriving.sr",
+    to: (await getSchoolContact()).email,
     replyTo: email,
     subject: `New contact form message from ${name}`,
     text: `From: ${name} <${email}>\n\n${message}`,

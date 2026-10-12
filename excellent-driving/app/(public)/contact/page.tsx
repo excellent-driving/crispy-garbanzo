@@ -49,7 +49,9 @@ export default async function ContactPage() {
                 <div className={styles["info-icon"]} aria-hidden="true">✉️</div>
                 <div>
                   <div className={styles["info-label"]}>{t("email")}</div>
-                  <div className={styles["info-value"]}>info@excellentdriving.sr</div>
+                  <div className={styles["info-value"]}>
+                    <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                  </div>
                 </div>
               </div>
               <div className={styles["info-row"]}>

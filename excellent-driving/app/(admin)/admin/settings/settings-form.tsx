@@ -6,6 +6,7 @@ type Settings = {
   schoolName: string;
   address: string;
   phone: string;
+  email: string;
   whatsappNumber: string;
   whatsappBotEnabled: boolean;
   defaultLanguage: "EN" | "NL";
@@ -59,6 +60,10 @@ export function SettingsForm({ initial }: { initial: Settings }) {
             <label htmlFor="school-whatsapp">WhatsApp number</label>
             <input id="school-whatsapp" value={form.whatsappNumber} onChange={(e) => setForm((f) => ({ ...f, whatsappNumber: e.target.value }))} placeholder="+597…" />
           </div>
+        </div>
+        <div className="field">
+          <label htmlFor="school-email">Email (shown on the site; contact-form messages go here)</label>
+          <input id="school-email" type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
         </div>
         <div className="field">
           <label htmlFor="school-lang">Default language</label>
