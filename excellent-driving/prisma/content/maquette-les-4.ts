@@ -18,7 +18,8 @@
 // against the two inrit answers the key does give (les 4 regel 1, les 6 V.B. 2).
 // They are shown as worked examples, not quizzes. The instructor confirmed
 // them on 2026-10-15 with two corrections: in regel 3 Opl 2, f5 and f4 ride
-// together (no second V.F.), and regel 5's answer holds on a wide road only.
+// together (no second V.F.), and regel 5's "1 – 2 + 3" holds on a wide road
+// only; on a narrow road the cars stand behind each other: 1 – 2 – 3.
 //
 // All of them use the wide template: a T-kruising leaves out the north arm;
 // with an inrit, the whole north arm is the inrit. Where the PDF draws a road user beside or
@@ -293,9 +294,9 @@ export const maquetteLes4Lessons = [
         },
         {
           situation: S["regel-5"],
-          solution: "Brede weg: 1 – 2 + 3",
+          solution: "Brede weg: 1 – 2 + 3; smalle weg: 1 – 2 – 3",
           explanation:
-            "1 staat vooraan op de eindigende weg en rijdt rechtdoor naar de vrije inrit aan de overkant. Volgens <strong>regel 5</strong> mag hij eerst oprijden, vóór de voertuigen achter hem. Daarna slaan 2 (linksaf) en 3 (rechtsaf) samen af; er is geen ander verkeer. Deze oplossing geldt bij een <strong>brede weg</strong>; bij een smalle weg niet. Oplossing (brede weg): <strong>1 – 2 + 3</strong>.",
+            "1 staat vooraan op de eindigende weg en rijdt rechtdoor naar de vrije inrit aan de overkant. Volgens <strong>regel 5</strong> mag hij eerst oprijden, vóór de voertuigen achter hem. Bij een <strong>brede weg</strong> staan 2 (linksaf) en 3 (rechtsaf) naast elkaar en slaan ze daarna samen af; er is geen ander verkeer. Bij een <strong>smalle weg</strong> staan de auto's achter elkaar, dus rijden ze één voor één. Oplossing: brede weg <strong>1 – 2 + 3</strong>; smalle weg <strong>1 – 2 – 3</strong>.",
         },
         {
           situation: S["regel-6"],

@@ -954,7 +954,7 @@ Both question pages came back by WhatsApp (owner and instructor: Steven Pas).
 **Instructor:**
 - Les 4 Regel 2, 3 Opl 1, 4 and 6, the six signs (16, 68, 71, 72, 73, 74), theory question 25 and the three Les 3 typo readings: correct. The `suggested` marks on the six signs are gone.
 - **Regel 3 Opl 2:** no second V.F. between f5 and f4, they ride together → `VF f5+3 — (3Wf5) f5 – 3 – f4 – 1 – 2 – 6 of (f5W3) 3 – f5 + f4 – 1 – 2 – 6`.
-- **Regel 5:** "1 – 2 + 3" holds on a wide road, not on a narrow one → now shown as "Brede weg: 1 – 2 + 3". The answer for a narrow road is still to come from the instructor.
+- **Regel 5:** "1 – 2 + 3" holds on a wide road, not on a narrow one. Asked again with a picture: on a narrow road the cars stand behind each other, so 1 – 2 – 3 → now shown as "Brede weg: 1 – 2 + 3; smalle weg: 1 – 2 – 3".
 
 **Rescheduling:** on My bookings, "Verzetten" next to "Annuleren" (same rule: up to 24 hours before the lesson). It opens a date field and the instructor's free times for that day; picking a time moves the booking (same instructor, package and payment). `PATCH /api/bookings/[id]/reschedule` checks the same things as a new booking (`slotProblem()` in the new `lib/bookings.ts`, now also used by `POST /api/bookings`), refuses a time already taken, and notifies the student and the instructor (new `bookingRescheduled` / `instructorRescheduled` texts in Dutch and English).
 
