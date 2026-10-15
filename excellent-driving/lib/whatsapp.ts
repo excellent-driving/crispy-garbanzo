@@ -100,6 +100,8 @@ export function lessonDate(date: Date, lang: Lang) {
 
 const lessonTime = (timeSlot: string, lang: Lang) => displaySlot(timeSlot, lang === "NL" ? "nl" : "en");
 
+type Slot = { date: Date; timeSlot: string };
+
 /**
  * Every notification in the recipient's language (their account's language).
  * The English texts are the ones from Claude.md; register the same wording
@@ -148,6 +150,28 @@ export const templates = {
       : {
           subject: "Your Excellent Driving booking was cancelled",
           message: `Your booking on ${lessonDate(p.date, lang)} at ${lessonTime(p.timeSlot, lang)} has been cancelled.`,
+        },
+
+  bookingRescheduled: (lang: Lang, p: { instructor: string; from: Slot; to: Slot }): Message =>
+    lang === "NL"
+      ? {
+          subject: "Je les bij Excellent Driving is verzet",
+          message: `Je les bij ${p.instructor} is verzet van ${lessonDate(p.from.date, lang)} om ${lessonTime(p.from.timeSlot, lang)} naar ${lessonDate(p.to.date, lang)} om ${lessonTime(p.to.timeSlot, lang)}.`,
+        }
+      : {
+          subject: "Your Excellent Driving lesson was rescheduled",
+          message: `Your lesson with ${p.instructor} has moved from ${lessonDate(p.from.date, lang)} at ${lessonTime(p.from.timeSlot, lang)} to ${lessonDate(p.to.date, lang)} at ${lessonTime(p.to.timeSlot, lang)}.`,
+        },
+
+  instructorRescheduled: (lang: Lang, p: { studentName: string; from: Slot; to: Slot }): Message =>
+    lang === "NL"
+      ? {
+          subject: "Les verzet",
+          message: `${p.studentName} heeft de les van ${lessonDate(p.from.date, lang)} om ${lessonTime(p.from.timeSlot, lang)} verzet naar ${lessonDate(p.to.date, lang)} om ${lessonTime(p.to.timeSlot, lang)}.`,
+        }
+      : {
+          subject: "Lesson rescheduled",
+          message: `${p.studentName} moved their lesson from ${lessonDate(p.from.date, lang)} at ${lessonTime(p.from.timeSlot, lang)} to ${lessonDate(p.to.date, lang)} at ${lessonTime(p.to.timeSlot, lang)}.`,
         },
 
   instructorNewBooking: (lang: Lang, p: { studentName: string; date: Date; timeSlot: string }): Message =>

@@ -934,3 +934,28 @@ The user confirmed that all course content from the instructor is in (Maquette L
 ### 2026-10-12 — Email through Resend (test mode)
 
 The user made a Resend account with webtrekker95@gmail.com, added `RESEND_API_KEY` in Vercel (Production) and redeployed. The live contact page shows the form again, and a test message through `/api/contact` was accepted (`{"ok":true}`). In Resend's test mode mail only reaches the account's own address, which is also the school email in the settings for now, so the contact form works; booking emails to students (the WhatsApp fallback) are not delivered until the school's domain is verified in Resend, after which the sender in `app/api/contact/route.ts` and `lib/whatsapp.ts` changes from `onboarding@resend.dev` to an address on that domain.
+
+### 2026-10-15 — Answers from the owner and the instructor
+
+Both question pages came back by WhatsApp (owner and instructor: Steven Pas).
+
+**Owner:**
+- **1 Contact:** opening hours 08:00–18:00 (was 7:00–18:00). Phone, WhatsApp, email and days left as they are.
+- **2 Bank, 3 homepage numbers, 11 launch date:** not answered yet. Bank transfer stays off and the numbers stay hidden.
+- **4 Packages:** the package contents were not commented on. "Verzetten" must be possible, so students can now **reschedule** a lesson (see below); the FAQ text ("annuleren of verzetten, tot 24 uur vooraf") is now true and stays.
+- **5 Lessons only after payment:** yes → setting `lessonsAfterPayment` on (live database). Existing students keep their access.
+- **6 Privacy and terms:** the owner is having them checked first; they stay marked "Concept".
+- **7 WhatsApp Business:** not yet. Notifications keep going by email (Resend, test mode).
+- **8 Domain:** still to be arranged.
+- **9 Hosting:** only the paid Vercel plan (about $20/month), no paid Supabase plan (so no automatic daily backups). He asks for advice on how to pay (which card).
+- **10 Example modules:** delete → removed from the seed (with their three example quizzes) and from the live database; the C and D theory modules move to 9 and 10.
+- **12 Other:** he asks for access to the information in the app so he can answer questions himself.
+
+**Instructor:**
+- Les 4 Regel 2, 3 Opl 1, 4 and 6, the six signs (16, 68, 71, 72, 73, 74), theory question 25 and the three Les 3 typo readings: correct. The `suggested` marks on the six signs are gone.
+- **Regel 3 Opl 2:** no second V.F. between f5 and f4, they ride together → `VF f5+3 — (3Wf5) f5 – 3 – f4 – 1 – 2 – 6 of (f5W3) 3 – f5 + f4 – 1 – 2 – 6`.
+- **Regel 5:** "1 – 2 + 3" holds on a wide road, not on a narrow one → now shown as "Brede weg: 1 – 2 + 3". The answer for a narrow road is still to come from the instructor.
+
+**Rescheduling:** on My bookings, "Verzetten" next to "Annuleren" (same rule: up to 24 hours before the lesson). It opens a date field and the instructor's free times for that day; picking a time moves the booking (same instructor, package and payment). `PATCH /api/bookings/[id]/reschedule` checks the same things as a new booking (`slotProblem()` in the new `lib/bookings.ts`, now also used by `POST /api/bookings`), refuses a time already taken, and notifies the student and the instructor (new `bookingRescheduled` / `instructorRescheduled` texts in Dutch and English).
+
+**Checked:** tsc, eslint, jest (79 tests), `next build`.

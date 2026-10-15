@@ -3,14 +3,8 @@ import { getLocale } from "next-intl/server";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { packageName } from "@/lib/progress";
-import { parseSlotLabel } from "@/lib/slots";
+import { CHANGE_DEADLINE_HOURS, hoursUntilLesson } from "@/lib/bookings";
 import { BookingsList, type BookingRow } from "./bookings-list";
-
-function hoursUntilLesson(date: Date, timeSlot: string) {
-  const lessonStart = new Date(date);
-  lessonStart.setUTCMinutes(lessonStart.getUTCMinutes() + parseSlotLabel(timeSlot));
-  return (lessonStart.getTime() - Date.now()) / (1000 * 60 * 60);
-}
 
 export default async function StudentBookingsPage() {
   const session = await getServerSession(authOptions);
@@ -22,8 +16,6 @@ export default async function StudentBookingsPage() {
   });
 
   const rows: BookingRow[] = bookings.map((b) => {
-    const hoursUntil = hoursUntilLesson(b.date, b.timeSlot);
-
     return {
       id: b.id,
       date: b.date.toISOString(),
@@ -33,7 +25,8 @@ export default async function StudentBookingsPage() {
       paymentStatus: b.paymentStatus,
       packageName: packageName(b.package, locale),
       instructorName: b.instructor.user.name,
-      canCancel: b.status !== "CANCELLED" && hoursUntil >= 24,
+      instructorId: b.instructorId,
+      canChange: b.status !== "CANCELLED" && hoursUntilLesson(b.date, b.timeSlot) >= CHANGE_DEADLINE_HOURS,
     };
   });
 

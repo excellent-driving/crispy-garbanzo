@@ -262,7 +262,17 @@
     "statusCancelled": "Cancelled",
     "cancel": "Cancel",
     "cancelling": "Cancelling…",
-    "cancelError": "Could not cancel this booking."
+    "cancelError": "Could not cancel this booking.",
+    "reschedule": "Reschedule",
+    "rescheduleTitle": "Pick a new date and time with {instructor}",
+    "newDate": "New date",
+    "loadingSlots": "Loading times…",
+    "noSlots": "No free times on this day. Try another date.",
+    "confirmReschedule": "Move lesson",
+    "rescheduling": "Moving…",
+    "close": "Close",
+    "rescheduleError": "Could not move this booking.",
+    "rescheduled": "Your lesson has been moved."
   },
   "Profile": {
     "profileDetails": "Profile Details",
@@ -374,7 +384,8 @@
     "contactNotConfigured": "Email is not configured yet — please reach out via WhatsApp instead.",
     "contactFailed": "Failed to send. Please try WhatsApp instead.",
     "invalidRegistration": "Please check your name, email and password (at least 8 characters).",
-    "bankTransferUnavailable": "Paying by bank transfer isn't possible yet. Please choose cash."
+    "bankTransferUnavailable": "Paying by bank transfer isn't possible yet. Please choose cash.",
+    "rescheduleTooLate": "Bookings can only be rescheduled at least 24 hours in advance."
   },
   "Auth": {
     "loginTitle": "Log in",

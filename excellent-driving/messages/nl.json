@@ -262,7 +262,17 @@
     "statusCancelled": "Geannuleerd",
     "cancel": "Annuleren",
     "cancelling": "Annuleren…",
-    "cancelError": "Deze boeking kon niet worden geannuleerd."
+    "cancelError": "Deze boeking kon niet worden geannuleerd.",
+    "reschedule": "Verzetten",
+    "rescheduleTitle": "Kies een nieuwe datum en tijd bij {instructor}",
+    "newDate": "Nieuwe datum",
+    "loadingSlots": "Tijden laden…",
+    "noSlots": "Geen vrije tijden op deze dag. Kies een andere datum.",
+    "confirmReschedule": "Les verzetten",
+    "rescheduling": "Verzetten…",
+    "close": "Sluiten",
+    "rescheduleError": "Deze boeking kon niet worden verzet.",
+    "rescheduled": "Je les is verzet."
   },
   "Profile": {
     "profileDetails": "Profielgegevens",
@@ -374,7 +384,8 @@
     "contactNotConfigured": "E-mail is nog niet ingesteld. Neem contact met ons op via WhatsApp.",
     "contactFailed": "Verzenden is mislukt. Probeer het via WhatsApp.",
     "invalidRegistration": "Controleer je naam, e-mailadres en wachtwoord (minstens 8 tekens).",
-    "bankTransferUnavailable": "Betalen per overschrijving is nog niet mogelijk. Kies contant."
+    "bankTransferUnavailable": "Betalen per overschrijving is nog niet mogelijk. Kies contant.",
+    "rescheduleTooLate": "Een boeking kan alleen tot 24 uur van tevoren worden verzet."
   },
   "Auth": {
     "loginTitle": "Inloggen",

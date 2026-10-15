@@ -16,8 +16,9 @@
 // Regel 2–6 are not in the key. At the owner's request (2026-10-11) their
 // answers are worked out from the PDF's rules and Oplossingsmodel A, checked
 // against the two inrit answers the key does give (les 4 regel 1, les 6 V.B. 2).
-// They are shown as worked examples, not quizzes, and await the instructor's
-// confirmation.
+// They are shown as worked examples, not quizzes. The instructor confirmed
+// them on 2026-10-15 with two corrections: in regel 3 Opl 2, f5 and f4 ride
+// together (no second V.F.), and regel 5's answer holds on a wide road only.
 //
 // All of them use the wide template: a T-kruising leaves out the north arm;
 // with an inrit, the whole north arm is the inrit. Where the PDF draws a road user beside or
@@ -280,9 +281,9 @@ export const maquetteLes4Lessons = [
         },
         {
           situation: S["regel-3-opl-2"],
-          solution: "VF f5+3 — (3Wf5) f5 – 3 – f4 – 1 – 2 – 6 of (f5W3) 3 – VF f5+f4 — (f5Wf4) f4 – f5 of (f4Wf5) f5 – f4, daarna 1 – 2 – 6",
+          solution: "VF f5+3 — (3Wf5) f5 – 3 – f4 – 1 – 2 – 6 of (f5W3) 3 – f5 + f4 – 1 – 2 – 6",
           explanation:
-            "f5 gaat rechtdoor en 3 slaat linksaf; ze komen elkaar tegemoet en moeten allebei een voertuig passeren dat naar de inrit wil (2 en 6). Volgens <strong>regel 3</strong> is er dan <strong>V.F.</strong>, ook tussen een fietser en een auto. Wenkt 3 naar f5, dan rijdt f5, dan 3, en daarna f4, die achter 3 stond. Wenkt f5 naar 3, dan rijdt 3 eerst; daarna staan f4 en f5 tegenover elkaar, allebei rechtdoor en allebei langs een wachtende auto, dus is er opnieuw V.F. tussen die twee. Als al dat verkeer weg is, maakt 1 de inrit vrij, en gaan 2 en daarna 6 erin. Oplossing: <strong>VF f5+3 — (3Wf5) f5 – 3 – f4 – 1 – 2 – 6 of (f5W3) 3 – VF f5+f4 — (f5Wf4) f4 – f5 of (f4Wf5) f5 – f4, daarna 1 – 2 – 6</strong>.",
+            "f5 gaat rechtdoor en 3 slaat linksaf; ze komen elkaar tegemoet en moeten allebei een voertuig passeren dat naar de inrit wil (2 en 6). Volgens <strong>regel 3</strong> is er dan <strong>V.F.</strong>, ook tussen een fietser en een auto. Wenkt 3 naar f5, dan rijdt f5, dan 3, en daarna f4, die achter 3 stond. Wenkt f5 naar 3, dan rijdt 3 eerst; daarna rijden f5 en f4 samen. Er is geen V.F. tussen die twee. Als al dat verkeer weg is, maakt 1 de inrit vrij, en gaan 2 en daarna 6 erin. Oplossing: <strong>VF f5+3 — (3Wf5) f5 – 3 – f4 – 1 – 2 – 6 of (f5W3) 3 – f5 + f4 – 1 – 2 – 6</strong>.",
         },
         {
           situation: S["regel-4"],
@@ -292,9 +293,9 @@ export const maquetteLes4Lessons = [
         },
         {
           situation: S["regel-5"],
-          solution: "1 – 2 + 3",
+          solution: "Brede weg: 1 – 2 + 3",
           explanation:
-            "1 staat vooraan op de eindigende weg en rijdt rechtdoor naar de vrije inrit aan de overkant. Volgens <strong>regel 5</strong> mag hij eerst oprijden, vóór de voertuigen achter hem. Daarna slaan 2 (linksaf) en 3 (rechtsaf) samen af; er is geen ander verkeer. Oplossing: <strong>1 – 2 + 3</strong>.",
+            "1 staat vooraan op de eindigende weg en rijdt rechtdoor naar de vrije inrit aan de overkant. Volgens <strong>regel 5</strong> mag hij eerst oprijden, vóór de voertuigen achter hem. Daarna slaan 2 (linksaf) en 3 (rechtsaf) samen af; er is geen ander verkeer. Deze oplossing geldt bij een <strong>brede weg</strong>; bij een smalle weg niet. Oplossing (brede weg): <strong>1 – 2 + 3</strong>.",
         },
         {
           situation: S["regel-6"],

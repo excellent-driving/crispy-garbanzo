@@ -3,8 +3,8 @@
 // numbers them in PDF order; their images are listed in verkeersborden-images.ts. The PDF's own row numbers skip
 // and repeat (28/29, 62/63, 64–65 twice), so they are not used.
 //
-// The PDF gives no meaning for 6 signs; `suggested` marks the meaning filled
-// in here. The owner kept them as they are until the instructor corrects them. Signs without a model number in the PDF
+// The PDF gives no meaning for 6 signs (16, 68, 71, 72, 73, 74); their meanings
+// were filled in here and confirmed by the instructor on 2026-10-15. Signs without a model number in the PDF
 // have no `model`.
 //
 // The signs are grouped by kind into six lessons, each followed by a quiz:
@@ -13,7 +13,7 @@
 
 import { SIGN_IMAGES } from "./verkeersborden-images";
 
-type Sign = { nr: number; model?: string; meaning: string; suggested?: true };
+type Sign = { nr: number; model?: string; meaning: string };
 type Group = { title: string; intro: string; signs: Sign[] };
 
 const GROUPS: Group[] = [
@@ -57,7 +57,7 @@ const GROUPS: Group[] = [
     intro: "Deze borden zeggen waar je wel of niet mag wachten of parkeren, en hoe hard je mag rijden.",
     signs: [
       { nr: 26, model: "33", meaning: "Wachtverbod voor beide zijden van de weg." },
-      { nr: 73, meaning: "Verbod stil te staan (stopverbod).", suggested: true },
+      { nr: 73, meaning: "Verbod stil te staan (stopverbod)." },
       { nr: 28, model: "43", meaning: "Parkeerplaats." },
       { nr: 33, model: "47", meaning: "Snelheidsbeperking tot de op het bord aangegeven snelheid." },
       { nr: 34, model: "48", meaning: "Einde snelheidsbeperking." },
@@ -70,9 +70,9 @@ const GROUPS: Group[] = [
     signs: [
       { nr: 14, model: "23", meaning: "Gesloten voor alle verkeer, rij- of trekdieren en vee in een andere richting dan de pijl aanwijst." },
       { nr: 15, model: "23a", meaning: "Verbod voor alle verkeer, behalve voetgangers, om aan de andere zijde van het bord te rijden of te gaan dan de pijl aangeeft." },
-      { nr: 16, meaning: "Rechts of links aanhouden: je mag aan beide zijden langs het bord rijden.", suggested: true },
+      { nr: 16, meaning: "Rechts of links aanhouden: je mag aan beide zijden langs het bord rijden." },
       { nr: 66, meaning: "Verplicht rechtsaf voor rij- en voertuigen, rij- of trekdieren." },
-      { nr: 74, meaning: "Verplichte rijrichting: rechtdoor of rechtsaf.", suggested: true },
+      { nr: 74, meaning: "Verplichte rijrichting: rechtdoor of rechtsaf." },
       { nr: 63, model: "23d", meaning: "Verplichte rijrichting op een verkeersplein of rotonde." },
       { nr: 27, model: "42", meaning: "Verplicht rijwielpad." },
       { nr: 65, meaning: "Verplicht voetpad." },
@@ -87,7 +87,7 @@ const GROUPS: Group[] = [
       { nr: 38, model: "51a", meaning: "S-bocht of -bochten, eerst naar links." },
       { nr: 39, model: "51b", meaning: "S-bocht of -bochten, eerst naar rechts." },
       { nr: 69, model: "51c", meaning: "Bocht naar rechts." },
-      { nr: 68, meaning: "Bocht naar rechts met een zijweg links.", suggested: true },
+      { nr: 68, meaning: "Bocht naar rechts met een zijweg links." },
       { nr: 40, model: "52", meaning: "Gevaarlijk kruispunt." },
       { nr: 41, model: "52a", meaning: "Uitholling overdwars of slecht wegdek." },
       { nr: 42, model: "52b", meaning: "Werk in uitvoering." },
@@ -122,9 +122,9 @@ const GROUPS: Group[] = [
       { nr: 59, model: "57", meaning: "Hospitaal of ziekenhuis, geen onnodig lawaai." },
       { nr: 60, model: "61", meaning: "Autoweg." },
       { nr: 61, model: "62", meaning: "Einde autoweg." },
-      { nr: 72, meaning: "Voetgangersoversteekplaats.", suggested: true },
+      { nr: 72, meaning: "Voetgangersoversteekplaats." },
       { nr: 70, meaning: "Bord van de verkeersbrigadier om een stopteken te geven." },
-      { nr: 71, meaning: "De verkeersbrigadier geeft met dit bord een stopteken: stoppen.", suggested: true },
+      { nr: 71, meaning: "De verkeersbrigadier geeft met dit bord een stopteken: stoppen." },
       { nr: 75, meaning: "Markeringen bij een wegafsluiting (verticale markering) en waar de weg eindigt (bermplank)." },
     ],
   },

@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { dayOfWeekCode, formatSlotLabel, generateSlotMinutes } from "@/lib/slots";
+import { slotProblem } from "@/lib/bookings";
 import { notify, templates } from "@/lib/whatsapp";
 import { apiError } from "@/lib/api-error";
 import { getSchool } from "@/lib/school";
@@ -33,34 +33,17 @@ export async function POST(request: Request) {
     return await apiError("bankTransferUnavailable", 400);
   }
   const date = new Date(`${dateParam}T00:00:00Z`);
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
-  const dayCode = dayOfWeekCode(date);
 
-  if (dayCode === "SUN" || date < today) {
-    return await apiError("dateUnavailable", 400);
-  }
-
-  const [pkg, instructor, schedule] = await Promise.all([
+  const [pkg, instructor] = await Promise.all([
     prisma.package.findUnique({ where: { id: packageId, isActive: true } }),
     prisma.instructor.findUnique({ where: { id: instructorId, isActive: true } }),
-    prisma.schedule.findFirst({ where: { instructorId, dayOfWeek: dayCode } }),
   ]);
 
   if (!pkg) return await apiError("packageNotFound", 404);
   if (!instructor) return await apiError("instructorNotFound", 404);
-  if (!schedule) {
-    return await apiError("instructorUnavailable", 400);
-  }
 
-  const validSlots = generateSlotMinutes(
-    schedule.startTime,
-    schedule.endTime,
-    schedule.slotDurationMinutes
-  ).map(formatSlotLabel);
-  if (!validSlots.includes(timeSlot)) {
-    return await apiError("slotUnavailable", 400);
-  }
+  const problem = await slotProblem(instructorId, date, timeSlot);
+  if (problem) return await apiError(problem, 400);
 
   const booking = await prisma.$transaction(async (tx) => {
     const clash = await tx.booking.findFirst({

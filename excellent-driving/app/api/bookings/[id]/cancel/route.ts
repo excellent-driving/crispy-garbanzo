@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { parseSlotLabel } from "@/lib/slots";
+import { CHANGE_DEADLINE_HOURS, hoursUntilLesson } from "@/lib/bookings";
 import { notify, templates } from "@/lib/whatsapp";
 import { apiError } from "@/lib/api-error";
 
@@ -24,11 +24,7 @@ export async function PATCH(
     return await apiError("alreadyCancelled", 400);
   }
 
-  const lessonStart = new Date(booking.date);
-  lessonStart.setUTCMinutes(lessonStart.getUTCMinutes() + parseSlotLabel(booking.timeSlot));
-  const hoursUntilLesson = (lessonStart.getTime() - Date.now()) / (1000 * 60 * 60);
-
-  if (hoursUntilLesson < 24) {
+  if (hoursUntilLesson(booking.date, booking.timeSlot) < CHANGE_DEADLINE_HOURS) {
     return await apiError("cancelTooLate", 400);
   }
 
