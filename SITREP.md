@@ -961,3 +961,10 @@ Both question pages came back by WhatsApp (owner and instructor: Steven Pas).
 **Checked:** tsc, eslint, jest (79 tests), `next build`.
 
 **Live (same day):** both commits pushed. On the live database: Les 4 lesson 3 updated, the four example modules deleted (14 lessons, no progress), C and D theory modules at 9 and 10 (11 modules in all), opening times 8:00–18:00, `lessonsAfterPayment` on. Checked over HTTP with a temporary student, deleted afterwards: login, "Verzetten" and "Annuleren" on My bookings, the slots API, a move to the next day (HTTP 200, the booking changed), a Sunday refused, a lesson within 24 hours refused (Dutch message), 8:00–18:00 on the homepage, both Les 4 corrections in the lesson, and a deleted module answering 404.
+
+### 2026-10-16 — Owner's follow-up answers
+
+- **Bank:** the school's account still has to be opened; students pay cash until then (bank transfer stays hidden). No longer counted as a launch blocker.
+- **Homepage numbers:** rather not shown; they stay empty and hidden.
+- **Launch:** the owner aims for the end of October 2026.
+- **Access:** he wants to log in, i.e. the admin account (admin@excellentdriving.sr). The admin area is English only (task L6).
