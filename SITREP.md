@@ -968,3 +968,4 @@ Both question pages came back by WhatsApp (owner and instructor: Steven Pas).
 - **Homepage numbers:** rather not shown; they stay empty and hidden.
 - **Launch:** the owner aims for the end of October 2026.
 - **Access:** he wants to log in, i.e. the admin account (admin@excellentdriving.sr). The admin area is English only (task L6).
+- **Temporary accounts for Steven (live site):** `steven.admin@example.com` (ADMIN) and `steven.leerling@example.com` (STUDENT, NL, all 49 published lessons marked PASSED so every module is open). Passwords given to the user in chat only. Both logins checked over HTTP (admin dashboard and the last module answer 200). The example.com addresses receive no mail. Delete both at launch (task H5).
