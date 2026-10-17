@@ -970,3 +970,12 @@ Both question pages came back by WhatsApp (owner and instructor: Steven Pas).
 - **Access:** he wants to log in, i.e. the admin account (admin@excellentdriving.sr). The admin area is English only (task L6).
 - **Temporary accounts for Steven (live site):** `steven.admin@example.com` (ADMIN) and `steven.leerling@example.com` (STUDENT, NL, all 49 published lessons marked PASSED so every module is open). Passwords given to the user in chat only. Both logins checked over HTTP (admin dashboard and the last module answer 200). The example.com addresses receive no mail. Delete both at launch (task H5).
 - **Admin language:** the owner is fine with the admin area in English ("Taal geen probleem"); it stays English only (task L6 closed).
+
+### 2026-10-17 — Domain, running costs and payment
+
+- **Domain:** excellentdriving.sr costs $110 a year at Datasur. Free on 2026-10-17 at about $12 a year: excellentdrivingsr.com (suggested), excellentdriving.net, excellentdriving.org, excellentdriving-sr.com, excellentdrivingsuriname.com, rijschoolexcellent.com. Taken: excellentdriving.com, excellentdrivingschool.com. The owner still has to choose (task H4).
+- **Running costs:** new Pricing tab in the status sheet. Needed: domain about $12 a year, Vercel Pro $240 a year; Supabase, Resend, email forwarding and GitHub free. With a 15% reserve: about $290 a year ($24 a month), the same every year. Optional: a mailbox on the domain and WhatsApp messages.
+- **Email:** no mail server needed. Resend sends once the domain is verified; info@ on the domain is forwarded to the school's inbox for free.
+- **Owner's cost page (Dutch):** https://claude.ai/artifact/F4qz1GfeSN1NhZUuqroJub (running costs only; development costs are separate). The user shares it with the owner.
+- **Payment:** the school has no credit card, so the user's card pays Vercel Pro and the domain and the owner pays the user back, agreed in writing. The school stays the owner of every account and is the domain registrant; Vercel invoices in the school's name, with a spend limit (Transfer plan T0.3, T1.2, T3.1).
+- Internal notes (not for the owner) are in the status sheet: the Break-even tab and the notes on tasks H4 and N2.
