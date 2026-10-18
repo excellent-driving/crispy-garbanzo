@@ -979,3 +979,17 @@ Both question pages came back by WhatsApp (owner and instructor: Steven Pas).
 - **Owner's cost page (Dutch):** https://claude.ai/artifact/F4qz1GfeSN1NhZUuqroJub (running costs only; development costs are separate). The user shares it with the owner.
 - **Payment:** the school has no credit card, so the user's card pays Vercel Pro and the domain and the owner pays the user back, agreed in writing. The school stays the owner of every account and is the domain registrant; Vercel invoices in the school's name, with a spend limit (Transfer plan T0.3, T1.2, T3.1).
 - Internal notes (not for the owner) are in the status sheet: the Break-even tab and the notes on tasks H4 and N2.
+
+### 2026-10-18 — Owner's answers on costs, domain, contact details and packages
+
+The owner replied by WhatsApp on 2026-10-17:
+- **Costs:** agrees to the yearly running costs (about $290 a year).
+- **Domain:** chooses **excellentdrivingsr.com** (task H4).
+- **Card:** asks whether a UnionPay card from Southern Commercial Bank will work. Vercel's billing page lists China UnionPay as an accepted card type (not yet tried at a checkout). If it works, the school pays Vercel itself and the plan for the user's card to pay and be paid back (Transfer plan T0.3) is no longer needed. The domain can be bought through Vercel on the same card, or at another registrar once it is clear that registrar takes UnionPay.
+- **Contact details:** email excellentdriving@gmail.com, phone 8505281. To be filled in under Admin › Settings on the live site (tasks B4, B7). Not yet asked whether 8505281 is also the WhatsApp number.
+- **Instructors:** the three names (Carlos Martinus, Sandra Pengel, Roy Apensa) were examples and can go. This reverses task B2. Not removed yet: booking needs at least one instructor with weekly hours, so first the user and the owner decide who replaces them (for example only Steven).
+- **Videos:** the app has no videos, so "video" was removed from the package texts and the comparison table (Standard and Premium now say "Volledige theoriecursus"; Premium's theory row says "Volledig").
+- **Prices:** he is not sure whether the package prices should be shown. Still showing; his decision.
+- **Certificate:** he is thinking about whether a certificate should be given. The app does not make one; the "Certificaat bij afronding" line stays until he decides.
+
+**Checked:** tsc, eslint, jest (79 tests).

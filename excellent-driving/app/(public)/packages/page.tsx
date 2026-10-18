@@ -82,7 +82,7 @@ export default async function PackagesPage() {
                   <td><strong>{t("rowTheory")}</strong></td>
                   <td><span className={styles.check}>✓</span> {t("basic")}</td>
                   <td className={styles.highlight}><span className={styles.check}>✓</span> {t("full")}</td>
-                  <td><span className={styles.check}>✓</span> {t("fullVideo")}</td>
+                  <td><span className={styles.check}>✓</span> {t("full")}</td>
                   <td><span className={styles.check}>✓</span> {t("days30")}</td>
                 </tr>
                 <tr>

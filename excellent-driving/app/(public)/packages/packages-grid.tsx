@@ -47,7 +47,7 @@ const packageMeta: Record<
     ],
     includes: [
       { key: "noPractical", included: false },
-      { key: "fullTheoryVideo", included: true },
+      { key: "fullTheory", included: true },
       { key: "twoMock", included: true },
       { key: "prioritySlots", included: true },
       { key: "whatsappReminders", included: true },
@@ -64,7 +64,7 @@ const packageMeta: Record<
     ],
     includes: [
       { key: "noPractical", included: false },
-      { key: "fullTheoryLibrary", included: true },
+      { key: "fullTheory", included: true },
       { key: "unlimitedMock", included: true },
       { key: "priorityFirst", included: true },
       { key: "dedicatedInstructor", included: true },
