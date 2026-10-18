@@ -995,3 +995,6 @@ The owner replied by WhatsApp on 2026-10-17:
 **Checked:** tsc, eslint, jest (79 tests).
 
 **Live (same day):** 00f4454 pushed; the packages page no longer mentions video. On the live database the school's phone (+597 850-5281) and email (excellentdriving@gmail.com) are set; both show on the home, contact and FAQ pages, and the temporary email is gone. The WhatsApp number stays the temporary one until the owner says whether 8505281 is also his WhatsApp. Questions on instructors, prices, the certificate and the package lines went to the owner by WhatsApp; waiting for his answer.
+- **WhatsApp:** the user confirmed 8505281 is also the WhatsApp number; set live (`+597 850-5281`, buttons open wa.me/5978505281).
+- **Transfer plan:** Gmail route chosen. The school's accounts (Vercel, GitHub, Supabase, Resend, email forwarding) are made with excellentdriving@gmail.com; the domain excellentdrivingsr.com is still bought, through Vercel on the school's UnionPay card. New step T5.6 forwards info@ on the domain to the Gmail. Steven was asked for temporary access to the Gmail; he changes the password afterwards.
+- **Contact form:** Resend's test mode only delivers to the account owner (webtrekker95@gmail.com), so the form can't reach excellentdriving@gmail.com until the school's own Resend account (T5.3) replaces `RESEND_API_KEY` in Vercel.
