@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 import { apiError } from "@/lib/api-error";
-import { getSchoolContact } from "@/lib/school";
+import { contactFormEnabled, getSchoolContact } from "@/lib/school";
 
 const contactSchema = z.object({
   name: z.string().min(1),
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     return await apiError("contactInvalid", 400);
   }
 
-  if (!process.env.RESEND_API_KEY) {
+  if (!contactFormEnabled()) {
     return await apiError("contactNotConfigured", 503);
   }
 

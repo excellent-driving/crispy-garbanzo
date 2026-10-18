@@ -56,3 +56,10 @@ export async function getSchool(): Promise<School> {
 export async function getSchoolContact(): Promise<SchoolContact> {
   return (await getSchool()).contact;
 }
+
+/** The contact form shows only when CONTACT_FORM_ENABLED is "true" and Resend
+ * has a key. Resend's test mode only delivers to its own account's address, so
+ * keep the flag off until the school's own Resend account sends the mail. */
+export function contactFormEnabled(): boolean {
+  return Boolean(process.env.RESEND_API_KEY) && process.env.CONTACT_FORM_ENABLED === "true";
+}

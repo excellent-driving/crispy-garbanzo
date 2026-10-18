@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getSchoolContact } from "@/lib/school";
+import { contactFormEnabled, getSchoolContact } from "@/lib/school";
 import { ContactForm } from "./contact-form";
 import styles from "./contact.module.css";
 
@@ -81,8 +81,8 @@ export default async function ContactPage() {
             />
           </div>
 
-          {/* The form needs email sending (RESEND_API_KEY); until then, point people to email and WhatsApp. */}
-          {process.env.RESEND_API_KEY ? (
+          {/* Until the form can deliver to the school, point people to email and WhatsApp. */}
+          {contactFormEnabled() ? (
             <ContactForm />
           ) : (
             <div className={styles["form-card"]}>
