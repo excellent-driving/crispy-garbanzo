@@ -993,3 +993,5 @@ The owner replied by WhatsApp on 2026-10-17:
 - **Certificate:** he is thinking about whether a certificate should be given. The app does not make one; the "Certificaat bij afronding" line stays until he decides.
 
 **Checked:** tsc, eslint, jest (79 tests).
+
+**Live (same day):** 00f4454 pushed; the packages page no longer mentions video. On the live database the school's phone (+597 850-5281) and email (excellentdriving@gmail.com) are set; both show on the home, contact and FAQ pages, and the temporary email is gone. The WhatsApp number stays the temporary one until the owner says whether 8505281 is also his WhatsApp. Questions on instructors, prices, the certificate and the package lines went to the owner by WhatsApp; waiting for his answer.
