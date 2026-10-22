@@ -86,39 +86,11 @@ export default async function PackagesPage() {
                   <td><span className={styles.check}>✓</span> {t("days30")}</td>
                 </tr>
                 <tr>
-                  <td><strong>{t("rowMock")}</strong></td>
-                  <td><span className={styles.cross}>—</span></td>
-                  <td className={styles.highlight}>{t("sessions2")}</td>
-                  <td>{t("unlimited")}</td>
-                  <td>{t("session1")}</td>
-                </tr>
-                <tr>
-                  <td><strong>{t("rowPriority")}</strong></td>
-                  <td><span className={styles.cross}>—</span></td>
-                  <td className={styles.highlight}><span className={styles.check}>✓</span></td>
-                  <td><span className={styles.check}>✓</span></td>
-                  <td><span className={styles.cross}>—</span></td>
-                </tr>
-                <tr>
                   <td><strong>{t("rowWhatsapp")}</strong></td>
                   <td><span className={styles.check}>✓</span></td>
                   <td className={styles.highlight}><span className={styles.check}>✓</span></td>
                   <td><span className={styles.check}>✓</span></td>
                   <td><span className={styles.check}>✓</span></td>
-                </tr>
-                <tr>
-                  <td><strong>{t("rowDedicated")}</strong></td>
-                  <td><span className={styles.cross}>—</span></td>
-                  <td className={styles.highlight}><span className={styles.cross}>—</span></td>
-                  <td><span className={styles.check}>✓</span></td>
-                  <td><span className={styles.cross}>—</span></td>
-                </tr>
-                <tr>
-                  <td><strong>{t("rowExamDay")}</strong></td>
-                  <td><span className={styles.cross}>—</span></td>
-                  <td className={styles.highlight}><span className={styles.cross}>—</span></td>
-                  <td><span className={styles.check}>✓</span></td>
-                  <td><span className={styles.cross}>—</span></td>
                 </tr>
                 <tr>
                   <td><strong>{t("rowPrice")}</strong></td>
@@ -135,7 +107,6 @@ export default async function PackagesPage() {
 
       <div className={styles["cta-banner"]}>
         <h2>{t("ctaTitle")}</h2>
-        <p>{t("ctaSubtitle")}</p>
         <div className={styles["cta-actions"]}>
           <Link href="/booking" className="btn btn-primary btn-lg">{t("bookFirstLesson")}</Link>
           <Link href="/contact" className="btn btn-white btn-lg">{t("askQuestion")}</Link>

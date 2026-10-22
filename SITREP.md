@@ -999,3 +999,18 @@ The owner replied by WhatsApp on 2026-10-17:
 - **Transfer plan:** Gmail route chosen. The school's accounts (Vercel, GitHub, Supabase, Resend, email forwarding) are made with excellentdriving@gmail.com; the domain excellentdrivingsr.com is still bought, through Vercel on the school's UnionPay card. New step T5.6 forwards info@ on the domain to the Gmail. Steven was asked for temporary access to the Gmail; he changes the password afterwards.
 - **Contact form:** Resend's test mode only delivers to the account owner (webtrekker95@gmail.com), so the form can't reach excellentdriving@gmail.com until the school's own Resend account (T5.3) replaces `RESEND_API_KEY` in Vercel.
 - **Contact form hidden:** the form now shows only when `CONTACT_FORM_ENABLED=true` is set in Vercel as well as `RESEND_API_KEY` (`contactFormEnabled()` in `lib/school.ts`; `/api/contact` refuses with the same check). Until then the contact page shows the school's email and WhatsApp buttons. Turn it on in step T5.3, after the school's own Resend key is in Vercel. Checked: tsc, eslint, jest (79).
+
+### 2026-10-22 — School email corrected; owner's answers on the packages
+
+- **Email:** the school Gmail is **excellencentdriving@gmail.com** (with "cen"); "excellentdriving@gmail.com" was a typo. Corrected in `school_settings` on the live database; checked on home, packages, instructors, FAQ, contact, privacy and terms. The user is logged into the account (Transfer plan T1.1 in progress).
+- **Owner's answers** (`materiaalrijonderricht/app rijonderricht.docx`, written into the questions):
+  - Remove mock exams, priority booking, dedicated instructor, exam-day accompaniment and the pass guarantee → removed from the package cards, the stats and the comparison table (`app/(public)/packages/`), and their texts from `messages/en.json` and `nl.json`. Standard and Premium now show "Theorie ✓" where "Proefexamens" was. Premium is left with fewer items than Standard.
+  - All packages are theory only: yes.
+  - Prices: "Prijs op aanvraag is goed" (probably: hide the prices); to confirm before changing.
+  - Instructors: "kan voorlopig onzichtbaar blijven"; no names or hours yet.
+  - "Astrando Pas instead of Steven Pas, 8680936 instead of 8505281": the name isn't in the app; asking where it goes and whether the number is phone, WhatsApp or both.
+  - Certificate: not answered. Refresher: "7 dagen" written next to the 30-day quiz access line; to confirm.
+- **To ask:** if every package is theory only, what do students book with an instructor (the booking flow and homepage talk about driving lessons and practical training)? The banner at the bottom of the packages page said "meer dan 500 studenten", which conflicted with the owner's wish to show no student numbers; that line was removed (both languages).
+- Preview for the user: https://claude.ai/artifact/NRKwMi7agWvx96y92T8EvV
+
+**Checked:** tsc, eslint, jest (79 tests).

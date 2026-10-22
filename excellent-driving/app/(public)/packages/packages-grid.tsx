@@ -19,7 +19,7 @@ type Pkg = {
 type Feature = { key: string; included: boolean };
 const packageMeta: Record<
   string,
-  { icon: string; tags: string[]; stats: { num: string; key: "statPractical" | "statTheory" | "statMock" }[]; includes: Feature[] }
+  { icon: string; tags: string[]; stats: { num: string; key: "statPractical" | "statTheory" }[]; includes: Feature[] }
 > = {
   Starter: {
     icon: "🚀",
@@ -34,8 +34,6 @@ const packageMeta: Record<
       { key: "quizzesUnlimited", included: true },
       { key: "whatsappBooking", included: true },
       { key: "certificate", included: true },
-      { key: "mockSessions", included: false },
-      { key: "examDay", included: false },
     ],
   },
   Standard: {
@@ -43,16 +41,13 @@ const packageMeta: Record<
     tags: ["beginner", "theory"],
     stats: [
       { num: "0", key: "statPractical" },
-      { num: "2", key: "statMock" },
+      { num: "✓", key: "statTheory" },
     ],
     includes: [
       { key: "noPractical", included: false },
       { key: "fullTheory", included: true },
-      { key: "twoMock", included: true },
-      { key: "prioritySlots", included: true },
       { key: "whatsappReminders", included: true },
       { key: "certificate", included: true },
-      { key: "examDay", included: false },
     ],
   },
   Premium: {
@@ -60,16 +55,11 @@ const packageMeta: Record<
     tags: ["theory", "exam"],
     stats: [
       { num: "0", key: "statPractical" },
-      { num: "∞", key: "statMock" },
+      { num: "✓", key: "statTheory" },
     ],
     includes: [
       { key: "noPractical", included: false },
       { key: "fullTheory", included: true },
-      { key: "unlimitedMock", included: true },
-      { key: "priorityFirst", included: true },
-      { key: "dedicatedInstructor", included: true },
-      { key: "examDayInstructor", included: true },
-      { key: "passGuarantee", included: true },
     ],
   },
   Refresher: {
@@ -78,7 +68,6 @@ const packageMeta: Record<
     stats: [],
     includes: [
       { key: "noPractical", included: false },
-      { key: "oneMock", included: true },
       { key: "quiz30", included: true },
       { key: "fullTheory", included: false },
     ],
