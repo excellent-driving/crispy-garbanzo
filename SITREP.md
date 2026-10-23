@@ -1014,3 +1014,11 @@ The owner replied by WhatsApp on 2026-10-17:
 - Preview for the user: https://claude.ai/artifact/NRKwMi7agWvx96y92T8EvV
 
 **Checked:** tsc, eslint, jest (79 tests).
+
+### 2026-10-23 — Accounts moved to the school
+
+- **GitHub:** school account `excellencentdriving-creator` (Google sign-in with the school Gmail) and organization **excellent-driving**, with webtrekker95-hue as owner. The code moved to github.com/excellent-driving/crispy-garbanzo (public; history checked for passwords and keys: none). The VPS points at the new address and keeps a fine-grained token for the organization (expires about 2027-01-21). Vercel followed the move by itself.
+- **Supabase:** organization **Excellent Driving** (signed in with the school GitHub), the user as Owner; the database project was transferred with the same address and connection strings. Checked with a temporary student (deleted): register, login, dashboard, lessons, bookings and free times.
+- **Resend:** school account (Google sign-in); its key is in Vercel and `CONTACT_FORM_ENABLED=true`, so the contact form is back and delivers to excellencentdriving@gmail.com (test message received). Emails to students wait for the domain.
+- **Vercel:** school account (Hobby, GitHub sign-in) with the Vercel GitHub app installed on excellent-driving (crispy-garbanzo only). The Pro team, Steven's UnionPay card, the project move and the domain wait for a moment with Steven.
+- **Gmail 2-step verification** waits until the handover at launch (the user's choice, so development logins don't need Steven's codes).
