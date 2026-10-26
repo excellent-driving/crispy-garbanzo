@@ -1022,3 +1022,11 @@ The owner replied by WhatsApp on 2026-10-17:
 - **Resend:** school account (Google sign-in); its key is in Vercel and `CONTACT_FORM_ENABLED=true`, so the contact form is back and delivers to excellencentdriving@gmail.com (test message received). Emails to students wait for the domain.
 - **Vercel:** school account (Hobby, GitHub sign-in) with the Vercel GitHub app installed on excellent-driving (crispy-garbanzo only). The Pro team, Steven's UnionPay card, the project move and the domain wait for a moment with Steven.
 - **Gmail 2-step verification** waits until the handover at launch (the user's choice, so development logins don't need Steven's codes).
+
+### 2026-10-26 — Theory-only app live; project on a local VM
+
+- **New machine:** the project moved from the VPS (1 GB memory, too little to test with) to the user's local Proxmox VM (Ubuntu 24.04, 8 GB). Installed: PostgreSQL 16 with a local copy of the database, Playwright's Chromium with its libraries, fonts including emoji, pip. Type check, lint and jest (79 tests) pass. A fresh clone needs `npx next typegen` before `tsc`.
+- **Owner's answers** (WhatsApp, 2026-10-26): no booking and no instructors, Astrando Pas is contact person and owner, +597 868-0936 is phone and WhatsApp, prijs op aanvraag, no certificate, Refresher 7 days. Built on branch theory-only (22a4cb2): booking, My Bookings and the instructors page switched off (`lib/features.ts`, code kept), prices hidden, new setting "Contact person and owner", new theory-only FAQ, legal texts reworded.
+- **Live database:** `prisma migrate deploy` (adds `school_settings.contactName`) and `prisma/theory-only-update.ts` run through the session pooler. Checked: phone and WhatsApp +597 868-0936, contact person Astrando Pas, 10 new FAQ rows (5 NL, 5 EN), the old driving-lesson FAQ gone.
+- **Live app:** theory-only merged into main (fast-forward) and pushed. Checked on desktop and phone: home, packages, contact and FAQ load with no page errors; the contact page shows Astrando Pas; no prices or booking buttons; /booking sends visitors to the login page.
+- **Still open:** the advice to merge Standard and Premium (leaving Basis, Volledig, Opfriscursus) is not sent to the owner yet (task B6).
