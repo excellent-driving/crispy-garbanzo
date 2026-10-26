@@ -10,6 +10,7 @@ const settingsSchema = z.object({
   phone: z.string().min(1),
   email: z.string().email(),
   whatsappNumber: z.string(),
+  contactName: z.string(),
   whatsappBotEnabled: z.boolean(),
   bankName: z.string(),
   bankAccountHolder: z.string(),

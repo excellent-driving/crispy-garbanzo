@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations, getLocale } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
+import { getSchool } from "@/lib/school";
+import { BOOKING_ENABLED, SHOW_PRICES } from "@/lib/features";
 import { PackagesGrid } from "./packages-grid";
 import styles from "./packages.module.css";
 
@@ -16,7 +18,9 @@ export default async function PackagesPage() {
   const locale = await getLocale();
   const isNl = locale === "nl";
 
-  const packages = await prisma.package.findMany({ where: { isActive: true } });
+  const [packages, school] = await Promise.all([prisma.package.findMany({ where: { isActive: true } }), getSchool()]);
+  const money = (price: unknown) =>
+    SHOW_PRICES ? `SRD ${Number(price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}` : t("onRequest");
   const orderOf = (name: string) => {
     const i = displayOrder.indexOf(name);
     return i === -1 ? displayOrder.length : i; // unknown packages sort last, not first
@@ -41,6 +45,7 @@ export default async function PackagesPage() {
       <div className={styles.content}>
         <div className={styles["content-inner"]}>
           <PackagesGrid
+            contactHref={school.contact.whatsappUrl ?? "/contact"}
             packages={sorted.map((p) => ({
               id: p.id,
               nameEn: p.nameEn,
@@ -83,7 +88,7 @@ export default async function PackagesPage() {
                   <td><span className={styles.check}>✓</span> {t("basic")}</td>
                   <td className={styles.highlight}><span className={styles.check}>✓</span> {t("full")}</td>
                   <td><span className={styles.check}>✓</span> {t("full")}</td>
-                  <td><span className={styles.check}>✓</span> {t("days30")}</td>
+                  <td><span className={styles.check}>✓</span> {t("days7")}</td>
                 </tr>
                 <tr>
                   <td><strong>{t("rowWhatsapp")}</strong></td>
@@ -94,10 +99,10 @@ export default async function PackagesPage() {
                 </tr>
                 <tr>
                   <td><strong>{t("rowPrice")}</strong></td>
-                  <td><strong>SRD {Number(byName.Starter?.price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}</strong></td>
-                  <td className={styles.highlight}><strong>SRD {Number(byName.Standard?.price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}</strong></td>
-                  <td><strong>SRD {Number(byName.Premium?.price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}</strong></td>
-                  <td><strong>SRD {Number(byName.Refresher?.price ?? 0).toLocaleString(isNl ? "nl-NL" : "en-US")}</strong></td>
+                  <td><strong>{money(byName.Starter?.price)}</strong></td>
+                  <td className={styles.highlight}><strong>{money(byName.Standard?.price)}</strong></td>
+                  <td><strong>{money(byName.Premium?.price)}</strong></td>
+                  <td><strong>{money(byName.Refresher?.price)}</strong></td>
                 </tr>
               </tbody>
             </table>
@@ -108,7 +113,11 @@ export default async function PackagesPage() {
       <div className={styles["cta-banner"]}>
         <h2>{t("ctaTitle")}</h2>
         <div className={styles["cta-actions"]}>
-          <Link href="/booking" className="btn btn-primary btn-lg">{t("bookFirstLesson")}</Link>
+          {BOOKING_ENABLED ? (
+            <Link href="/booking" className="btn btn-primary btn-lg">{t("bookFirstLesson")}</Link>
+          ) : (
+            <Link href="/register" className="btn btn-primary btn-lg">{t("createAccount")}</Link>
+          )}
           <Link href="/contact" className="btn btn-white btn-lg">{t("askQuestion")}</Link>
         </div>
       </div>

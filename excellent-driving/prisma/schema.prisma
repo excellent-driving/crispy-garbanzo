@@ -262,6 +262,8 @@ model SchoolSettings {
   /// Shown on the site and where contact-form messages are sent.
   email              String   @default("info@excellentdriving.sr")
   whatsappNumber     String   @default("")
+  /// Contact person and owner, shown on the contact page and in the privacy policy and terms; hidden when empty.
+  contactName        String   @default("")
   whatsappBotEnabled Boolean  @default(false)
   /// Bank transfer is offered once bankAccountNumber is filled in.
   bankName           String   @default("")

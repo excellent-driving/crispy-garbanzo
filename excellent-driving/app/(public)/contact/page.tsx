@@ -34,6 +34,15 @@ export default async function ContactPage() {
         <div className={styles["content-inner"]}>
           <div>
             <div className={styles["info-card"]}>
+              {contact.person && (
+                <div className={styles["info-row"]}>
+                  <div className={styles["info-icon"]} aria-hidden="true">👤</div>
+                  <div>
+                    <div className={styles["info-label"]}>{t("person")}</div>
+                    <div className={styles["info-value"]}>{contact.person}</div>
+                  </div>
+                </div>
+              )}
               <div className={styles["info-row"]}>
                 <div className={styles["info-icon"]} aria-hidden="true">📍</div>
                 <div>

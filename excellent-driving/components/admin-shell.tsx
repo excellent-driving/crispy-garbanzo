@@ -5,16 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import styles from "@/app/(admin)/admin-shell.module.css";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 const overviewLinks = [
   { href: "/admin/dashboard", icon: "📊", label: "Dashboard" },
-  { href: "/admin/bookings", icon: "📅", label: "Bookings" },
+  ...(BOOKING_ENABLED ? [{ href: "/admin/bookings", icon: "📅", label: "Bookings" }] : []),
   { href: "/admin/students", icon: "👥", label: "Students" },
 ];
 
 const schoolLinks = [
   { href: "/admin/packages", icon: "📦", label: "Packages" },
-  { href: "/admin/instructors", icon: "👨‍🏫", label: "Instructors" },
+  ...(BOOKING_ENABLED ? [{ href: "/admin/instructors", icon: "👨‍🏫", label: "Instructors" }] : []),
   { href: "/admin/content", icon: "📚", label: "Course Content" },
   { href: "/admin/faq", icon: "❓", label: "FAQ" },
 ];

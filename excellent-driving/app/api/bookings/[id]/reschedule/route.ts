@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { CHANGE_DEADLINE_HOURS, hoursUntilLesson, slotProblem } from "@/lib/bookings";
 import { notify, templates } from "@/lib/whatsapp";
 import { apiError } from "@/lib/api-error";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 const rescheduleSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -17,6 +18,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!BOOKING_ENABLED) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const session = await getServerSession(authOptions);
   if (!session?.user) return await apiError("unauthorized", 401);
 

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./language-switcher";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 export function SiteNav() {
   const t = useTranslations("Nav");
@@ -14,7 +15,7 @@ export function SiteNav() {
   const navLinks = [
     { href: "/", label: t("home") },
     { href: "/packages", label: t("packages") },
-    { href: "/instructors", label: t("instructors") },
+    ...(BOOKING_ENABLED ? [{ href: "/instructors", label: t("instructors") }] : []),
     { href: "/faq", label: t("faq") },
     { href: "/contact", label: t("contact") },
   ];
@@ -50,8 +51,8 @@ export function SiteNav() {
             <Link href="/login" className="btn btn-outline" onClick={() => setMenuOpen(false)}>
               {t("login")}
             </Link>
-            <Link href="/booking" className="btn btn-primary" onClick={() => setMenuOpen(false)}>
-              {t("bookNow")}
+            <Link href={BOOKING_ENABLED ? "/booking" : "/register"} className="btn btn-primary" onClick={() => setMenuOpen(false)}>
+              {BOOKING_ENABLED ? t("bookNow") : t("getStarted")}
             </Link>
           </div>
         </div>

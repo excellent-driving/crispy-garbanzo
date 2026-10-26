@@ -104,6 +104,7 @@
 .pkg-price-row { display: flex; align-items: baseline; gap: 6px; margin-top: 16px; }
 .pkg-price { font-family: var(--font-sora), sans-serif; font-size: 2.4rem; font-weight: 800; color: var(--navy); }
 .featured .pkg-price { color: var(--amber); }
+.pkg-price.on-request { font-size: 1.5rem; }
 .pkg-currency { font-size: 1rem; font-weight: 600; color: var(--gray-600); }
 .featured .pkg-currency { color: rgba(255, 255, 255, 0.5); }
 .pkg-period { font-size: 0.82rem; color: var(--gray-600); }

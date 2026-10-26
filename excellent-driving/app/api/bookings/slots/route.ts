@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { dayOfWeekCode, formatSlotLabel, generateSlotMinutes } from "@/lib/slots";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 export async function GET(request: Request) {
+  if (!BOOKING_ENABLED) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const { searchParams } = new URL(request.url);
   const instructorId = searchParams.get("instructorId");
   const dateParam = searchParams.get("date"); // YYYY-MM-DD

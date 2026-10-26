@@ -18,6 +18,7 @@ export default async function AdminSettingsPage() {
           phone: settings.phone,
           email: settings.email,
           whatsappNumber: settings.whatsappNumber,
+          contactName: settings.contactName,
           whatsappBotEnabled: settings.whatsappBotEnabled,
           bankName: settings.bankName,
           bankAccountHolder: settings.bankAccountHolder,

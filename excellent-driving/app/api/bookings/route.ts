@@ -7,6 +7,7 @@ import { slotProblem } from "@/lib/bookings";
 import { notify, templates } from "@/lib/whatsapp";
 import { apiError } from "@/lib/api-error";
 import { getSchool } from "@/lib/school";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 const bookingSchema = z.object({
   packageId: z.string().min(1),
@@ -17,6 +18,7 @@ const bookingSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  if (!BOOKING_ENABLED) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return await apiError("loginToBook", 401);

@@ -8,6 +8,7 @@ import { maquetteLes5Lessons } from "./content/maquette-les-5";
 import { maquetteLes6Lessons } from "./content/maquette-les-6";
 import { theorieAlgemeenLessons, theorieCategorieCLessons, theorieCategorieDLessons } from "./content/theorie-vragen";
 import { verkeersbordenLessons } from "./content/verkeersborden";
+import { faqSeeds } from "./content/faq";
 
 const prisma = new PrismaClient();
 
@@ -158,91 +159,6 @@ async function main() {
     });
   }
 
-  const faqSeeds = [
-    {
-      question: "How many lessons do I need to pass my exam?",
-      answer:
-        "Most students pass after 15–20 lessons, depending on their prior experience. Our instructors will guide you and let you know when you're ready for the exam.",
-      language: "EN" as const,
-      orderIndex: 1,
-    },
-    {
-      question: "What payment methods do you accept?",
-      answer:
-        "We accept cash payments at our location (Bonistraat 44) and bank transfers. After payment is confirmed by our admin, you'll receive a WhatsApp message with your course access details.",
-      language: "EN" as const,
-      orderIndex: 2,
-    },
-    {
-      question: "Can I cancel or reschedule a lesson?",
-      answer:
-        "Yes! You can cancel or reschedule a lesson up to 24 hours before the scheduled time, directly from your student dashboard.",
-      language: "EN" as const,
-      orderIndex: 3,
-    },
-    {
-      question: "Is the theory course available in Dutch?",
-      answer:
-        "Yes! Our full platform is available in both English and Dutch. You can switch languages at any time from your profile settings.",
-      language: "EN" as const,
-      orderIndex: 4,
-    },
-    {
-      question: "Where are lessons conducted?",
-      answer:
-        "Lessons start and end at our school at Bonistraat 44, Paramaribo. Your instructor will drive through various routes around the city.",
-      language: "EN" as const,
-      orderIndex: 5,
-    },
-    {
-      question: "Moet ik mijn eigen auto meenemen?",
-      answer: "Nee — alle praktijklessen gebruiken onze volledig verzekerde lesauto's.",
-      language: "NL" as const,
-      orderIndex: 1,
-    },
-    {
-      question: "Welke betaalmethoden accepteren jullie?",
-      answer:
-        "Wij accepteren contante betalingen op onze locatie (Bonistraat 44) en bankoverschrijvingen. Zodra de betaling is bevestigd, ontvang je een WhatsApp-bericht.",
-      language: "NL" as const,
-      orderIndex: 2,
-    },
-    // Each language has the same six questions; added 2026-10-12.
-    {
-      question: "Do I need to bring my own car?",
-      answer: "No. All practical lessons use our fully insured driving school cars.",
-      language: "EN" as const,
-      orderIndex: 6,
-    },
-    {
-      question: "Hoeveel lessen heb ik nodig om te slagen voor mijn examen?",
-      answer:
-        "De meeste leerlingen slagen na 15 tot 20 lessen, afhankelijk van hun eerdere ervaring. Onze instructeurs begeleiden je en laten je weten wanneer je klaar bent voor het examen.",
-      language: "NL" as const,
-      orderIndex: 3,
-    },
-    {
-      question: "Kan ik een les annuleren of verzetten?",
-      answer:
-        "Ja! Je kunt een les tot 24 uur voor de geplande tijd annuleren of verzetten, direct vanuit je studentendashboard.",
-      language: "NL" as const,
-      orderIndex: 4,
-    },
-    {
-      question: "Is de theoriecursus beschikbaar in het Nederlands?",
-      answer:
-        "Ja! Ons hele platform is beschikbaar in het Engels en het Nederlands. Je kunt op elk moment van taal wisselen via je profielinstellingen.",
-      language: "NL" as const,
-      orderIndex: 5,
-    },
-    {
-      question: "Waar worden de lessen gegeven?",
-      answer:
-        "De lessen beginnen en eindigen bij onze rijschool aan de Bonistraat 44 in Paramaribo. Je instructeur rijdt met je verschillende routes door de stad.",
-      language: "NL" as const,
-      orderIndex: 6,
-    },
-  ];
 
   for (const faq of faqSeeds) {
     const existing = await prisma.fAQ.findFirst({

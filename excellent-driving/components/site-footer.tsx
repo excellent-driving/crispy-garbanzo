@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import type { SchoolContact } from "@/lib/school";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 export function SiteFooter({ contact }: { contact: SchoolContact }) {
   const t = useTranslations("Footer");
@@ -37,7 +38,7 @@ export function SiteFooter({ contact }: { contact: SchoolContact }) {
           <ul>
             <li><Link href="/">{t("aboutUs")}</Link></li>
             <li><Link href="/packages">{t("packages")}</Link></li>
-            <li><Link href="/instructors">{t("instructors")}</Link></li>
+            {BOOKING_ENABLED && <li><Link href="/instructors">{t("instructors")}</Link></li>}
             <li><Link href="/contact">{t("contact")}</Link></li>
           </ul>
         </div>
@@ -48,7 +49,7 @@ export function SiteFooter({ contact }: { contact: SchoolContact }) {
             <li><Link href="/login">{t("login")}</Link></li>
             <li><Link href="/register">{t("register")}</Link></li>
             <li><Link href="/student/dashboard">{t("dashboard")}</Link></li>
-            <li><Link href="/student/bookings">{t("myBookings")}</Link></li>
+            {BOOKING_ENABLED && <li><Link href="/student/bookings">{t("myBookings")}</Link></li>}
           </ul>
         </div>
 

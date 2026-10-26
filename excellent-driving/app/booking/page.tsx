@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { packageName } from "@/lib/progress";
 import { getSchool } from "@/lib/school";
 import { BookingWizard } from "./booking-wizard";
+import { notFound } from "next/navigation";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 const dayOrder = ["MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const packageDisplayOrder = ["Starter", "Standard", "Premium", "Refresher"];
@@ -23,6 +25,7 @@ function describeAvailability(days: string[], t: Awaited<ReturnType<typeof getTr
 }
 
 export default async function BookingPage() {
+  if (!BOOKING_ENABLED) notFound();
   const [locale, t] = [await getLocale(), await getTranslations("Booking")];
   const [packagesRaw, instructors, school] = await Promise.all([
     prisma.package.findMany({ where: { isActive: true } }),

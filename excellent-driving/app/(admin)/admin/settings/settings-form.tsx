@@ -7,6 +7,7 @@ type Settings = {
   address: string;
   phone: string;
   email: string;
+  contactName: string;
   whatsappNumber: string;
   whatsappBotEnabled: boolean;
   bankName: string;
@@ -73,6 +74,10 @@ export function SettingsForm({ initial }: { initial: Settings }) {
         <div className="field">
           <label htmlFor="school-email">Email (shown on the site; contact-form messages go here)</label>
           <input id="school-email" type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+        </div>
+        <div className="field">
+          <label htmlFor="school-contact-name">Contact person and owner (shown on the contact page and in the privacy policy and terms)</label>
+          <input id="school-contact-name" value={form.contactName} onChange={(e) => setForm((f) => ({ ...f, contactName: e.target.value }))} placeholder="e.g. Astrando Pas" />
         </div>
         <h3 className="settings-section">Opening hours</h3>
         <div className="field-row">

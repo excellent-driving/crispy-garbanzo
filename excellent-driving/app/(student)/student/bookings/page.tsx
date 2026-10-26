@@ -5,8 +5,11 @@ import { prisma } from "@/lib/prisma";
 import { packageName } from "@/lib/progress";
 import { CHANGE_DEADLINE_HOURS, hoursUntilLesson } from "@/lib/bookings";
 import { BookingsList, type BookingRow } from "./bookings-list";
+import { notFound } from "next/navigation";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 export default async function StudentBookingsPage() {
+  if (!BOOKING_ENABLED) notFound();
   const session = await getServerSession(authOptions);
   const locale = await getLocale();
   const bookings = await prisma.booking.findMany({

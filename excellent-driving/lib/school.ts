@@ -5,6 +5,8 @@ export type SchoolContact = {
   /** Null while the admin settings still hold the placeholder number. */
   phone: string | null;
   email: string;
+  /** Contact person and owner; null when not filled in. */
+  person: string | null;
   /** A wa.me chat link, or null when no WhatsApp number is set. */
   whatsappUrl: string | null;
   /** Opening hours in each language, e.g. "Ma–Za: 7:00–18:00". */
@@ -39,6 +41,7 @@ export async function getSchool(): Promise<School> {
       address: s?.address || "Bonistraat 44, Paramaribo",
       phone: phone && !/X/i.test(phone) ? phone : null,
       email: s?.email || "info@excellentdriving.sr",
+      person: text(s?.contactName),
       whatsappUrl: whatsappDigits ? `https://wa.me/${whatsappDigits}` : null,
       hours: { nl: `${days.nl}: ${times}`, en: `${days.en}: ${times}` },
     },

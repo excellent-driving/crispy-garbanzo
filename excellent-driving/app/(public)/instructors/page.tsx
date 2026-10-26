@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import styles from "./instructors.module.css";
+import { notFound } from "next/navigation";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 const dayLabels: Record<string, Record<string, string>> = {
   en: { MON: "Mon", TUE: "Tue", WED: "Wed", THU: "Thu", FRI: "Fri", SAT: "Sat" },
@@ -15,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function InstructorsPage() {
+  if (!BOOKING_ENABLED) notFound();
   const [t, locale] = await Promise.all([getTranslations("Instructors"), getLocale()]);
   const days = dayLabels[locale] ?? dayLabels.en;
   const instructors = await prisma.instructor.findMany({

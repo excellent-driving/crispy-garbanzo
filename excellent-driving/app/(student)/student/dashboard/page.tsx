@@ -7,6 +7,7 @@ import { getStudentModuleStates, getStudentDashboardStats, moduleTitle, packageN
 import styles from "./dashboard.module.css";
 import shell from "../../student-shell.module.css";
 import { displaySlot } from "@/lib/slots";
+import { BOOKING_ENABLED } from "@/lib/features";
 
 const moduleIcons = ["📖", "🚦", "🛣️", "🚗", "🏁"];
 
@@ -117,11 +118,11 @@ export default async function StudentDashboardPage() {
         </div>
         <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
           <Link href="/student/learn" className={`btn ${styles["btn-amber"]}`}>{t("continueLearning")} →</Link>
-          <Link href="/booking" className={`btn ${styles["btn-outline-white"]}`}>{t("bookALesson")}</Link>
+          {BOOKING_ENABLED && <Link href="/booking" className={`btn ${styles["btn-outline-white"]}`}>{t("bookALesson")}</Link>}
         </div>
       </div>
 
-      <div className={styles["stats-row"]}>
+      <div className={`${styles["stats-row"]}${BOOKING_ENABLED ? "" : ` ${styles.three}`}`}>
         <div className={styles["stat-card"]}>
           <div className={styles["stat-card-top"]}>
             <div className={styles["stat-icon"]} style={{ background: "rgba(16,185,129,0.1)" }} aria-hidden="true">✅</div>
@@ -136,13 +137,15 @@ export default async function StudentDashboardPage() {
           <div className={styles["stat-num"]}>{stats.quizzesPassed}</div>
           <div className={styles["stat-label"]}>{t("quizzesPassed")}</div>
         </div>
-        <div className={styles["stat-card"]}>
-          <div className={styles["stat-card-top"]}>
-            <div className={styles["stat-icon"]} style={{ background: "rgba(59,130,246,0.1)" }} aria-hidden="true">📅</div>
+        {BOOKING_ENABLED && (
+          <div className={styles["stat-card"]}>
+            <div className={styles["stat-card-top"]}>
+              <div className={styles["stat-icon"]} style={{ background: "rgba(59,130,246,0.1)" }} aria-hidden="true">📅</div>
+            </div>
+            <div className={styles["stat-num"]}>{stats.upcomingBookings}</div>
+            <div className={styles["stat-label"]}>{t("upcomingBookings")}</div>
           </div>
-          <div className={styles["stat-num"]}>{stats.upcomingBookings}</div>
-          <div className={styles["stat-label"]}>{t("upcomingBookings")}</div>
-        </div>
+        )}
         <div className={styles["stat-card"]}>
           <div className={styles["stat-card-top"]}>
             <div className={styles["stat-icon"]} style={{ background: "rgba(245,166,35,0.12)" }} aria-hidden="true">⭐</div>
@@ -190,6 +193,7 @@ export default async function StudentDashboardPage() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          {BOOKING_ENABLED && (
           <div className={shell.card}>
             <div className={shell["card-header"]}>
               <div className={shell["card-title"]}>{t("nextLesson")}</div>
@@ -220,6 +224,7 @@ export default async function StudentDashboardPage() {
               )}
             </div>
           </div>
+          )}
 
           <div className={shell.card}>
             <div className={shell["card-header"]}>
@@ -230,12 +235,16 @@ export default async function StudentDashboardPage() {
                 <Link className={styles["quick-link"]} href="/student/learn">
                   <span className={styles["quick-link-icon"]} aria-hidden="true">🎓</span> {t("takeAQuiz")}
                 </Link>
-                <Link className={styles["quick-link"]} href="/booking">
-                  <span className={styles["quick-link-icon"]} aria-hidden="true">📅</span> {t("bookLesson")}
-                </Link>
-                <Link className={styles["quick-link"]} href="/student/bookings">
-                  <span className={styles["quick-link-icon"]} aria-hidden="true">📊</span> {t("myBookings")}
-                </Link>
+                {BOOKING_ENABLED && (
+                  <>
+                    <Link className={styles["quick-link"]} href="/booking">
+                      <span className={styles["quick-link-icon"]} aria-hidden="true">📅</span> {t("bookLesson")}
+                    </Link>
+                    <Link className={styles["quick-link"]} href="/student/bookings">
+                      <span className={styles["quick-link-icon"]} aria-hidden="true">📊</span> {t("myBookings")}
+                    </Link>
+                  </>
+                )}
                 <Link className={styles["quick-link"]} href="/student/profile">
                   <span className={styles["quick-link-icon"]} aria-hidden="true">👤</span> {t("editProfile")}
                 </Link>

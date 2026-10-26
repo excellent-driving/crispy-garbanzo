@@ -10,8 +10,15 @@ export async function LegalPage({ doc }: { doc: Record<"nl" | "en", Doc> }) {
   const [locale, school] = await Promise.all([getLocale(), getSchool()]);
   const d = doc[locale === "nl" ? "nl" : "en"];
   const t = await getTranslations("Legal");
+  const owner = school.contact.person;
   const fill = (text: string) =>
-    text.replaceAll("{school}", school.name).replaceAll("{address}", school.contact.address).replaceAll("{email}", school.contact.email);
+    text
+      .replaceAll("{school}", school.name)
+      .replaceAll("{address}", school.contact.address)
+      .replaceAll("{email}", school.contact.email)
+      .replaceAll("{owner}", owner ?? "");
+  // A paragraph that names the owner is left out until a contact person is set.
+  const shown = (p: string) => owner || !p.includes("{owner}");
   return (
     <main className={styles.wrap}>
       <article className={styles.doc}>
@@ -21,7 +28,7 @@ export async function LegalPage({ doc }: { doc: Record<"nl" | "en", Doc> }) {
         {d.sections.map((sec) => (
           <section key={sec.h}>
             <h2>{sec.h}</h2>
-            {sec.p.map((p) => <p key={p}>{fill(p)}</p>)}
+            {sec.p.filter(shown).map((p) => <p key={p}>{fill(p)}</p>)}
           </section>
         ))}
       </article>

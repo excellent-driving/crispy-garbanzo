@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { BOOKING_ENABLED, SHOW_PRICES } from "@/lib/features";
 import styles from "./packages.module.css";
 
 type Pkg = {
@@ -32,8 +33,7 @@ const packageMeta: Record<
       { key: "noPractical", included: false },
       { key: "onlineTheory", included: true },
       { key: "quizzesUnlimited", included: true },
-      { key: "whatsappBooking", included: true },
-      { key: "certificate", included: true },
+      { key: "whatsappSupport", included: true },
     ],
   },
   Standard: {
@@ -46,8 +46,7 @@ const packageMeta: Record<
     includes: [
       { key: "noPractical", included: false },
       { key: "fullTheory", included: true },
-      { key: "whatsappReminders", included: true },
-      { key: "certificate", included: true },
+      { key: "whatsappSupport", included: true },
     ],
   },
   Premium: {
@@ -68,7 +67,7 @@ const packageMeta: Record<
     stats: [],
     includes: [
       { key: "noPractical", included: false },
-      { key: "quiz30", included: true },
+      { key: "quiz7", included: true },
       { key: "fullTheory", included: false },
     ],
   },
@@ -78,7 +77,6 @@ const fallbackIncludes: Feature[] = [
   { key: "noPractical", included: false },
   { key: "onlineTheory", included: true },
   { key: "whatsappSupport", included: true },
-  { key: "certificate", included: true },
 ];
 
 /** Every known package has hand-tuned copy above; anything else (e.g. a
@@ -88,11 +86,33 @@ function getMeta(name: string) {
   return packageMeta[name] ?? { icon: "🚗", tags: [] as string[], stats: [] as { num: string; key: "statPractical" }[], includes: fallbackIncludes };
 }
 
-export function PackagesGrid({ packages }: { packages: Pkg[] }) {
+/** The price, or "price on request" while prices are hidden. */
+function PriceRow({ price, label }: { price: number; label: { perPackage: string; onRequest: string; locale: string } }) {
+  if (!SHOW_PRICES) {
+    return (
+      <div className={styles["pkg-price-row"]}>
+        <div className={`${styles["pkg-price"]} ${styles["on-request"]}`}>{label.onRequest}</div>
+      </div>
+    );
+  }
+  return (
+    <div className={styles["pkg-price-row"]}>
+      <div className={styles["pkg-price"]}>{price.toLocaleString(label.locale)}</div>
+      <div className={styles["pkg-currency"]}>SRD</div>
+      <div className={styles["pkg-period"]}>{label.perPackage}</div>
+    </div>
+  );
+}
+
+/** Without booking, a package's button asks for the price: WhatsApp when set, else the contact page. */
+export function PackagesGrid({ packages, contactHref }: { packages: Pkg[]; contactHref: string }) {
   const t = useTranslations("Packages");
   const locale = useLocale();
   const isNl = locale === "nl";
   const [filter, setFilter] = useState("all");
+  const priceLabel = { perPackage: t("perPackage"), onRequest: t("priceOnRequest"), locale: isNl ? "nl-NL" : "en-US" };
+  const ctaHref = BOOKING_ENABLED ? "/booking" : contactHref;
+  const ctaExtra = ctaHref.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   const filters = [
     { value: "all", label: t("filterAll") },
@@ -146,11 +166,7 @@ export function PackagesGrid({ packages }: { packages: Pkg[] }) {
                 <div className={styles["pkg-icon"]} aria-hidden="true">{meta.icon}</div>
                 <div className={styles["pkg-name"]}>{isNl ? pkg.nameNl : pkg.nameEn}</div>
                 <div className={styles["pkg-tagline"]}>{isNl ? pkg.descriptionNl : pkg.descriptionEn}</div>
-                <div className={styles["pkg-price-row"]}>
-                  <div className={styles["pkg-price"]}>{pkg.price.toLocaleString(isNl ? "nl-NL" : "en-US")}</div>
-                  <div className={styles["pkg-currency"]}>SRD</div>
-                  <div className={styles["pkg-period"]}>{t("perPackage")}</div>
-                </div>
+                <PriceRow price={pkg.price} label={priceLabel} />
               </div>
               <div className={styles["package-body"]}>
                 <div className={styles["pkg-stats"]}>
@@ -176,10 +192,11 @@ export function PackagesGrid({ packages }: { packages: Pkg[] }) {
                   ))}
                 </div>
                 <Link
-                  href="/booking"
+                  href={ctaHref}
+                  {...ctaExtra}
                   className={`btn ${pkg.featured ? "btn-primary" : "btn-outline"} ${styles["pkg-cta"]}`}
                 >
-                  {t("bookPackage", { name: isNl ? pkg.nameNl : pkg.nameEn })}
+                  {BOOKING_ENABLED ? t("bookPackage", { name: isNl ? pkg.nameNl : pkg.nameEn }) : t("askPrice")}
                 </Link>
               </div>
             </div>
@@ -193,11 +210,7 @@ export function PackagesGrid({ packages }: { packages: Pkg[] }) {
                 <div className={styles["pkg-icon"]} aria-hidden="true">🔄</div>
                 <div className={styles["pkg-name"]}>{isNl ? visibleRefresher.nameNl : "Refresher"}</div>
                 <div className={styles["pkg-tagline"]}>{isNl ? visibleRefresher.descriptionNl : visibleRefresher.descriptionEn}</div>
-                <div className={styles["pkg-price-row"]}>
-                  <div className={styles["pkg-price"]}>{visibleRefresher.price.toLocaleString(isNl ? "nl-NL" : "en-US")}</div>
-                  <div className={styles["pkg-currency"]}>SRD</div>
-                  <div className={styles["pkg-period"]}>{t("perPackage")}</div>
-                </div>
+                <PriceRow price={visibleRefresher.price} label={priceLabel} />
               </div>
               <div className={styles["package-body"]}>
                 <div className={styles["includes-title"]}>{t("whatsIncluded")}</div>
@@ -215,11 +228,12 @@ export function PackagesGrid({ packages }: { packages: Pkg[] }) {
                   ))}
                 </div>
                 <Link
-                  href="/booking"
+                  href={ctaHref}
+                  {...ctaExtra}
                   className={`btn btn-outline ${styles["pkg-cta"]}`}
                   style={{ marginTop: "auto" }}
                 >
-                  {t("bookRefresher")}
+                  {BOOKING_ENABLED ? t("bookRefresher") : t("askPrice")}
                 </Link>
               </div>
             </div>

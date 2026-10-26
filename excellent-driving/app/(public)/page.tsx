@@ -3,6 +3,7 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { getSchool } from "@/lib/school";
+import { BOOKING_ENABLED, SHOW_PRICES } from "@/lib/features";
 import styles from "./home.module.css";
 
 const packageIcons: Record<string, string> = {
@@ -43,12 +44,21 @@ export default async function HomePage() {
     { num: 3, title: t("step3Title"), body: t("step3Body") },
   ];
 
-  const journeyItems = [
-    { icon: "📚", label: t("journeyTheory"), sub: t("journeyTheorySub") },
-    { icon: "🚗", label: t("journeyPractical"), sub: t("journeyPracticalSub") },
-    { icon: "🎓", label: t("journeyExam"), sub: t("journeyExamSub") },
-    { icon: "📱", label: t("journeyWhatsapp"), sub: t("journeyWhatsappSub") },
-  ];
+  const journeyItems = BOOKING_ENABLED
+    ? [
+        { icon: "📚", label: t("journeyTheory"), sub: t("journeyTheorySub") },
+        { icon: "🚗", label: t("journeyPractical"), sub: t("journeyPracticalSub") },
+        { icon: "🎓", label: t("journeyExam"), sub: t("journeyExamSub") },
+        { icon: "📱", label: t("journeyWhatsapp"), sub: t("journeyWhatsappSub") },
+      ]
+    : [
+        { icon: "📚", label: t("journeyTheory"), sub: t("journeyTheorySub") },
+        { icon: "🚦", label: t("journeySigns"), sub: t("journeySignsSub") },
+        { icon: "🎓", label: t("journeyExam"), sub: t("journeyExamSub") },
+        { icon: "📱", label: t("journeyPhone"), sub: t("journeyPhoneSub") },
+      ];
+  // Without booking, a package's button asks for the price (WhatsApp when set, else the contact page).
+  const packageHref = BOOKING_ENABLED ? "/booking" : school.contact.whatsappUrl ?? "/contact";
 
   return (
     <>
@@ -66,7 +76,11 @@ export default async function HomePage() {
             </h1>
             <p>{t("heroSubtitle")}</p>
             <div className={styles["hero-ctas"]}>
-              <Link href="/booking" className="btn btn-primary btn-lg">{t("bookALesson")}</Link>
+              {BOOKING_ENABLED ? (
+                <Link href="/booking" className="btn btn-primary btn-lg">{t("bookALesson")}</Link>
+              ) : (
+                <Link href="/register" className="btn btn-primary btn-lg">{t("getStarted")}</Link>
+              )}
               <Link href="/packages" className="btn btn-white btn-lg">{t("viewPackages")}</Link>
             </div>
           </div>
@@ -98,10 +112,12 @@ export default async function HomePage() {
               <div className={styles["stat-label"]}>{t("statsStudents")}</div>
             </div>
           )}
-          <div className={styles.stat}>
-            <div className={styles["stat-number"]}>{instructorCount}</div>
-            <div className={styles["stat-label"]}>{t("statsInstructors")}</div>
-          </div>
+          {BOOKING_ENABLED && (
+            <div className={styles.stat}>
+              <div className={styles["stat-number"]}>{instructorCount}</div>
+              <div className={styles["stat-label"]}>{t("statsInstructors")}</div>
+            </div>
+          )}
           <div className={styles.stat}>
             <div className={styles["stat-number"]}>{school.openingDays[isNl ? "nl" : "en"]}</div>
             <div className={styles["stat-label"]}>{t("statsAvailable", { times: school.openingTimes })}</div>
@@ -143,8 +159,12 @@ export default async function HomePage() {
                 </div>
                 <div className={styles["package-name"]}>{isNl ? pkg.nameNl : pkg.nameEn}</div>
                 <div className={styles["package-desc"]}>{isNl ? pkg.descriptionNl : pkg.descriptionEn}</div>
-                <div className={styles["package-price"]}>
-                  SRD {Number(pkg.price).toLocaleString(isNl ? "nl-NL" : "en-US")} <span>{t("perPackage")}</span>
+                <div className={`${styles["package-price"]}${SHOW_PRICES ? "" : ` ${styles["on-request"]}`}`}>
+                  {SHOW_PRICES ? (
+                    <>SRD {Number(pkg.price).toLocaleString(isNl ? "nl-NL" : "en-US")} <span>{t("perPackage")}</span></>
+                  ) : (
+                    t("priceOnRequest")
+                  )}
                 </div>
                 <div className={styles["package-includes"]}>
                   <div className={`${styles["include-item"]} ${styles.excluded}`}>
@@ -152,13 +172,13 @@ export default async function HomePage() {
                   </div>
                   <div className={styles["include-item"]}>{t("includeTheory")}</div>
                   <div className={styles["include-item"]}>{t("includeWhatsapp")}</div>
-                  <div className={styles["include-item"]}>{t("includeCertificate")}</div>
                 </div>
                 <Link
-                  href="/booking"
+                  href={packageHref}
                   className={`btn ${pkg.featured ? "btn-primary" : "btn-outline"} ${styles["full-width-cta"]}`}
+                  {...(packageHref.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
-                  {t("bookThisPackage")}
+                  {BOOKING_ENABLED ? t("bookThisPackage") : t("askPrice")}
                 </Link>
               </div>
             ))}
@@ -186,6 +206,7 @@ export default async function HomePage() {
       </section>
 
       {/* INSTRUCTORS */}
+      {BOOKING_ENABLED && (
       <section style={{ background: "var(--gray-50)" }}>
         <div className="section-inner">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16, marginBottom: 0 }}>
@@ -215,6 +236,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* FAQ */}
       <section className={styles["faq-section"]}>

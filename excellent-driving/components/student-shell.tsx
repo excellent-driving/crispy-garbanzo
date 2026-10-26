@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { BOOKING_ENABLED } from "@/lib/features";
 import styles from "@/app/(student)/student-shell.module.css";
 
 function initials(name: string) {
@@ -33,8 +34,12 @@ export function StudentShell({
   const navItems = [
     { href: "/student/dashboard", icon: "🏠", label: t("navDashboard") },
     { href: "/student/learn", icon: "📚", label: t("navMyLessons") },
-    { href: "/booking", icon: "📅", label: t("navBookALesson"), badge: t("navNew") },
-    { href: "/student/bookings", icon: "🎯", label: t("navMyBookings") },
+    ...(BOOKING_ENABLED
+      ? [
+          { href: "/booking", icon: "📅", label: t("navBookALesson"), badge: t("navNew") },
+          { href: "/student/bookings", icon: "🎯", label: t("navMyBookings") },
+        ]
+      : []),
   ];
   const accountItems = [{ href: "/student/profile", icon: "👤", label: t("navProfile") }];
 
