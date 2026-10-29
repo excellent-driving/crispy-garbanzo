@@ -29,13 +29,23 @@ export function packageName(pkg: { nameEn: string; nameNl: string }, locale: str
 }
 
 /**
- * A module unlocks once the previous module is fully complete; a lesson
+ * Which published modules a student sees: those of their package, or every
+ * published module when they have none (students from before packages decided this).
+ */
+export function studentModulesWhere(packageId: string | null | undefined) {
+  return packageId ? { isPublished: true, packages: { some: { id: packageId } } } : { isPublished: true };
+}
+
+/**
+ * The modules of the student's package, in order (see studentModulesWhere).
+ * A module unlocks once the previous one is fully complete; a lesson
  * unlocks once its module is unlocked AND the previous lesson in that
- * module has status PASSED. Module 1 / lesson 1 are always unlocked.
+ * module has status PASSED. The first module / lesson are always unlocked.
  */
 export async function getStudentModuleStates(studentId: string): Promise<ModuleState[]> {
+  const student = await prisma.user.findUnique({ where: { id: studentId }, select: { packageId: true } });
   const modules = await prisma.module.findMany({
-    where: { isPublished: true },
+    where: studentModulesWhere(student?.packageId),
     include: { lessons: { orderBy: { orderIndex: "asc" } } },
     orderBy: { orderIndex: "asc" },
   });

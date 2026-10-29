@@ -64,9 +64,10 @@ export default async function StudentDashboardPage() {
   const totalLessons = moduleStates.reduce((sum, m) => sum + m.totalLessons, 0);
   const totalCompleted = moduleStates.reduce((sum, m) => sum + m.completedCount, 0);
   const overallPct = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
-  const activePackage = (
-    await prisma.booking.findFirst({ where: { studentId }, include: { package: true }, orderBy: { createdAt: "desc" } })
-  )?.package;
+  // The package the admin set for the student; before that, the one of their latest booking.
+  const activePackage =
+    (await prisma.user.findUnique({ where: { id: studentId }, select: { package: true } }))?.package ??
+    (await prisma.booking.findFirst({ where: { studentId }, include: { package: true }, orderBy: { createdAt: "desc" } }))?.package;
   const activePackageName = activePackage ? packageName(activePackage, locale) : null;
   const bookingStatusLabel = {
     PENDING: t("bookingStatusPending"),

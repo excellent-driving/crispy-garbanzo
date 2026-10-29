@@ -67,6 +67,8 @@ model User {
   name          String
   language      Language  @default(EN)
   courseAccess  Boolean   @default(true)
+  /// The package the student paid for; it decides which modules they see. Empty = every published module.
+  packageId     String?
   /// Wrong passwords in a row; after 5 the account is locked until lockedUntil (lib/login-lock.ts).
   failedLoginCount Int       @default(0)
   lockedUntil      DateTime?
@@ -78,6 +80,7 @@ model User {
   instructor      Instructor?
   bookings        Booking[]        @relation("StudentBookings")
   progress        StudentProgress[]
+  package         Package?         @relation(fields: [packageId], references: [id], onDelete: SetNull)
 
   @@map("users")
 }
@@ -138,7 +141,9 @@ model Package {
   updatedAt     DateTime @updatedAt
 
   bookings Booking[]
-  modules  Module[]
+  /// The modules a student with this package sees.
+  modules  Module[] @relation("ModulePackages")
+  students User[]
 
   @@map("packages")
 }
@@ -203,9 +208,9 @@ model Module {
   descriptionNl String?
   orderIndex  Int
   isPublished Boolean  @default(false)
-  packageId   String?
 
-  package  Package?          @relation(fields: [packageId], references: [id])
+  /// The packages that include this module (Admin > Content).
+  packages Package[]         @relation("ModulePackages")
   lessons  Lesson[]
   progress StudentProgress[]
 

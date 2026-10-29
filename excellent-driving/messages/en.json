@@ -98,7 +98,6 @@
     "packagesWord": "packages",
     "mostPopular": "Most Popular",
     "bookPackage": "Book {name} Package",
-    "bookRefresher": "Book Refresher",
     "comparisonTitle": "Compare All Packages",
     "comparisonSubtitle": "See exactly what's included in each package side by side.",
     "featureCol": "Feature",
@@ -112,8 +111,6 @@
     "rowPractical": "Practical Lessons",
     "notIncluded": "Not included",
     "rowTheory": "Theory Course",
-    "basic": "Basic",
-    "full": "Full",
     "rowWhatsapp": "WhatsApp Support",
     "rowPrice": "Price",
     "features": {
@@ -122,13 +119,20 @@
       "quizzesUnlimited": "Practice quizzes (unlimited retries)",
       "fullTheory": "Full theory course",
       "whatsappSupport": "WhatsApp support",
-      "quiz7": "Access to theory quizzes (7 days)"
+      "lessons1to6": "Lessons 1 to 6 and the traffic signs",
+      "allLessons": "Full theory course: all lessons",
+      "examQuestions": "Theory exam questions (A/B, C and D)",
+      "examQuestions7": "Theory exam questions (A/B, C and D) to practise for 7 days"
     },
     "askPrice": "Ask for the Price",
     "priceOnRequest": "Price on request",
     "onRequest": "On request",
     "createAccount": "Create Account",
-    "days7": "7 days"
+    "days7": "7 days",
+    "statDays": "Days",
+    "lessons1to6Short": "Lessons 1 to 6 and traffic signs",
+    "allLessonsShort": "All lessons",
+    "rowExamQuestions": "Theory exam questions (A/B, C and D)"
   },
   "Dashboard": {
     "goodMorning": "Good morning",

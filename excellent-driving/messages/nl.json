@@ -98,7 +98,6 @@
     "packagesWord": "pakketten",
     "mostPopular": "Meest Gekozen",
     "bookPackage": "Boek {name} Pakket",
-    "bookRefresher": "Boek Opfriscursus",
     "comparisonTitle": "Vergelijk Alle Pakketten",
     "comparisonSubtitle": "Zie precies wat elk pakket bevat, naast elkaar.",
     "featureCol": "Kenmerk",
@@ -112,8 +111,6 @@
     "rowPractical": "Praktijklessen",
     "notIncluded": "Niet inbegrepen",
     "rowTheory": "Theoriecursus",
-    "basic": "Basis",
-    "full": "Volledig",
     "rowWhatsapp": "WhatsApp-ondersteuning",
     "rowPrice": "Prijs",
     "features": {
@@ -122,13 +119,20 @@
       "quizzesUnlimited": "Oefenquizzen (onbeperkt opnieuw proberen)",
       "fullTheory": "Volledige theoriecursus",
       "whatsappSupport": "WhatsApp-ondersteuning",
-      "quiz7": "Toegang tot theoriequizzen (7 dagen)"
+      "lessons1to6": "Les 1 t/m 6 en de verkeersborden",
+      "allLessons": "Volledige theoriecursus: alle lessen",
+      "examQuestions": "Theorie-examenvragen (A/B, C en D)",
+      "examQuestions7": "Theorie-examenvragen (A/B, C en D) om 7 dagen te oefenen"
     },
     "askPrice": "Vraag de Prijs Aan",
     "priceOnRequest": "Prijs op aanvraag",
     "onRequest": "Op aanvraag",
     "createAccount": "Account Aanmaken",
-    "days7": "7 dagen"
+    "days7": "7 dagen",
+    "statDays": "Dagen",
+    "lessons1to6Short": "Les 1 t/m 6 en verkeersborden",
+    "allLessonsShort": "Alle lessen",
+    "rowExamQuestions": "Theorie-examenvragen (A/B, C en D)"
   },
   "Dashboard": {
     "goodMorning": "Goedemorgen",

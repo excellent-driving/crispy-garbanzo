@@ -27,7 +27,11 @@ export async function PATCH(
     data: { paymentStatus: "CONFIRMED", status: "CONFIRMED" },
   });
   if ((await getSchool()).lessonsAfterPayment) {
-    await prisma.user.update({ where: { id: booking.studentId }, data: { courseAccess: true } });
+    // A student without a package gets the one they paid for.
+    await prisma.user.update({
+      where: { id: booking.studentId },
+      data: { courseAccess: true, packageId: booking.student.packageId ?? booking.packageId },
+    });
   }
 
   await notify({

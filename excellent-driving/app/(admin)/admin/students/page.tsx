@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { StudentsManager, type StudentRow } from "./students-manager";
 
 export default async function AdminStudentsPage() {
-  const [students, modules, allProgress] = await Promise.all([
+  const [students, modules, allProgress, packages] = await Promise.all([
     prisma.user.findMany({
       where: { role: "STUDENT" },
       include: { _count: { select: { bookings: true } } },
@@ -10,15 +10,13 @@ export default async function AdminStudentsPage() {
     }),
     prisma.module.findMany({
       where: { isPublished: true },
-      include: { lessons: { select: { id: true } } },
+      include: { lessons: { select: { id: true } }, packages: { select: { id: true } } },
       orderBy: { orderIndex: "asc" },
     }),
     // One query for every student's progress, instead of N queries.
     prisma.studentProgress.findMany({ where: { status: "PASSED" }, select: { studentId: true, lessonId: true } }),
+    prisma.package.findMany({ where: { isActive: true }, select: { id: true, nameEn: true }, orderBy: { createdAt: "asc" } }),
   ]);
-
-  const lessonToModule = new Map<string, string>();
-  for (const m of modules) for (const l of m.lessons) lessonToModule.set(l.id, m.id);
 
   const passedByStudent = new Map<string, Set<string>>();
   for (const p of allProgress) {
@@ -28,13 +26,7 @@ export default async function AdminStudentsPage() {
 
   const rows: StudentRow[] = students.map((s) => {
     const passedLessonIds = passedByStudent.get(s.id) ?? new Set<string>();
-    const moduleBreakdown = modules.map((m) => ({
-      title: m.titleEn,
-      completed: m.lessons.filter((l) => passedLessonIds.has(l.id)).length,
-      total: m.lessons.length,
-    }));
-    const totalLessons = modules.reduce((sum, m) => sum + m.lessons.length, 0);
-    const lessonsCompleted = [...passedLessonIds].filter((id) => lessonToModule.has(id)).length;
+    const completedPerModule = modules.map((m) => m.lessons.filter((l) => passedLessonIds.has(l.id)).length);
 
     return {
       id: s.id,
@@ -43,13 +35,18 @@ export default async function AdminStudentsPage() {
       phone: s.phone ?? "",
       language: s.language,
       courseAccess: s.courseAccess,
+      packageId: s.packageId,
       createdAt: s.createdAt.toISOString(),
       bookingsCount: s._count.bookings,
-      lessonsCompleted,
-      totalLessons,
-      moduleBreakdown,
+      completedPerModule,
     };
   });
 
-  return <StudentsManager initial={rows} />;
+  return (
+    <StudentsManager
+      initial={rows}
+      packages={packages}
+      modules={modules.map((m) => ({ title: m.titleEn, total: m.lessons.length, packageIds: m.packages.map((p) => p.id) }))}
+    />
+  );
 }

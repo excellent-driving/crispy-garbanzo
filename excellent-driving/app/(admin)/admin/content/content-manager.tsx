@@ -6,9 +6,11 @@ import { QuizBuilder, type QuizQuestion } from "./quiz-builder";
 
 type LessonType = "TEXT" | "QUIZ" | "VIDEO";
 type Lesson = { id: string; title: string; type: LessonType; orderIndex: number; content: Record<string, unknown> };
-type Module = { id: string; titleEn: string; titleNl: string; orderIndex: number; isPublished: boolean; lessons: Lesson[] };
+/** packageIds: the packages whose students see this module. */
+type Module = { id: string; titleEn: string; titleNl: string; orderIndex: number; isPublished: boolean; packageIds: string[]; lessons: Lesson[] };
+type PackageOption = { id: string; nameEn: string };
 
-const emptyModuleForm = { titleEn: "", titleNl: "", orderIndex: "1", isPublished: false };
+const emptyModuleForm = { titleEn: "", titleNl: "", orderIndex: "1", isPublished: false, packageIds: [] as string[] };
 
 function emptyLessonForm(type: LessonType = "TEXT") {
   return {
@@ -21,7 +23,7 @@ function emptyLessonForm(type: LessonType = "TEXT") {
   };
 }
 
-export function ContentManager({ initial }: { initial: Module[] }) {
+export function ContentManager({ initial, packages }: { initial: Module[]; packages: PackageOption[] }) {
   const [modules, setModules] = useState(initial);
   const [expanded, setExpanded] = useState<string | null>(initial[0]?.id ?? null);
 
@@ -35,13 +37,14 @@ export function ContentManager({ initial }: { initial: Module[] }) {
   const [error, setError] = useState<string | null>(null);
 
   function openModuleCreate() {
-    setModuleForm({ ...emptyModuleForm, orderIndex: String(modules.length + 1) });
+    // A new module is in every package until the admin unticks one.
+    setModuleForm({ ...emptyModuleForm, orderIndex: String(modules.length + 1), packageIds: packages.map((p) => p.id) });
     setError(null);
     setModuleEditing("new");
   }
 
   function openModuleEdit(mod: Module) {
-    setModuleForm({ titleEn: mod.titleEn, titleNl: mod.titleNl, orderIndex: String(mod.orderIndex), isPublished: mod.isPublished });
+    setModuleForm({ titleEn: mod.titleEn, titleNl: mod.titleNl, orderIndex: String(mod.orderIndex), isPublished: mod.isPublished, packageIds: mod.packageIds });
     setError(null);
     setModuleEditing(mod);
   }
@@ -52,7 +55,7 @@ export function ContentManager({ initial }: { initial: Module[] }) {
     setError(null);
 
     const isNew = moduleEditing === "new";
-    const payload = { titleEn: moduleForm.titleEn, titleNl: moduleForm.titleNl, orderIndex: Number(moduleForm.orderIndex), isPublished: moduleForm.isPublished };
+    const payload = { titleEn: moduleForm.titleEn, titleNl: moduleForm.titleNl, orderIndex: Number(moduleForm.orderIndex), isPublished: moduleForm.isPublished, packageIds: moduleForm.packageIds };
     const res = await fetch(isNew ? "/api/admin/modules" : `/api/admin/modules/${(moduleEditing as Module).id}`, {
       method: isNew ? "POST" : "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -163,7 +166,8 @@ export function ContentManager({ initial }: { initial: Module[] }) {
             <div className={styles["module-header-info"]}>
               <div className={styles["module-header-title"]}>Module {mod.orderIndex}: {mod.titleEn}</div>
               <div className={styles["module-header-meta"]}>
-                {mod.lessons.length} lesson{mod.lessons.length === 1 ? "" : "s"} · {mod.isPublished ? "Published" : "Draft"}
+                {mod.lessons.length} lesson{mod.lessons.length === 1 ? "" : "s"} · {mod.isPublished ? "Published" : "Draft"} ·{" "}
+                {packages.filter((p) => mod.packageIds.includes(p.id)).map((p) => p.nameEn).join(", ") || "No package"}
               </div>
             </div>
             <button
@@ -226,6 +230,25 @@ export function ContentManager({ initial }: { initial: Module[] }) {
                   Published (visible to students)
                 </label>
               </div>
+              <fieldset className="field" style={{ border: "none", padding: 0, margin: 0 }}>
+                <legend style={{ fontSize: "0.8rem", fontWeight: 600, marginBottom: 6 }}>In packages (students with these packages see the module)</legend>
+                {packages.map((p) => (
+                  <label key={p.id} style={{ display: "block", fontWeight: 400 }}>
+                    <input
+                      type="checkbox"
+                      style={{ width: "auto", marginRight: 8 }}
+                      checked={moduleForm.packageIds.includes(p.id)}
+                      onChange={(e) =>
+                        setModuleForm((f) => ({
+                          ...f,
+                          packageIds: e.target.checked ? [...f.packageIds, p.id] : f.packageIds.filter((id) => id !== p.id),
+                        }))
+                      }
+                    />
+                    {p.nameEn}
+                  </label>
+                ))}
+              </fieldset>
               <div className="modal-actions">
                 <button type="button" className="btn btn-outline" onClick={() => setModuleEditing(null)} disabled={busy}>Cancel</button>
                 <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? "Saving…" : "Save Module"}</button>

@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 import { BOOKING_ENABLED } from "@/lib/features";
 
 const dayOrder = ["MON", "TUE", "WED", "THU", "FRI", "SAT"];
-const packageDisplayOrder = ["Starter", "Standard", "Premium", "Refresher"];
+const packageDisplayOrder = ["Basic", "Complete", "Refresher"];
 
 const shortDay: Record<string, Record<string, string>> = {
   en: { MON: "Mon", TUE: "Tue", WED: "Wed", THU: "Thu", FRI: "Fri", SAT: "Sat" },

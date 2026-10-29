@@ -9,19 +9,43 @@ export type StudentRow = {
   phone: string;
   language: "EN" | "NL";
   courseAccess: boolean;
+  /** Null: no package yet, so the student sees every module (as before packages decided this). */
+  packageId: string | null;
   createdAt: string;
   bookingsCount: number;
-  lessonsCompleted: number;
-  totalLessons: number;
-  moduleBreakdown: { title: string; completed: number; total: number }[];
+  /** Lessons passed, per published module (same order as the modules prop). */
+  completedPerModule: number[];
 };
+
+export type ModuleInfo = { title: string; total: number; packageIds: string[] };
+export type PackageOption = { id: string; nameEn: string };
+
+/** The student's own modules (same rule as lib/progress.ts) with their progress. */
+function breakdown(student: StudentRow, modules: ModuleInfo[]) {
+  const rows = modules
+    .map((m, i) => ({ title: m.title, total: m.total, completed: student.completedPerModule[i] ?? 0, packageIds: m.packageIds }))
+    .filter((m) => !student.packageId || m.packageIds.includes(student.packageId));
+  return {
+    rows,
+    completed: rows.reduce((sum, m) => sum + m.completed, 0),
+    total: rows.reduce((sum, m) => sum + m.total, 0),
+  };
+}
 
 const avatarColors = ["#6366f1", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#06b6d4"];
 function initials(name: string) {
   return name.split(" ").map((p) => p[0]).join("").slice(0, 2).toUpperCase();
 }
 
-export function StudentsManager({ initial }: { initial: StudentRow[] }) {
+export function StudentsManager({
+  initial,
+  packages,
+  modules,
+}: {
+  initial: StudentRow[];
+  packages: PackageOption[];
+  modules: ModuleInfo[];
+}) {
   const [students, setStudents] = useState(initial);
   const [search, setSearch] = useState("");
   const [progressFor, setProgressFor] = useState<StudentRow | null>(null);
@@ -32,16 +56,16 @@ export function StudentsManager({ initial }: { initial: StudentRow[] }) {
     [students, search]
   );
 
-  async function toggleAccess(student: StudentRow) {
+  async function update(student: StudentRow, change: Partial<Pick<StudentRow, "courseAccess" | "packageId">>) {
     setBusyId(student.id);
     const res = await fetch(`/api/admin/students/${student.id}/access`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseAccess: !student.courseAccess }),
+      body: JSON.stringify(change),
     });
     setBusyId(null);
     if (res.ok) {
-      setStudents((list) => list.map((s) => (s.id === student.id ? { ...s, courseAccess: !s.courseAccess } : s)));
+      setStudents((list) => list.map((s) => (s.id === student.id ? { ...s, ...change } : s)));
     }
   }
 
@@ -68,13 +92,18 @@ export function StudentsManager({ initial }: { initial: StudentRow[] }) {
                   <th>Student</th>
                   <th>Contact</th>
                   <th>Bookings</th>
+                  <th>Package</th>
                   <th>Progress</th>
                   <th>Course Access</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((s, i) => (
+                {filtered.map((s, i) => {
+                  const progress = breakdown(s, modules);
+                  // Opening the lessons waits for a package, so a new student never gets every module by accident.
+                  const needsPackage = !s.courseAccess && !s.packageId;
+                  return (
                   <tr key={s.id}>
                     <td>
                       <div className="student-cell">
@@ -87,7 +116,24 @@ export function StudentsManager({ initial }: { initial: StudentRow[] }) {
                       <div style={{ fontSize: "0.72rem", color: "var(--gray-600)" }}>{s.phone || "—"}</div>
                     </td>
                     <td>{s.bookingsCount}</td>
-                    <td>{s.lessonsCompleted}/{s.totalLessons} lessons</td>
+                    <td>
+                      <select
+                        aria-label={`Package of ${s.name}`}
+                        value={s.packageId ?? ""}
+                        disabled={busyId === s.id}
+                        onChange={(e) => update(s, { packageId: e.target.value || null })}
+                        style={{ width: "auto", fontSize: "0.8rem", padding: "4px 8px" }}
+                      >
+                        <option value="">{s.courseAccess ? "No package" : "Choose…"}</option>
+                        {packages.map((p) => (
+                          <option key={p.id} value={p.id}>{p.nameEn}</option>
+                        ))}
+                      </select>
+                      {!s.packageId && s.courseAccess && (
+                        <div style={{ fontSize: "0.72rem", color: "var(--gray-600)", marginTop: 2 }}>Sees all modules</div>
+                      )}
+                    </td>
+                    <td>{progress.completed}/{progress.total} lessons</td>
                     <td>
                       <span className={`badge ${s.courseAccess ? "badge-active" : "badge-inactive"}`}>
                         {s.courseAccess ? "Granted" : "Revoked"}
@@ -98,27 +144,31 @@ export function StudentsManager({ initial }: { initial: StudentRow[] }) {
                         <button className="btn btn-sm btn-outline" onClick={() => setProgressFor(s)}>View Progress</button>
                         <button
                           className={`btn btn-sm ${s.courseAccess ? "btn-danger" : "btn-success"}`}
-                          onClick={() => toggleAccess(s)}
-                          disabled={busyId === s.id}
+                          onClick={() => update(s, { courseAccess: !s.courseAccess })}
+                          disabled={busyId === s.id || needsPackage}
+                          title={needsPackage ? "Choose a package first" : undefined}
                         >
                           {s.courseAccess ? "Revoke Access" : "Grant Access"}
                         </button>
                       </div>
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
         )}
       </div>
 
-      {progressFor && (
+      {progressFor && (() => {
+        const progress = breakdown(progressFor, modules);
+        return (
         <div className="modal-overlay" role="dialog" aria-modal="true" onClick={() => setProgressFor(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-title">{progressFor.name}&apos;s Progress</div>
-            <div className="modal-sub">{progressFor.lessonsCompleted} of {progressFor.totalLessons} lessons completed overall.</div>
-            {progressFor.moduleBreakdown.map((m) => (
+            <div className="modal-sub">{progress.completed} of {progress.total} lessons completed overall.</div>
+            {progress.rows.map((m) => (
               <div key={m.title} style={{ marginBottom: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.82rem", marginBottom: 4 }}>
                   <span style={{ fontWeight: 600, color: "var(--navy)" }}>{m.title}</span>
@@ -141,7 +191,8 @@ export function StudentsManager({ initial }: { initial: StudentRow[] }) {
             </div>
           </div>
         </div>
-      )}
+        );
+      })()}
     </div>
   );
 }

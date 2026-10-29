@@ -20,9 +20,9 @@ type Pkg = {
 type Feature = { key: string; included: boolean };
 const packageMeta: Record<
   string,
-  { icon: string; tags: string[]; stats: { num: string; key: "statPractical" | "statTheory" }[]; includes: Feature[] }
+  { icon: string; tags: string[]; stats: { num: string; key: "statPractical" | "statTheory" | "statDays" }[]; includes: Feature[] }
 > = {
-  Starter: {
+  Basic: {
     icon: "🚀",
     tags: ["beginner"],
     stats: [
@@ -31,43 +31,38 @@ const packageMeta: Record<
     ],
     includes: [
       { key: "noPractical", included: false },
-      { key: "onlineTheory", included: true },
+      { key: "lessons1to6", included: true },
       { key: "quizzesUnlimited", included: true },
       { key: "whatsappSupport", included: true },
+      { key: "examQuestions", included: false },
     ],
   },
-  Standard: {
+  Complete: {
     icon: "🎯",
-    tags: ["beginner", "theory"],
+    tags: ["beginner", "theory", "exam"],
     stats: [
       { num: "0", key: "statPractical" },
       { num: "✓", key: "statTheory" },
     ],
     includes: [
       { key: "noPractical", included: false },
-      { key: "fullTheory", included: true },
+      { key: "allLessons", included: true },
+      { key: "quizzesUnlimited", included: true },
+      { key: "examQuestions", included: true },
       { key: "whatsappSupport", included: true },
-    ],
-  },
-  Premium: {
-    icon: "💎",
-    tags: ["theory", "exam"],
-    stats: [
-      { num: "0", key: "statPractical" },
-      { num: "✓", key: "statTheory" },
-    ],
-    includes: [
-      { key: "noPractical", included: false },
-      { key: "fullTheory", included: true },
     ],
   },
   Refresher: {
     icon: "🔄",
     tags: ["exam"],
-    stats: [],
+    stats: [
+      { num: "0", key: "statPractical" },
+      { num: "7", key: "statDays" },
+    ],
     includes: [
       { key: "noPractical", included: false },
-      { key: "quiz7", included: true },
+      { key: "examQuestions7", included: true },
+      { key: "whatsappSupport", included: true },
       { key: "fullTheory", included: false },
     ],
   },
@@ -121,14 +116,7 @@ export function PackagesGrid({ packages, contactHref }: { packages: Pkg[]; conta
     { value: "exam", label: t("filterExam") },
   ];
 
-  const regular = packages.filter((p) => p.nameEn !== "Refresher");
-  const refresher = packages.find((p) => p.nameEn === "Refresher");
-
-  const matchesFilter = (name: string) => filter === "all" || getMeta(name).tags.includes(filter);
-
-  const visibleRegular = regular.filter((p) => matchesFilter(p.nameEn));
-  const visibleRefresher = refresher && matchesFilter(refresher.nameEn) ? refresher : null;
-  const totalVisible = visibleRegular.length + (visibleRefresher ? 1 : 0);
+  const visible = packages.filter((p) => filter === "all" || getMeta(p.nameEn).tags.includes(filter));
 
   return (
     <>
@@ -149,12 +137,12 @@ export function PackagesGrid({ packages, contactHref }: { packages: Pkg[]; conta
           ))}
         </div>
         <div className={styles["result-count"]}>
-          {t("showing")} <strong>{totalVisible}</strong> {t("packagesWord")}
+          {t("showing")} <strong>{visible.length}</strong> {t("packagesWord")}
         </div>
       </div>
 
       <div className={styles["packages-grid"]}>
-        {visibleRegular.map((pkg) => {
+        {visible.map((pkg) => {
           const meta = getMeta(pkg.nameEn);
           return (
             <div
@@ -203,42 +191,6 @@ export function PackagesGrid({ packages, contactHref }: { packages: Pkg[]; conta
           );
         })}
 
-        {visibleRefresher && (
-          <div className={`${styles["package-card"]} ${styles["refresher-card"]}`}>
-            <div className={styles["refresher-inner"]}>
-              <div className={`${styles["package-header"]} ${styles["refresher-header"]}`}>
-                <div className={styles["pkg-icon"]} aria-hidden="true">🔄</div>
-                <div className={styles["pkg-name"]}>{isNl ? visibleRefresher.nameNl : "Refresher"}</div>
-                <div className={styles["pkg-tagline"]}>{isNl ? visibleRefresher.descriptionNl : visibleRefresher.descriptionEn}</div>
-                <PriceRow price={visibleRefresher.price} label={priceLabel} />
-              </div>
-              <div className={styles["package-body"]}>
-                <div className={styles["includes-title"]}>{t("whatsIncluded")}</div>
-                <div className={styles["includes-list"]}>
-                  {getMeta("Refresher").includes.map((item) => (
-                    <div
-                      key={item.key}
-                      className={`${styles["include-item"]}${item.included ? "" : ` ${styles.unavailable}`}`}
-                    >
-                      <div className={item.included ? styles["check-icon"] : styles["cross-icon"]}>
-                        {item.included ? "✓" : "✗"}
-                      </div>
-                      {t(`features.${item.key}`)}
-                    </div>
-                  ))}
-                </div>
-                <Link
-                  href={ctaHref}
-                  {...ctaExtra}
-                  className={`btn btn-outline ${styles["pkg-cta"]}`}
-                  style={{ marginTop: "auto" }}
-                >
-                  {BOOKING_ENABLED ? t("bookRefresher") : t("askPrice")}
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

@@ -9,6 +9,7 @@ import { maquetteLes6Lessons } from "./content/maquette-les-6";
 import { theorieAlgemeenLessons, theorieCategorieCLessons, theorieCategorieDLessons } from "./content/theorie-vragen";
 import { verkeersbordenLessons } from "./content/verkeersborden";
 import { faqSeeds } from "./content/faq";
+import { packageSeeds } from "./content/packages";
 
 const prisma = new PrismaClient();
 
@@ -100,45 +101,6 @@ async function main() {
     instructors.push(instructor);
   }
 
-  const packageSeeds = [
-    {
-      id: "seed-pkg-starter",
-      nameEn: "Starter",
-      nameNl: "Starter",
-      descriptionEn: "Perfect for beginners with no prior driving experience.",
-      descriptionNl: "Perfect voor beginners zonder eerdere rijervaring.",
-      price: 2500,
-      featured: false,
-    },
-    {
-      id: "seed-pkg-standard",
-      nameEn: "Standard",
-      nameNl: "Standaard",
-      descriptionEn: "Our most popular package — comprehensive training for confident drivers.",
-      descriptionNl: "Ons populairste pakket — uitgebreide training voor zelfverzekerde bestuurders.",
-      price: 3000,
-      featured: true,
-    },
-    {
-      id: "seed-pkg-premium",
-      nameEn: "Premium",
-      nameNl: "Premium",
-      descriptionEn: "Intensive program designed to get you exam-ready in minimum time.",
-      descriptionNl: "Intensief programma om je in minimale tijd examenklaar te maken.",
-      price: 3500,
-      featured: false,
-    },
-    {
-      id: "seed-pkg-refresher",
-      nameEn: "Refresher",
-      nameNl: "Opfriscursus",
-      descriptionEn: "Already know how to drive? Brush up your skills for the exam.",
-      descriptionNl: "Kun je al autorijden? Fris je vaardigheden op voor het examen.",
-      price: 650,
-      featured: false,
-    },
-  ];
-
   for (const pkg of packageSeeds) {
     await prisma.package.upsert({
       where: { id: pkg.id },
@@ -154,7 +116,7 @@ async function main() {
         lessonCount: 0,
         includesTheory: true,
         featured: pkg.featured,
-        isActive: true,
+        isActive: pkg.isActive,
       },
     });
   }
@@ -370,6 +332,7 @@ async function main() {
         titleNl: mod.titleNl,
         orderIndex: mod.orderIndex,
         isPublished: true,
+        packages: { connect: packageSeeds.filter((p) => p.modules.includes(mod.id)).map((p) => ({ id: p.id })) },
       },
     });
 

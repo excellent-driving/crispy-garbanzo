@@ -6,10 +6,10 @@ import { getSchool } from "@/lib/school";
 import { BOOKING_ENABLED, SHOW_PRICES } from "@/lib/features";
 import styles from "./home.module.css";
 
+const packageOrder = ["Basic", "Complete", "Refresher"];
 const packageIcons: Record<string, string> = {
-  Starter: "🚀",
-  Standard: "⭐",
-  Premium: "💎",
+  Basic: "🚀",
+  Complete: "🎯",
   Refresher: "🔄",
 };
 
@@ -20,8 +20,7 @@ export default async function HomePage() {
 
   const [packages, instructors, faqs, instructorCount, school] = await Promise.all([
     prisma.package.findMany({
-      where: { isActive: true, nameEn: { in: ["Starter", "Standard", "Premium"] } },
-      orderBy: { price: "asc" },
+      where: { isActive: true, nameEn: { in: packageOrder } },
     }),
     prisma.instructor.findMany({
       where: { isActive: true },
@@ -148,7 +147,7 @@ export default async function HomePage() {
           </div>
 
           <div className={styles["packages-grid"]}>
-            {packages.map((pkg) => (
+            {packages.sort((a, b) => packageOrder.indexOf(a.nameEn) - packageOrder.indexOf(b.nameEn)).map((pkg) => (
               <div
                 key={pkg.id}
                 className={`${styles["package-card"]}${pkg.featured ? ` ${styles.featured}` : ""}`}

@@ -7,7 +7,7 @@ import { BOOKING_ENABLED, SHOW_PRICES } from "@/lib/features";
 import { PackagesGrid } from "./packages-grid";
 import styles from "./packages.module.css";
 
-const displayOrder = ["Starter", "Standard", "Premium", "Refresher"];
+const displayOrder = ["Basic", "Complete", "Refresher"];
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getTranslations("Meta"))("packages") };
@@ -26,7 +26,23 @@ export default async function PackagesPage() {
     return i === -1 ? displayOrder.length : i; // unknown packages sort last, not first
   };
   const sorted = [...packages].sort((a, b) => orderOf(a.nameEn) - orderOf(b.nameEn));
-  const byName = Object.fromEntries(sorted.map((p) => [p.nameEn, p]));
+
+  // One row per feature; a package the table doesn't know (added in the admin) shows "—".
+  type Cell = { mark?: "yes" | "no"; text?: string; bold?: boolean };
+  const pick = (values: Record<string, Cell>) => (p: { nameEn: string }) => values[p.nameEn] ?? { mark: "no" as const };
+  const rows: { label: string; cell: (p: (typeof sorted)[number]) => Cell }[] = [
+    { label: t("rowPractical"), cell: () => ({ mark: "no", text: t("notIncluded") }) },
+    {
+      label: t("rowTheory"),
+      cell: pick({ Basic: { mark: "yes", text: t("lessons1to6Short") }, Complete: { mark: "yes", text: t("allLessonsShort") }, Refresher: { mark: "no" } }),
+    },
+    {
+      label: t("rowExamQuestions"),
+      cell: pick({ Basic: { mark: "no" }, Complete: { mark: "yes" }, Refresher: { mark: "yes", text: t("days7") } }),
+    },
+    { label: t("rowWhatsapp"), cell: () => ({ mark: "yes" }) },
+    { label: t("rowPrice"), cell: (p) => ({ text: money(p.price), bold: true }) },
+  ];
 
   return (
     <>
@@ -69,41 +85,30 @@ export default async function PackagesPage() {
               <thead>
                 <tr>
                   <th>{t("featureCol")}</th>
-                  <th>{isNl ? byName.Starter?.nameNl : "Starter"}</th>
-                  <th className={styles.highlight}>{(isNl ? byName.Standard?.nameNl : "Standard") ?? "Standard"} ⭐</th>
-                  <th>{isNl ? byName.Premium?.nameNl : "Premium"}</th>
-                  <th>{isNl ? byName.Refresher?.nameNl : "Refresher"}</th>
+                  {sorted.map((p) => (
+                    <th key={p.id} className={p.featured ? styles.highlight : undefined}>
+                      {isNl ? p.nameNl : p.nameEn}{p.featured ? " ⭐" : ""}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><strong>{t("rowPractical")}</strong></td>
-                  <td><span className={styles.cross}>—</span> {t("notIncluded")}</td>
-                  <td className={styles.highlight}><span className={styles.cross}>—</span> {t("notIncluded")}</td>
-                  <td><span className={styles.cross}>—</span> {t("notIncluded")}</td>
-                  <td><span className={styles.cross}>—</span> {t("notIncluded")}</td>
-                </tr>
-                <tr>
-                  <td><strong>{t("rowTheory")}</strong></td>
-                  <td><span className={styles.check}>✓</span> {t("basic")}</td>
-                  <td className={styles.highlight}><span className={styles.check}>✓</span> {t("full")}</td>
-                  <td><span className={styles.check}>✓</span> {t("full")}</td>
-                  <td><span className={styles.check}>✓</span> {t("days7")}</td>
-                </tr>
-                <tr>
-                  <td><strong>{t("rowWhatsapp")}</strong></td>
-                  <td><span className={styles.check}>✓</span></td>
-                  <td className={styles.highlight}><span className={styles.check}>✓</span></td>
-                  <td><span className={styles.check}>✓</span></td>
-                  <td><span className={styles.check}>✓</span></td>
-                </tr>
-                <tr>
-                  <td><strong>{t("rowPrice")}</strong></td>
-                  <td><strong>{money(byName.Starter?.price)}</strong></td>
-                  <td className={styles.highlight}><strong>{money(byName.Standard?.price)}</strong></td>
-                  <td><strong>{money(byName.Premium?.price)}</strong></td>
-                  <td><strong>{money(byName.Refresher?.price)}</strong></td>
-                </tr>
+                {rows.map((row) => (
+                  <tr key={row.label}>
+                    <td><strong>{row.label}</strong></td>
+                    {sorted.map((p) => {
+                      const cell = row.cell(p);
+                      return (
+                        <td key={p.id} className={p.featured ? styles.highlight : undefined}>
+                          {cell.mark === "yes" && <span className={styles.check}>✓</span>}
+                          {cell.mark === "no" && <span className={styles.cross}>—</span>}
+                          {cell.mark && cell.text ? " " : ""}
+                          {cell.bold ? <strong>{cell.text}</strong> : cell.text}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
